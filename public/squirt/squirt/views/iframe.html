@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+
+    <link rel='stylesheet' href='../fonts/ss-pika.css'>
+    <link rel='stylesheet' href='../css/frame.inner.css'>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  </head>
+  <body>
+    <div class="article-veil"></div>
+    <div class="modal">
+      <div class="drawer">
+        <div class="drawer-content">
+          <ul class='font-selector'>
+            <li class='font-option serif'>S<span class='orp'>e</span>rif</li>
+            <li class='font-option sans'>S<span class='orp'>a</span>ns</li>
+          </ul>
+          <ul class='keyboard-shortcuts'>
+            <li>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>pause</i> &amp; <i class='ss-icon'>play</i>
+              </span>
+              <span class='shortcut-key'>Spacebar</span>
+            </li>
+            <li>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>rewind</i>
+                WPM
+                <i class='ss-icon'>fastforward</i>
+              </span>
+              <span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>
+            </li>
+            <li>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>rewind</i> &amp; <i class='ss-icon'>fastforward</i>
+              </span>
+              <span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>
+            </li>
+            <li>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>close</i>
+              </span>
+              <span class='shortcut-key'>Escape</span>
+            </li>
+            <li>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>settings</i>
+              </span>
+              <span class='shortcut-key'>S</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="toolbar">
+        <ul class="menu segment">
+          <li><i class="toolbar-settings btn ss-icon">settings</i></li>
+        </ul>
+        <div class="playback segment">
+          <i class="btn pause ss-icon">pause</i>
+          <div class="scrubber no-select">
+            <span class="scrubber-bar scrubber-bar-left"></span>
+            <span class="scrubber-bar scrubber-bar-right"></span>
+            <i class="ss-icon scrubber-knob btn no-select">record</i>
+          </div>
+          <div class="time-to-read"></div>
+        </div>
+        <div class="wpm segment">
+          <i class="ss-icon wpm-down btn">directleft</i>
+          <div class="wpm-count no-select">&lt; {{ wpm }}</div>
+          <i class="ss-icon wpm-up btn">directright</i>
+        </div>
+
+      </div>
+      <div class="reader">
+	  
+        <i class='close ss-icon'>close</i>
+        <div class="carousel">
+          <div class="focus-indicator-gap">&nbsp;</div>
+          <ul class="nodes"></ul>
+        </div>
+        <div class="reader-content">
+          <img class='share-logo' src='../images/logo.png'/>
+          <div class="feature-requests">
+          </div>
+          <h3 class='tweet-preview'>&ldquo;The Internet is too damn long! Read it
+            at 350-1000 words per minute with Squirt.&rdquo;
+          </h3>
+          
+		</div>
+	    <div class='keyboard-shortcuts' style='position:absolute;bottom:0;left:0'>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>pause</i> &amp; <i class='ss-icon'>play</i>
+              </span>
+              <span class='shortcut-key'>Spacebar</span>
+ 
+              <span class='shortcut-function'>
+                <i class='ss-icon'>rewind</i>
+                WPM
+                <i class='ss-icon'>fastforward</i>
+              </span>
+              <span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>
+              <span class='shortcut-function'>
+                <i class='ss-icon'>rewind</i> &amp; <i class='ss-icon'>fastforward</i>
+              </span>
+              <span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>
+  
+              <span class='shortcut-function'>
+                <i class='ss-icon'>close</i>
+              </span>
+              <span class='shortcut-key'>Escape</span>
+      
+              <span class='shortcut-function'>
+                <i class='ss-icon'>settings</i>
+              </span>
+              <span class='shortcut-key'>S</span>
+          </div>
+
+			
+
+    </div>
+    <script src="../frame.inner.js"></script>
+</body>
+</html>

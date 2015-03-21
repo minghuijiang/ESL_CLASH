@@ -1,0 +1,39 @@
+body{
+  position: relative;
+}
+
+.sq-invis{
+  opacity: 0;
+}
+
+.sq-frame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width:100%;
+  height: 100%;
+  z-index: 9999999999999999999999;
+}
+
+.sq-frame.closed {
+  height: 0;
+}
+
+.sq-trans{
+  transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  -webkit-transition: all .2s ease-in-out;
+}
+
+.sq-current-word {
+  color: red !important;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.sq-blur{
+  filter: blur(2px);
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+}
+

@@ -1,0 +1,394 @@
+* {
+  vertical-align: baseline;
+  font-weight: inherit;
+  font-style: inherit;
+  border: 0 none;
+  outline: 0;
+  padding: 0;
+  margin: 0;
+  color: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: "Helvetia Neue", sans-serif;
+  font-size: 19px;
+  overflow: hidden;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-weight: bold;
+  margin: 1em 0;
+}
+
+input {
+  font-size: 1em;
+}
+
+.article-veil {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 9999999999999999999999;
+}
+
+.playing .article-veil {
+  background-color: rgba(209, 209, 209, 0.3);
+}
+
+.modal {
+  position: relative;
+  color: #333;
+  z-index: 99999999999999999999999;
+  width: 100%;
+  background-color: #FDFDFD;
+  top: 50%;
+}
+
+.modal .error {
+  display: none
+  margin: 2em;
+  font-size: .8em;
+}
+
+.drawer {
+  height: 7;
+  box-shadow: 0 0px 6px rgba(0,0,0,.3);
+  padding: 3em;
+  font-weight: bold;
+}
+
+.drawer-content {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.drawer-content .ss-icon {
+  position: relative;
+  top: .1em;
+}
+
+.drawer-content ul{
+  list-style: none;
+}
+
+.reader ul{
+  list-style: none;
+}
+
+.font-selector {
+  width: 45%;
+  float: left;
+  text-align: center;
+  font-weight: normal;
+}
+
+.font-option{
+  color: #6b6b6b;
+  cursor: pointer;
+  background-color: rgb(245, 245, 245);
+  border-radius: 4px;
+  padding: .4em;
+  margin: 1.1em auto 0 auto;
+  width: 55%;
+  border: 1px solid #EBEBEB;
+}
+
+.font-option:hover, .font-option.active{
+  background-color: rgba(150, 200, 250, .3);
+  border: 1px solid rgba(150, 200, 250, .6);
+}
+
+
+.font-option.serif {
+  font-family: "Georgia", serif;
+}
+
+.font-option.sans {
+  font-family: "Helvetica Neue", sans-serif;
+}
+
+.keyboard-shortcuts {
+  margin-left: 47%;
+  border-left: 1px solid #efefef;
+  padding-left: 5%;
+  color: #9b9b9b;
+  font-size: .8em;
+}
+
+.keyboard-shortcuts li {
+  margin: .6em 0;
+}
+
+.shortcut-function{
+  display: inline-block;
+  width: 8em;
+  margin-right: .3em;
+  text-align: right;
+}
+
+.shortcut-function:after{
+  content: "—";
+  color: #C5C5C5;
+  padding-left: .4em;
+  position: relative;
+  top: -.1em;
+}
+
+.close {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  color: #dedede;
+  cursor: pointer;
+}
+
+.toolbar {
+  font-family: "Helvetica Neue", "Arial", sans-serif;
+  color: rgba(196, 196, 196, 1);
+  padding: 1.2em;
+  padding-bottom: 1.1em;
+  line-height: 1.1em;
+}
+
+.toolbar .ss-icon{
+  position: relative;
+  top: 2px;
+}
+
+.segment {
+  display: inline-block;
+}
+
+.menu li{
+  display: inline-block;
+  padding: 0 .6em;:
+  padding-top: .23em;
+}
+
+.btn{
+  display: inline-block;
+}
+
+.btn:hover {
+  color: rgba(150, 200, 250, 1);
+  cursor: pointer;
+}
+
+.playback {
+  position: absolute;
+  left: 38%;
+}
+
+.time-to-read{
+  font-weight: bold;
+  font-size: .9em;
+  padding-left: .7em;
+  position: relative;
+  top: -2px;
+}
+
+.segment div {
+  display: inline-block;
+}
+
+.pause{
+  position: relative;
+  top: 2px;
+  padding-right: 1em
+}
+
+.wpm{
+  position: absolute;
+  right: 20px;
+  margin-top: -1px;
+  font-size: .9em;
+}
+
+.wpm .btn {
+  font-size: 1.5em;
+}
+
+.wpm-count {
+  position: relative;
+  top: -5px;
+  font-weight: bold;
+  letter-spacing: .12em
+}
+
+.scrubber {
+  width: 150px;
+  position: relative;
+  top: -.4em;
+}
+
+.scrubber-bar {
+  display: inline-block;
+  height: 2px;
+  border-radius: 2px;
+  position: absolute;
+}
+
+.scrubber-bar-left {
+  background-color: rgba(150, 200, 250, .6);
+}
+
+.scrubber-bar-right {
+  background-color: #e9e9e9;
+  width: 100%;
+  left: 0;
+}
+
+.scrubber-knob{
+  position:relative;
+  top: -.35em !important;
+}
+
+.reader {
+  box-shadow: 0 0px 6px rgba(0,0,0,.3);
+  height: 280px;
+  position: relative;
+}
+
+.carousel {
+  font-family: Georgia, serif;
+  position: absolute;
+  height: 100%;
+  left: 45%;
+  width: 55%;
+  border-left: 1px solid rgba(0,0,0, .2);
+  font-size: 2em;
+}
+
+.reader.sans .carousel {
+  font-family: "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+
+
+.nodes{
+  top: 38%;
+  position: relative;
+  width: 100000%;
+}
+
+.word {
+  opacity: .4;
+  display: inline-block;
+  padding-right: .3em;
+  transition: opacity .1s ease-in-out;
+  -moz-transition: opacity .1s ease-in-out;
+  -webkit-transition: opacity .1s ease-in-out;
+}
+
+.playing .word{
+  opacity: 0;
+}
+
+.seeking .word{
+  opacity: 1 !important;
+}
+
+.focus-node {
+  opacity: 1 !important;
+  transition-property: none !important
+}
+
+.playing .focus-node-prev{
+  opacity: 0;
+  transition-property: none !important
+}
+
+.playing .serial-fade {
+  opacity: .4;
+}
+
+.focus-node .orp, .font-option .orp{
+  color: rgb(3, 144, 255)
+}
+
+.focus-indicator-gap {
+  position: absolute;
+  top: 33%;
+  background-color: #FDFDFD;
+  width: 2px;
+  left: -2px;
+  font-size: 1.8em;
+}
+
+.reader-content {
+  padding: 3em 8em;
+  padding-left: 16em;
+  display: none;
+}
+
+.feature-requests {
+  display: none;
+}
+
+.feature-request {
+  padding-left: 2em;
+}
+
+.feature-requests h3{
+  margin-top: 0;
+  font-size: 1.2em;
+}
+
+.email-form {
+ margin-top: .8em
+}
+
+.email, .email-submit {
+  border: 2px solid #eee;
+  padding: .3em;
+} 
+
+.email-submit {
+  border: 0;
+  padding: calc( .3em + 2px);
+  background-color: rgba(150, 200, 250, 0.6);
+  font-weight: bold;
+  color: white
+}
+
+.form-btn {
+  background-color: rgba(150, 200, 250, 0.6);
+  font-weight: bold;
+  color: white
+  padding: .3em;
+  font-size: 1em;
+}
+
+
+.share-logo {
+  position: absolute;
+  top: 2em;
+  left: 3em;
+}
+
+.fb-share {
+  width: 7em;
+}
+
+.twitter-share {
+  width: 5.7em;
+}
+
+/* mixins */
+/* mixins */
+/* mixins */
+
+.invis {
+  opacity: 0;
+}
+
+.no-select{
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}

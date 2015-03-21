@@ -1,0 +1,54 @@
+#main{
+    height: auto;
+    width: auto;
+        
+    }    
+#dash {
+    background-color: ;
+    text-align:left;
+    padding: 50px;
+    height: 15%;
+    width: 80%;
+    position: absolute;
+    margin-left: 15%;
+}
+#nav {
+    line-height:30px;
+    background-color: ;
+    height: 80%;
+    width:20%;
+    float:left;
+    padding:5px;
+    position: absolute;
+    padding-top: 0px;
+}
+#section {
+    background-color: ;
+    width:80%;
+    height: 20%;
+    float:right;
+    padding:10px;
+    position: absolute;
+    margin-left: 17%;
+    margin-top: 5%;
+}
+
+.white-font{
+	color:white;
+}
+
+span :not(.sentence):hover {
+	-webkit-box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.3);
+}
+p {
+	text-indent: 50px;
+}
+
+#resizable { width: 500px; height: 300px; padding: 0.5em; }
+#resizable h3 { text-align: left; margin: 0; }
+
+#content {
+	margin-bottom: 2cm;
+	margin-right: 2cm;
+}

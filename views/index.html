@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CLASH Text Submit Test</title>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/redmond/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+<script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+
+<script src="js/display.js"></script>
+<link rel="stylesheet" href="css/style.css">
+
+    <title></title>
+	<script>
+		var json;
+		var tokenDelimiter = 'ˇ';
+	$(function() {
+		 
+		$("#resizable").resizable({
+		aspectRatio: 16 / 9
+		});
+		$( "#button" ).button();
+		$( "#read" ).button();
+		$('#characterLeft').text('30000 characters remaining');
+		$('#resizable').keyup(function () {
+				var max = 30000;
+				var len = $(this).val().length;
+			
+			if (len >= max) {
+				$('#characterLeft').text(' you have reached the limit');
+			} else {
+			var ch = max - len;
+				$('#characterLeft').text(ch + ' characters remaining');
+			}
+		});
+		
+	});
+	</script>
+  </head>
+  
+  <body>
+       <div id="nav">
+	  	<img src="/images/ClashLogo.png" alt="CLASH" style="width:250px;height:188px">
+		<br />
+		<select>
+		<option>Document1</option>
+		<option>Document2</option>
+		<option>Document3</option>
+		</select>
+		<br />
+
+		<br />
+		<!--
+			Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#008CFF
+			Pronoun			white-blue 			"PRP,PRP\\$,WP\\$,WP,WDT PNOUN" 	
+			Verb			red					"VB,VBD,VBG,VBN,VBP,VBZ,MD VERB"	#990000
+			Adverb			white-red			"RB,RBR,RBS,WRB ADV"	
+			Adjective		green				"JJ,JJR,JJS ADJ"					#437A00
+			Conjunction     white-green			"CC CONJ"
+			Preposition     Burgundy			"TO,IN PREP"						purple
+			Article         white-Burgundy		"DT ART"
+				
+		-->
+		<input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />
+			<span>S/l/a/s/h</span><br />
+		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />	
+			<span style="font-weight:bold">Exception</span><br />
+		
+		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS','#008CFF',this.checked,'white',true)" />
+			<span style="color:#008CFF; font-weight:bold">Noun</span><br />
+		
+		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT','white',this.checked, '#008CFF')">
+			<span class="white-font" style="background-color:#008CFF">Pronoun</span><br />
+
+		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD','#990000',this.checked)">
+			<span style="color:#990000">Verb</span><br />
+					
+		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB','white',this.checked, '#990000')">
+			<span class="white-font" style="background-color:#990000">Adverb</span><br />
+						
+		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS','#437A00',this.checked)">
+			<span style="color:#437A00">Adjective</span><br />
+						
+		<input type="checkbox" id="Conjunction" onclick="changeColor('CC','white', this.checked,'#437A00')">
+			<span class="white-font" style="background-color:#437A00">Conjunction</span><br />
+						
+		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN','purple',this.checked)">
+			<span style="color:purple">Preposition </span><br />
+						
+		<input type="checkbox" id="Article" onclick="changeColor('DT','white', this.checked,'purple')">
+			<span class="white-font" style="background-color:purple">Article</span><br />
+		
+         
+      </div>
+      <div id="dash">
+		<form action="" style="float: right;padding-top: 3px">
+          <input type="submit" value="Login" />
+        </form>
+      </div>
+      <div id="section">
+        <h2>Insert Text Below</h2>
+		<div id="enter">
+		<textarea id="resizable" cols="30" rows="10" wrap="physical" name="text" maxlength="30000" placeholder="Enter text to CLASH"></textarea>
+		<div for="resizable" id="characterLeft"></div>
+			<button type="button" id="button">CLASH IT!</button>	
+			<button type="button" id="read" onclick="startReader()">Start Read</button>	
+		</div>
+		<div id ='content' style ="font-size:30px">
+
+		</div>
+      </div>
+	 
+	  
+	  
+    <script>
+    	
+		var socket = io();
+	  $('#button').click(function(){
+		
+		console.log('trying to emit...');
+		socket.emit('text', $('#resizable').val());
+		console.log($('#resizable').val());
+		$('#resizable').val('');
+		socket.on('response', function(msg){
+			console.log('response recieved ' + msg);
+			json = JSON.parse(msg);
+			var str =(parseJSON(json));
+			document.getElementById("content").innerHTML = str;
+			hideSlash();
+		});
+	  });
+
+		
+
+		</script>
+  </body>
+</html>
