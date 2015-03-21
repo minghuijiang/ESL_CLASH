@@ -37,7 +37,7 @@ connection.query(' SELECT * FROM USER', function(err, rows) {
 });
 
 
-http.listen(3000, function(){
+http.listen(4000, function(){
   console.log('Express server listening on port %d in %s mode',http.address().port, app.settings.env);
 });
 
