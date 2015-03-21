@@ -321,7 +321,7 @@ function e(t, n, r) {
                         object[key] = val;
                     });
                 return object;
-            },
+            }
         }
 
         module.exports = dom;
@@ -464,13 +464,13 @@ function e(t, n, r) {
             loading.show();
             sq.pageContent = jtf.grabArticleText();
 
-            dom.injectStylesheet('squirt/css/frame.outer.css');
+            dom.injectStylesheet('/css/frame.outer.css');
 
             // inject reader iframe
            
 
             var iframeSrc = 
-                'squirt/views/iframe.html';
+                '/views/iframe.html';
 
             sq.innerFrame = createIframe(iframeSrc, _.compose(
                 loading.hide,
@@ -722,7 +722,7 @@ function e(t, n, r) {
                 return function() {
                     js.invoke(args);
                 }
-            },
+            }
         };
 
         module.exports = js;
@@ -1481,7 +1481,7 @@ function e(t, n, r) {
                     evt.once(el, dom.transitionEndEvents, function() {
                         loading.wrapperEl.remove();
                     });
-                },
+                }
             };
 
             module.exports = loading;
