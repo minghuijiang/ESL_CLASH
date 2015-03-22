@@ -54,7 +54,7 @@ input {
 }
 
 .drawer {
-  height: 0px;
+  height: 7;
   box-shadow: 0 0px 6px rgba(0,0,0,.3);
   padding: 3em;
   font-weight: bold;
@@ -252,7 +252,7 @@ input {
   position: relative;
 }
 
-.carousel .reader-content{
+.carousel {
   font-family: Georgia, serif;
   position: absolute;
   height: 100%;
@@ -317,7 +317,15 @@ input {
   font-size: 1.8em;
 }
 
+.reader-content {
+  padding: 3em 8em;
+  padding-left: 16em;
+  display: none;
+}
 
+.feature-requests {
+  display: none;
+}
 
 .feature-request {
   padding-left: 2em;
@@ -335,7 +343,7 @@ input {
 .email, .email-submit {
   border: 2px solid #eee;
   padding: .3em;
-} 
+}
 
 .email-submit {
   border: 0;
@@ -354,12 +362,19 @@ input {
 }
 
 
-.share-logo {
-  position: absolute;
+.share-logo .tweet-preview{
+  position: relative;
   top: 2em;
   left: 3em;
 }
 
+.fb-share {
+  width: 7em;
+}
+
+.twitter-share {
+  width: 5.7em;
+}
 
 /* mixins */
 /* mixins */
