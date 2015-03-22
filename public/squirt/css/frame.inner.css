@@ -317,11 +317,7 @@ input {
   font-size: 1.8em;
 }
 
-.reader-content {
-  padding: 3em 8em;
-  padding-left: 16em;
-  display: none;
-}
+
 
 .feature-request {
   padding-left: 2em;
@@ -364,13 +360,6 @@ input {
   left: 3em;
 }
 
-.fb-share {
-  width: 7em;
-}
-
-.twitter-share {
-  width: 5.7em;
-}
 
 /* mixins */
 /* mixins */
