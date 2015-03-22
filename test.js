@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
                 console.log('result: ' + results);
 				
                 var java = require("java");
-                java.classpath.push("slash.jar"); //Needs to be on the same path as of .js file
+                java.classpath.push("java/slash.jar"); //Needs to be on the same path as of .js file
                 var slash = java.newInstanceSync("main.Slash");
 				
 				/**
