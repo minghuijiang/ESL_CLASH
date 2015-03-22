@@ -54,7 +54,6 @@ input {
 }
 
 .drawer {
-  height: 7;
   box-shadow: 0 0px 6px rgba(0,0,0,.3);
   padding: 3em;
   font-weight: bold;
@@ -363,9 +362,12 @@ input {
 
 
 .share-logo {
-  position: absolute;
-  top: 2em;
-  left: 3em;
+    height: 100%;
+    left: 35%;
+    width: 65%;
+    top: 38%;
+    position: relative;
+
 }
 
 .fb-share {
@@ -374,6 +376,8 @@ input {
 
 .twitter-share {
   width: 5.7em;
+
+
 }
 
 /* mixins */
