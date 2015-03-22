@@ -54,7 +54,7 @@ input {
 }
 
 .drawer {
-  height: 7;
+  height: 7px;
   box-shadow: 0 0px 6px rgba(0,0,0,.3);
   padding: 3em;
   font-weight: bold;
@@ -252,7 +252,7 @@ input {
   position: relative;
 }
 
-.carousel {
+.carousel .reader-content{
   font-family: Georgia, serif;
   position: absolute;
   height: 100%;
