@@ -4,17 +4,15 @@
         
     }    
 #dash {
-    background-color: ;
     text-align:left;
     padding: 50px;
     height: 15%;
     width: 80%;
-    position: absolute;
+    position: relative;
     margin-left: 15%;
 }
 #nav {
     line-height:30px;
-    background-color: ;
     height: 80%;
     width:20%;
     float:left;
@@ -23,7 +21,6 @@
     padding-top: 0px;
 }
 #section {
-    background-color: ;
     width:80%;
     height: 20%;
     float:right;
