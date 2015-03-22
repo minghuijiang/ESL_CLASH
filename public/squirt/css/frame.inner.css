@@ -252,7 +252,7 @@ input {
   position: relative;
 }
 
-.carousel {
+.carousel .reader-content{
   font-family: Georgia, serif;
   position: absolute;
   height: 100%;
@@ -267,7 +267,7 @@ input {
 }
 
 
-.nodes{
+.nodes .reader-content{
   top: 38%;
   position: relative;
   width: 100000%;
@@ -317,11 +317,6 @@ input {
   font-size: 1.8em;
 }
 
-.reader-content {
-  padding: 3em 8em;
-  padding-left: 16em;
-  display: none;
-}
 
 .feature-requests {
   display: none;
