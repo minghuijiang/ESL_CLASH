@@ -362,10 +362,7 @@ input {
 
 
 .share-logo {
-
-    height: 100%;
-    left: 35%;
-    width: 65%;
+    left: 25%;
     top: 38%;
     position: relative;
 }
@@ -379,10 +376,7 @@ input {
 }
 
 .tweet-preview {
-    height: 100%;
-    left: 35%;
-    width: 65%;
-    top: 38%;
+    left: 15%;
     position: relative;
 }
 
