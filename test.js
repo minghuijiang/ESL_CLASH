@@ -73,42 +73,7 @@ var
 
   
   app.get( '/', function ( request, response ) {
-  	response.send( 'Hello World from Node with Express and nodemon!' );
-});
-
-//test.html
-  app.get('/test.html', function (request, response){
-    var options = {
-    	root: __dirname,// + '/public/',
-    	dotfiles: 'deny',
-    	headers: {
-        	'x-timestamp': Date.now(),
-        	'x-sent': true
-    	}
-	};	
-
-    var fileName = '/test.html';
-    
-   response.sendFile(fileName, options, function (err) {
-     if(err) {
-    	if (err.code === "ECONNABORT" && response.statusCode == 304) {
-      		// No problem, 304 means client cache hit, so no data sent
-      		console.log('304 cache hit for ' + fileName);
-      		return;
-    	}
-    console.error("SendFile error:", err, " (status: " + err.status + ")");
-    
-	if (err.status) {
-	      response.status(err.status).end();
-    	}
-  }
-  else {
-    console.log('Sent:', fileName);
-  }
-  });
-  
-
-
+      response.render('index.html');
 });
 
   //test2.html
