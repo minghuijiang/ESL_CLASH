@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" serverName="esl-clash-mgmt.cs.odu.edu" uploadOnCheckin="1d417ed7-727d-4738-a91c-f861dc40009e">
+    <serverData>
+      <paths name="esl-clash-mgmt.cs.odu.edu">
+        <serverdata>
+          <mappings>
+            <mapping deploy="ESL_CLASH" local="$PROJECT_DIR$" web="" />
+          </mappings>
+          <excludedPaths>
+            <excludedPath path=".git" />
+          </excludedPaths>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="esl-clash-mgmt.cs.odu.edu" />
+  </component>
+</project>
