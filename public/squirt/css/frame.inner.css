@@ -54,7 +54,7 @@ input {
 }
 
 .drawer {
-  height: 0px;
+  height: 7;
   box-shadow: 0 0px 6px rgba(0,0,0,.3);
   padding: 3em;
   font-weight: bold;
@@ -252,7 +252,7 @@ input {
   position: relative;
 }
 
-.carousel .reader-content{
+.carousel {
   font-family: Georgia, serif;
   position: absolute;
   height: 100%;
@@ -267,7 +267,7 @@ input {
 }
 
 
-.nodes .reader-content{
+.nodes{
   top: 38%;
   position: relative;
   width: 100000%;
@@ -317,6 +317,11 @@ input {
   font-size: 1.8em;
 }
 
+.reader-content {
+  padding: 3em 8em;
+  padding-left: 16em;
+  display: none;
+}
 
 .feature-requests {
   display: none;
@@ -357,8 +362,8 @@ input {
 }
 
 
-.share-logo .tweet-preview{
-  position: relative;
+.share-logo {
+  position: absolute;
   top: 2em;
   left: 3em;
 }
