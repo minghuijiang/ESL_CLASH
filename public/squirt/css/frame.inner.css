@@ -54,7 +54,7 @@ input {
 }
 
 .drawer {
-  height: 7;
+  height: 0px;
   box-shadow: 0 0px 6px rgba(0,0,0,.3);
   padding: 3em;
   font-weight: bold;
@@ -321,10 +321,10 @@ input {
   padding: 3em 8em;
   padding-left: 16em;
   display: none;
-}
-
-.feature-requests {
-  display: none;
+    position: absolute;
+    height: 100%;
+    left: 45%;
+    width: 55%;
 }
 
 .feature-request {
