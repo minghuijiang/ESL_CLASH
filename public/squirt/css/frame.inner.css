@@ -252,7 +252,7 @@ input {
   position: relative;
 }
 
-.carousel .reader-content{
+.carousel {
   font-family: Georgia, serif;
   position: absolute;
   height: 100%;
