@@ -56,6 +56,7 @@ var
     app.use(express.static(__dirname + '/public'));
 
 //Socket.IO and python-shell
+
 io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
