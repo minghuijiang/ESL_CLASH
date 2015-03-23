@@ -362,9 +362,7 @@ input {
 
 
 .share-logo {
-    height: 100%;
-    left: 35%;
-    width: 65%;
+    left: 25%;
     top: 38%;
     position: relative;
 
@@ -375,9 +373,12 @@ input {
 }
 
 .twitter-share {
-  width: 5.7em;
+    width: 5.7em;
+}
 
-
+.tweet-preview {
+    left: 15%;
+    position: relative;
 }
 
 /* mixins */
