@@ -1,41 +1,17 @@
 'use strict';
 
 //Node application
-//var 
-  //http = require( 'http' ),
-  //express = require( 'express' ),
-  //app = express(),
-  //url = require('url'),
-  //io = require('socket.io'),
 
-  //server = http.createServer( app );
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 var PythonShell = require('python-shell');
-var mysql      = require('mysql');
-
-/**
-  MYSQL
-**/
-
-var connection = mysql.createConnection({
-  host     : 'esl-clash.cs.odu.edu',
-  port     : '3306',
-  database : 'CLASH'
-});
-
-connection.query(' SELECT * FROM USER', function(err, rows) {
-     if(err){
-        console.log(err.code);
-     }
-     else{
-       console.log(rows);
-     }
-});
-
+var mysql = require('mysql');
+var java = require("java");
+java.classpath.push("java/slash.jar");
+var slash = java.newInstanceSync("main.Slash");
 
 http.listen(4000, function(){
   console.log('Express server listening on port %d in %s mode',http.address().port, app.settings.env);
@@ -66,11 +42,6 @@ var
 
 	app.set('view engine', 'ejs');
 
-	app.get('/about', function (req, res)
-	{
-		res.render('about.html');
-	});
-
   
   app.get( '/', function ( request, response ) {
       response.render('index.html');
@@ -81,6 +52,9 @@ var
     response.render('index.html');
   });
 
+    // open public folder
+    app.use(express.static(__dirname + '/public'));
+
 //Socket.IO and python-shell
 io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
@@ -88,24 +62,16 @@ io.on('connection', function(socket) {
     console.log('connected to client')
 
     socket.on('text', function(msg) {
-        console.log('input: ' + msg);
         var options = {
             args: [msg]
         };
-        console.log('options: ' + options);
 
         PythonShell.run('parse_pos.py', options, function(err, results) {
             if (err) {
                 console.log('error from python: ' + error);
                 socket.emit('response', error);
             } else {
-                // results is an array consisting of messages collected during execution 
-                console.log('result: ' + results);
-				
-                var java = require("java");
-                java.classpath.push("java/slash.jar"); //Needs to be on the same path as of .js file
-                var slash = java.newInstanceSync("main.Slash");
-				
+                // results is an array consisting of messages collected during execution
 				/**
 				 * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
 				 * 
@@ -143,7 +109,7 @@ io.on('connection', function(socket) {
 				 * @return
 				 * 			
 				 */
-                slash.parseSlash(results[0], 'from day to day;from year to year',3,7, function(error, data) {
+                slash.parseSlash(results[0], 'from day to day;from year to year',2,7, function(error, data) {
                     if (error) {
                         console.log('err from java: ' + error);
                         socket.emit('response', error);
@@ -154,12 +120,9 @@ io.on('connection', function(socket) {
                 });
             }
         });
-        console.log('\n\n===============================after io and pos\n\n')
     });
 });
 
-// open public folder
-app.use(express.static(__dirname + '/public'));
 
 
 
