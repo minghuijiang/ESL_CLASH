@@ -57,7 +57,7 @@ var
 
 //Socket.IO and python-shell
 
-io.on('connection', function(socket) {
+io.of('/dev').on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
     console.log('connected to client')
