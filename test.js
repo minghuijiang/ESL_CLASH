@@ -72,7 +72,8 @@ io.on('connection', function(socket) {
                 socket.emit('response', error);
             } else {
                 // results is an array consisting of messages collected during execution
-                console.log(results);
+                console.log('result: '+results[0]);
+
 				/**
 				 * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
 				 * 
