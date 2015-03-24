@@ -27,8 +27,6 @@ def process(token):
             str.decode('ascii')
         except UnicodeDecodeError:
             print "it was not a ascii-encoded unicode string"
-        else:
-            print str
 
 
 def main(argv):
