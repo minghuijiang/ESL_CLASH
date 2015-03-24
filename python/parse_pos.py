@@ -3,19 +3,18 @@
 import sys
 import nltk 
 import json
-
+import locale
 
 
 def parse_text(inputText):
     out = list()
+    print locale.getdefaultlocale()
     for para in inputText.splitlines():
         pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
             sList = list()
             token = nltk.word_tokenize(sent);
-            for s in token:
-                print s;
             for (word,tag) in nltk.pos_tag(token):
                 sList.append(word)
                 sList.append(tag)
