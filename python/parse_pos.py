@@ -11,7 +11,7 @@ def parse_text(inputText):
     for para in inputText.splitlines():
         print para
         print para.encode('utf-8','ignore')
-        print para.encode('utf-8','replace'')
+        print para.encode('utf-8','replace')
         pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
