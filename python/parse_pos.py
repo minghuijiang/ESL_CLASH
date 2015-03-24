@@ -4,28 +4,35 @@ import sys
 import nltk 
 import json
 
+delimiter = 'ˇ';
+sentDeli = '\n';
+paraDeli ='\n\r';
+
 def parse_text(inputText):
-    out = list()
+    result = '';
     for para in inputText.splitlines():
-        pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
-            sList = list()
             token = nltk.word_tokenize(sent);
-            process(token);
+         #   process(token);
             for (word,tag) in nltk.pos_tag(token):
-                sList.append(word)
-                sList.append(tag)
-            pList.append(sList)
-        out.append(pList)
-    print(json.dumps(out))
-            
+                result+=word+delimiter+tag+delimiter;
+            result+=sentDeli;
+        result+=paraDeli;
+    print result;
+
+#for future update,
+# for each token, check if it begin or end with unicode character
+# break them into individual token.
 def process(token):
     l = list();
     for str in token:
         try:
             str.decode('ascii')
         except UnicodeEncodeError:
+            startUnicode = ord(str[0])>=128  #check if first character is unicode
+            if startUnicode:
+
             for c in str:
                 print ord(c)
         else:
