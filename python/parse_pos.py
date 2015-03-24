@@ -4,23 +4,21 @@ import sys
 import nltk 
 import json
 
-delimiter = ur'\u02c7';
-print delimiter;
-sentDeli = '\n';
-paraDeli ='\n\r';
-
 def parse_text(inputText):
-    result = '';
+    out = list()
     for para in inputText.splitlines():
+        pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
+            sList = list()
             token = nltk.word_tokenize(sent);
          #   process(token);
             for (word,tag) in nltk.pos_tag(token):
-                result+=word+delimiter+tag+delimiter;
-            result+=sentDeli;
-        result+=paraDeli;
-    #print unicode(result,'utf8');
+                sList.append(word)
+                sList.append(tag)
+            pList.append(sList)
+        out.append(pList)
+    print(json.dumps(out))
 
 #for future update,
 # for each token, check if it begin or end with unicode character
