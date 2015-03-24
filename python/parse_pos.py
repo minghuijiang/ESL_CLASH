@@ -9,9 +9,8 @@ def parse_text(inputText):
     for para in inputText.splitlines():
         pList = list()
 
-        sents = nltk.sent_tokenize(para)
+        sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
-            sent = sent.decode('utf-8')
             sent=sent.replace(u'\u201c',u'\u201c'+' ')
             sent=sent.replace(u'\u201d',' '+u'\u201d')
             sList = list()
