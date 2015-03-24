@@ -9,7 +9,7 @@ def parse_text(inputText):
     for para in inputText.splitlines():
         pList = list()
         safeprint(para);
-        safeprint('ˇ');
+        safeprint(para.decode('utf-8'));
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
             sList = list()
