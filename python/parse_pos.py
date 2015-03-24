@@ -4,7 +4,7 @@ import sys
 import nltk 
 import json
 
-delimiter = 'ˇ'.encode('utf8');
+delimiter = unicode('ˇ','utf8');
 sentDeli = '\n';
 paraDeli ='\n\r';
 
