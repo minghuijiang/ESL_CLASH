@@ -10,7 +10,7 @@ def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
         print para
-        print para.decode('utf-8')
+        print para.encode('utf-8')
         pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
