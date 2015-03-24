@@ -69,7 +69,7 @@ io.on('connection', function(socket) {
 
         PythonShell.run( 'parse_pos.py', options, function(err, results) {
             if (err) {
-                console.log('error from python: ' + err);
+                console.log('error from python: ' + err.stack);
                 socket.emit('response', err);
             } else {
                 // results is an array consisting of messages collected during execution
