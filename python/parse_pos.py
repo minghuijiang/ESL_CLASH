@@ -23,8 +23,12 @@ def parse_text(inputText):
 def process(token):
     l = list();
     for str in token:
-        if str.find('\\u')== -1:
-            print str;
+        try:
+            str.decode('ascii')
+        except UnicodeDecodeError:
+            print "it was not a ascii-encoded unicode string"
+        else:
+            print str
 
 
 def main(argv):
