@@ -3,18 +3,16 @@
 import sys
 import nltk 
 import json
-import locale
-
 
 def parse_text(inputText):
     out = list()
-    print locale.getdefaultlocale()
     for para in inputText.splitlines():
         pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
             sList = list()
             token = nltk.word_tokenize(sent);
+            process(token);
             for (word,tag) in nltk.pos_tag(token):
                 sList.append(word)
                 sList.append(tag)
@@ -22,7 +20,12 @@ def parse_text(inputText):
         out.append(pList)
     print(json.dumps(out))
             
-
+def process(token){
+    l = list();
+    for str in token:
+        if str.find('\\u')== -1:
+            print str;
+}
 
 def main(argv):
     parse_text(argv[1])
