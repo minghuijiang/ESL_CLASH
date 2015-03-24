@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')(80);
+var io = require('socket.io')();
 
 var PythonShell = require('python-shell');
 var mysql = require('mysql');
@@ -56,13 +56,15 @@ var
     app.use(express.static(__dirname + '/public'));
 
 //Socket.IO and python-shell
-
+io.on('connection', function(socket){
+    console.log('connected to client -=========on regular port=============');
+});
 io.of('/dev').on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
-    console.log('connected to client')
+    console.log('connected to client -======================');
 
-    socket.of('/dev').on('text', function(msg) {
+    socket.on('text', function(msg) {
         var options = {
             args: [msg]
         };
@@ -125,6 +127,8 @@ io.of('/dev').on('connection', function(socket) {
         });
     });
 });
+
+io.listen(4000);
 
 
 
