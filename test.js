@@ -56,9 +56,7 @@ var
     app.use(express.static(__dirname + '/public'));
 
 //Socket.IO and python-shell
-io.on('connection', function(socket){
-    console.log('connected to client -=========on regular port=============');
-});
+
 io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
@@ -69,7 +67,7 @@ io.on('connection', function(socket) {
             args: [msg]
         };
 
-        PythonShell.run( 'parse_pos.py', options, function(err, results) {
+        PythonShell.run( 'python/parse_pos.py', options, function(err, results) {
             if (err) {
                 console.log('error from python: ' + error);
                 socket.emit('response', error);
