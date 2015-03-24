@@ -9,14 +9,14 @@ import json
 def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
-        print para
-        b = unicode(para,'utf-8')
-        print b
         pList = list()
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
             sList = list()
-            for (word,tag) in nltk.pos_tag(nltk.word_tokenize(sent)):
+            token = nltk.word_tokenize(sent);
+            for s in token:
+                print s;
+            for (word,tag) in nltk.pos_tag(token):
                 sList.append(word)
                 sList.append(tag)
             pList.append(sList)
