@@ -8,6 +8,8 @@ def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
         pList = list()
+        safeprint(para);
+        safeprint('ˇ');
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
             sList = list()
@@ -37,7 +39,14 @@ def process(token):
         else:
             l.append(str)
 
-
+def safeprint(s):
+    try:
+        print(s)
+    except UnicodeEncodeError:
+        if sys.version_info >= (3,):
+            print(s.encode('utf8').decode(sys.stdout.encoding))
+        else:
+            print(s.encode('utf8'))
 
 def main(argv):
     parse_text(argv[1])
