@@ -20,12 +20,12 @@ def parse_text(inputText):
         out.append(pList)
     print(json.dumps(out))
             
-def process(token){
+def process(token):
     l = list();
     for str in token:
         if str.find('\\u')== -1:
             print str;
-}
+
 
 def main(argv):
     parse_text(argv[1])
