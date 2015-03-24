@@ -33,8 +33,8 @@ def process(token):
             startUnicode = ord(str[0])>=128  #check if first character is unicode
             if startUnicode:
 
-            for c in str:
-                print ord(c)
+                for c in str:
+                    print ord(c)
         else:
             l.append(str)
 
