@@ -61,7 +61,7 @@ var
 io.on('connection', function(socket){
     console.log('connected to client -=========on regular port=============');
 });
-io.of('/dev').on('connection', function(socket) {
+io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
     console.log('connected to client -======================');
