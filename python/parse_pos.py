@@ -25,7 +25,7 @@ def process(token):
     for str in token:
         try:
             str.decode('ascii')
-        except UnicodeDecodeError:
+        except UnicodeEncodeError:
             print "it was not a ascii-encoded unicode string"
 
 
