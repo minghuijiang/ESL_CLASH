@@ -116,9 +116,8 @@
 	  
     <script>
     	
-		var socket = io();
+		var socket = io('/dev');
 	  $('#button').click(function(){
-		socket.connect('/dev');
 		console.log('trying to emit...');
 		socket.emit('text', $('#resizable').val());
 		console.log($('#resizable').val());
