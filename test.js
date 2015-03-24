@@ -5,7 +5,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
-var io = require('socket.io')();
+var io = require('socket.io')(http);
 
 var PythonShell = require('python-shell');
 var mysql = require('mysql');
@@ -127,8 +127,6 @@ io.of('/dev').on('connection', function(socket) {
         });
     });
 });
-
-//io.listen(3000);
 
 
 
