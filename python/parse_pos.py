@@ -8,11 +8,12 @@ def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
         pList = list()
-        para = para.decode('utf-8')
-        para=para.replace(u'\u201c',u'\u201c'+' ')
-        para=para.replace(u'\u201d',' '+u'\u201d')
+
         sents = nltk.sent_tokenize(para)
         for sent in sents:
+            sent = sent.decode('utf-8')
+            sent=sent.replace(u'\u201c',u'\u201c'+' ')
+            sent=sent.replace(u'\u201d',' '+u'\u201d')
             sList = list()
             token = nltk.word_tokenize(sent);
          #   process(token);
