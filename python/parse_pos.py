@@ -5,6 +5,7 @@ import nltk
 import json
 
 delimiter = u'\u02c7';
+print delimiter;
 sentDeli = '\n';
 paraDeli ='\n\r';
 
@@ -19,7 +20,7 @@ def parse_text(inputText):
                 result+=word+delimiter+tag+delimiter;
             result+=sentDeli;
         result+=paraDeli;
-    print unicode(result,'utf8');
+    #print unicode(result,'utf8');
 
 #for future update,
 # for each token, check if it begin or end with unicode character
