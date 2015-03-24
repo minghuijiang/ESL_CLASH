@@ -62,7 +62,7 @@ io.of('/dev').on('connection', function(socket) {
 
     console.log('connected to client')
 
-    socket.on('text', function(msg) {
+    socket.of('/dev').on('text', function(msg) {
         var options = {
             args: [msg]
         };
