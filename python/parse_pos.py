@@ -26,7 +26,11 @@ def process(token):
         try:
             str.decode('ascii')
         except UnicodeEncodeError:
-            print "it was not a ascii-encoded unicode string"
+            for c in str:
+                print ord(c)
+        else:
+            l.append(str)
+
 
 
 def main(argv):
