@@ -7,19 +7,20 @@ import json
 
 
 def parse_text(inputText):
-	out = list()
-	for para in inputText.splitlines():
-	    print para
-		pList = list()
-		sents = nltk.sent_tokenize(unicode(para,'utf-8'))
-		for sent in sents:
-			sList = list()
-			for (word,tag) in nltk.pos_tag(nltk.word_tokenize(sent)):
-				sList.append(word)
-				sList.append(tag)
-			pList.append(sList)
-		out.append(pList)
-	print(json.dumps(out))
+    out = list()
+    for para in inputText.splitlines():
+        print para
+        print unicode(para,'utf8')
+        pList = list()
+        sents = nltk.sent_tokenize(unicode(para,'utf-8'))
+        for sent in sents:
+            sList = list()
+            for (word,tag) in nltk.pos_tag(nltk.word_tokenize(sent)):
+                sList.append(word)
+                sList.append(tag)
+            pList.append(sList)
+        out.append(pList)
+    print(json.dumps(out))
             
 
 
