@@ -19,7 +19,7 @@ def parse_text(inputText):
                 result+=word+delimiter+tag+delimiter;
             result+=sentDeli;
         result+=paraDeli;
-    print result;
+    return result;
 
 #for future update,
 # for each token, check if it begin or end with unicode character
@@ -41,8 +41,8 @@ def process(token):
 
 
 def main(argv):
-    parse_text(argv[1])
+    return parse_text(argv[1])
 
 if __name__ == '__main__':
     argv = sys.argv
-    main(argv)
+    return main(argv)
