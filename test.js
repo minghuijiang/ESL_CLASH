@@ -73,8 +73,7 @@ io.on('connection', function(socket) {
                 socket.emit('response', err);
             } else {
                 // results is an array consisting of messages collected during execution
-                console.log('result: '+results[0]);
-
+                console.log("from python: "+results);
 				/**
 				 * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
 				 * 
@@ -117,7 +116,6 @@ io.on('connection', function(socket) {
                         console.log('err from java: ' + error);
                         socket.emit('response', error);
                     } else {
-                        console.log("Returned data " + data);
                         socket.emit('response', data);
                     }
                 });

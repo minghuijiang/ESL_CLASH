@@ -10,7 +10,7 @@ def parse_text(inputText):
 	out = list()
 	for para in inputText.splitlines():
 		pList = list()
-		sents = nltk.sent_tokenize(para.decode('utf-8'))
+		sents = nltk.sent_tokenize(unicode(para,'utf-8'))
 		for sent in sents:
 			sList = list()
 			for (word,tag) in nltk.pos_tag(nltk.word_tokenize(sent)):
