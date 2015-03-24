@@ -9,8 +9,8 @@ import json
 def parse_text(inputText):
 	out = list()
 	for para in inputText.splitlines():
-	    print para;
-	    print unicode(para,'utf8');
+	    print para
+	    print unicode(para,'utf8')
 		pList = list()
 		sents = nltk.sent_tokenize(unicode(para,'utf-8'))
 		for sent in sents:
