@@ -121,7 +121,7 @@
 		console.log('trying to emit...');
 		socket.emit('text', $('#resizable').val());
 		console.log($('#resizable').val());
-		$('#resizable').val('');
+		//$('#resizable').val('');
 		socket.on('response', function(msg){
 			console.log('response recieved ' + msg);
 			json = JSON.parse(msg);
