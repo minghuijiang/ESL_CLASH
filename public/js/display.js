@@ -46,8 +46,9 @@ function parseJSON(json){
 			
 			for(z=0;z<sent.length;z++){
 				var token = sent[z];
+                var id = i+"_"+j+"_"+z;
 				if(token['tagged']=="Exception"){
-                    var id = i+"_"+j+"_"+z;
+
 					str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
 					var nestTokens = token['tokens'];
 					for(y=0;y<nestTokens.length;y++){
@@ -59,7 +60,7 @@ function parseJSON(json){
 					str+="</span>";
 					
 				}else{
-					str+="<span class=\""+token['tagged']+"\">"+token['word']+"</span>";
+					str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
 					if(z!= sent.length-2)
 						str+=" ";
 				}
