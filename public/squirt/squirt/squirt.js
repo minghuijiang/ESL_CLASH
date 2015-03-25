@@ -541,7 +541,6 @@ function e(t, n, r) {
 		
 		
 		function getTextFromJson(){
-			console.log(tokenDelimiter);
 				var contents = json.contents;
 				var text ="";
 				var str = "";

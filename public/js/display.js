@@ -79,6 +79,8 @@ function parseJSON(json){
 	return str;
 }
 
+
+
 function startReader(){
 	if(!json){
 		alert('Clash a text before reading');
