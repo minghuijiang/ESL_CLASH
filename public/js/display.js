@@ -58,35 +58,12 @@ function parseJSON(json){
 		str+=getOpenTag('p','paragraph')+"\n";
 		var para = contents[i];
 		for(j=0;j<para.length;j++){
-            console.log(para[j]);
+            var id = i+'_'+j;
 			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
 			
-			for(z=0;z<sent.length;z++){
-				var token = sent[z];
-                var id = i+"_"+j+"_"+z;
-				if(token['tagged']=="Exception"){
-                    str+=getOpenTag('span','word Exception',id);
-					var nestTokens = token['tokens'];
-					for(y=0;y<nestTokens.length;y++){
-                        id +="_"+y; // exception token have id P_S_W_T , paragraph_sentence
-						var ntoken = nestTokens[y];
-						str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
-						if(y!= nestTokens.length-1)
-							str+=" ";
-					}
-					str+="</span>";
-					
-				}else{
-					str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
-					if(z!= sent.length-2)
-						str+=" ";
-				}
-				if(token['slashed']=='true'){
-					str+="<span class=\"Slash\">/</span>";
-				}
-			}
+			str+=parseSentence(sent,id);
 			
 			str+=getCloseTag('span');
 		}
@@ -97,8 +74,27 @@ function parseJSON(json){
 	return str;
 }
 
-function parseSentence(sent){
-
+function parseSentence(sent, vid){
+    for(z=0;z<sent.length;z++){
+        var token = sent[z];
+        var id =vid+ "_"+z;
+        if(token['tagged']=="Exception"){
+            str+=getOpenTag('span','Exception',id);
+            str+=parseSentence(token['tokens'],id);
+            str+=getCloseTag('span');
+        }else if(token['tagged']=='Punctuation'){
+            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
+            if(z!= sent.length-2)
+                str+=" ";
+        }else{
+            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
+            if(z!= sent.length-2)
+                str+=" ";
+        }
+        if(token['slashed']=='true'){
+            str+="<span class=\"Slash\">/</span>";
+        }
+    }
 }
 
 function startReader(){
