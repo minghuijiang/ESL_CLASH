@@ -80,8 +80,10 @@ function parseSentence(sent, vid){
         var token = sent[z];
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
+
             str+=getOpenTag('span','Exception',id);
             str+=parseSentence(token['tokens'],id);
+            console.log('Exception: '+str);
             str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){
             str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
@@ -96,6 +98,7 @@ function parseSentence(sent, vid){
             str+="<span class=\"Slash\">/</span>";
         }
     }
+    console.log('finish sentence: '+str);
     return str;
 }
 

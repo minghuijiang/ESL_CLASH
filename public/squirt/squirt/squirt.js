@@ -554,7 +554,7 @@ function e(t, n, r) {
 						for(z=0;z<sent.length;z++){
 							var token = sent[z];
 							{
-								if(token['tagged']=='Punctuation'){
+								if(token['tagged']=='Symbol'){
 									var w = token['word'];
 									switch(w){
 										case '.':
