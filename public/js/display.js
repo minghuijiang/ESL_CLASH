@@ -75,6 +75,7 @@ function parseJSON(json){
 }
 
 function parseSentence(sent, vid){
+    var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
         var id =vid+ "_"+z;
@@ -95,6 +96,7 @@ function parseSentence(sent, vid){
             str+="<span class=\"Slash\">/</span>";
         }
     }
+    return str;
 }
 
 function startReader(){
