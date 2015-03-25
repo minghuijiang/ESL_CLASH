@@ -32,15 +32,34 @@ function boldException(isChecked){
 	}
 }
 
+function getOpenTag(tag,clazz, id){
+    if(clazz){
+        if(id){ // class and id
+            return "<"+tag+" class=\""+clazz+"\" id=\""+id+"\">";
+        }else{  // class no id
+            return "<"+tag+" class=\""+clazz+"\">";
+        }
+    }else{  // no class no id
+        return "<"+tag+">";
+    }
+
+}
+function getCloseTag(tag){
+    return "</"+tag+">";
+}
 
 function parseJSON(json){
 	var contents = json.contents;
 	var str = "";
+    var openDouble = false;   // if double qoute is open, next double qoute attach to word in left, else attach to right
+    var openSingle = false;  // as above
+    var attachRight = false; //
 	for(i=0; i<contents.length;i++){
-		str+="<p class =\"paragraph\">\n";
+		str+=getOpenTag('p','paragraph')+"\n";
 		var para = contents[i];
 		for(j=0;j<para.length;j++){
-			str+="<span class =\"sentence\">\n";
+            console.log(para[j]);
+			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
 			
@@ -48,10 +67,10 @@ function parseJSON(json){
 				var token = sent[z];
                 var id = i+"_"+j+"_"+z;
 				if(token['tagged']=="Exception"){
-
-					str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
+                    str+=getOpenTag('span','word Exception',id);
 					var nestTokens = token['tokens'];
 					for(y=0;y<nestTokens.length;y++){
+                        id +="_"+y; // exception token have id P_S_W_T , paragraph_sentence
 						var ntoken = nestTokens[y];
 						str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
 						if(y!= nestTokens.length-1)
@@ -69,17 +88,18 @@ function parseJSON(json){
 				}
 			}
 			
-			str+="</span>";
+			str+=getCloseTag('span');
 		}
 		
-		str+="</p>\n";
-		
+		str+=getCloseTag('p')+"\n";
 	}
 
 	return str;
 }
 
+function parseSentence(sent){
 
+}
 
 function startReader(){
 	if(!json){
