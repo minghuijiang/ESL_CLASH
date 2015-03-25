@@ -62,7 +62,7 @@ function parseJSON(json){
 			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
-			
+			console.log(str);
 			str+=parseSentence(sent,id);
 			
 			str+=getCloseTag('span');
