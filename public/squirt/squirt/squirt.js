@@ -319,7 +319,7 @@ function e(t, n, r) {
                         object[key] = val;
                     });
                 return object;
-            },
+            }
         }
 
         module.exports = dom;
@@ -722,7 +722,7 @@ function e(t, n, r) {
                 return function() {
                     js.invoke(args);
                 }
-            },
+            }
         };
 
         module.exports = js;
@@ -1481,7 +1481,7 @@ function e(t, n, r) {
                     evt.once(el, dom.transitionEndEvents, function() {
                         loading.wrapperEl.remove();
                     });
-                },
+                }
             };
 
             module.exports = loading;
