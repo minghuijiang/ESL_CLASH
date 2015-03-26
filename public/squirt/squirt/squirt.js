@@ -553,6 +553,7 @@ function e(t, n, r) {
 						var sent = para[j].tokens;
 						for(z=0;z<sent.length;z++){
 							var token = sent[z];
+                            console.log(token.tagged);
 							{
 								if(token['tagged']=='Symbol'){
 									var w = token['word'];
