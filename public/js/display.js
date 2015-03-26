@@ -118,6 +118,10 @@ function parseSentence(sent, vid){
                     }
                     openSingle=!openSingle;
                     break;
+                default :
+                    str+=" "+parseToken(token,id);
+                    console.log('defaul symbol=========================  '+token.word);
+                    break;
             }
         }
         else{

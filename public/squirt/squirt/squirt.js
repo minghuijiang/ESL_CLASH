@@ -591,6 +591,9 @@ function e(t, n, r) {
 											}
 											openSingle=!openSingle;
 											break;
+                                        default :
+                                            str+=" "+w;
+                                            break;
 									}
 								}
 								else{
