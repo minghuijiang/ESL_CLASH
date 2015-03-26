@@ -74,15 +74,17 @@ function parseJSON(json){
 	return str;
 }
 
-function parseSentence(sent, vid){
+function parseSentence(sent, vid,e){
+    console.log(sent);
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
-
+            if(e)
+                return ;
             str+=getOpenTag('span','Exception',id);
-            str+=parseSentence(token['tokens'],id);
+            str+=parseSentence(token['tokens'],id,true);
             console.log('Exception: '+str);
             str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){

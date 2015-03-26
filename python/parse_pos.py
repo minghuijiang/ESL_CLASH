@@ -11,8 +11,11 @@ def parse_text(inputText):
 
         sents = nltk.sent_tokenize(para.decode('utf-8'))
         for sent in sents:
-            sent=sent.replace(u'\u201c',u'\u201c'+' ')
-            sent=sent.replace(u'\u201d',' '+u'\u201d')
+            #preserve the unicode double qoute;
+            #sent=sent.replace(u'\u201c',u'\u201c'+' ')
+            #sent=sent.replace(u'\u201d',' '+u'\u201d')
+            sent=sent.replace(u'\u201c',u'\"')
+            sent=sent.replace(u'\u201d',' '+u'\"')
             sList = list()
             token = nltk.word_tokenize(sent);
          #   process(token);
