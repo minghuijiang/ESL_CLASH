@@ -131,7 +131,7 @@ function parseSentence(sent, vid){
         }
 
         if(token['slashed']=='true'){
-            str+=getOpenTag('span','Slash')+'/'+getCloseTag('span')+' ';
+            str+=' '+getOpenTag('span','Slash')+'/'+getCloseTag('span')+' ';
         }
     }
     return str;
