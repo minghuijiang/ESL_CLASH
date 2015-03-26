@@ -567,6 +567,7 @@ function e(t, n, r) {
 										case ']':
 										case '>': // those punctuation attach to word on left.
 											str+=w;
+                                            console.log(str);
 											break;
 										case '(':
 										case '[':
