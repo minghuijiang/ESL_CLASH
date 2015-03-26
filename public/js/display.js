@@ -80,7 +80,7 @@ function parseSentence(sent, vid){
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
-   //     console.log('token: '+token['word']+ ' '+token['tagged']);
+        console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
             //str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
@@ -94,9 +94,9 @@ function parseSentence(sent, vid){
             //str+="</span>";
             str+=getOpenTag('span','Exception',id);
 
-            console.log('exception:' +token.tokens);
-            console.log('exception:' +token);
-            return ;
+            //console.log('exception:' +token.tokens);
+            //console.log('exception:' +token);
+
             str+=parseSentence(token['tokens'],id);
             //console.log('Exception: '+str);
             str+=getCloseTag('span');
