@@ -12,7 +12,6 @@ regexp_tagger = nltk.tag.RegexpTagger(
         (r'\(|\)', ':')
     ], backoff = tagger)
 
-(nltk.word_tokenize(text))
 def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
