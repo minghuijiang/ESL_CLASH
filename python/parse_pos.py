@@ -28,7 +28,7 @@ def parse_text(inputText):
             token = nltk.word_tokenize(sent);
          #   process(token);
             for (word,tag) in regexp_tagger.tag(token):
-                sList.append(word.replace('``','"')
+                sList.append(word.replace('``','"'))
                 sList.append(tag)
             pList.append(sList)
         out.append(pList)
