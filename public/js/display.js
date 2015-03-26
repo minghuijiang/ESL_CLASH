@@ -64,6 +64,7 @@ function parseJSON(json){
 			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
+            console.log(id);
 			str+=parseSentence(sent,id);
 			
 			str+=getCloseTag('span');
@@ -80,8 +81,9 @@ function parseSentence(sent, vid){
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
-        console.log('token: '+token['word']+ ' '+token['tagged']);
+        //console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
+        console.log(id);
         if(token['tagged']=="Exception"){
             //str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
             //var nestTokens = token['tokens'];
