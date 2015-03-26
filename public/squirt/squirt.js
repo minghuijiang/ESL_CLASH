@@ -461,13 +461,13 @@ function e(t, n, r) {
             loading.show();
             sq.pageContent = jtf.grabArticleText();
 
-            dom.injectStylesheet('/frame.outer.css');
+            dom.injectStylesheet('css/frame.outer.css');
 
             // inject reader iframe
            
 
             var iframeSrc = 
-                '/views/iframe.html';
+                'views/iframe.html';
 
             sq.innerFrame = createIframe(iframeSrc, _.compose(
                 loading.hide,
