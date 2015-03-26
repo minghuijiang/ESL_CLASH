@@ -75,6 +75,10 @@ function parseJSON(json){
 }
 
 function parseSentence(sent, vid,e){
+    if(!e)
+        e=0;
+    else
+        e++;
     console.log("sent: "+sent);
     var str="";
     for(z=0;z<sent.length;z++){
@@ -82,7 +86,7 @@ function parseSentence(sent, vid,e){
         console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
-            if(e)
+            if(e==2)
                 return ;
             str+=getOpenTag('span','Exception',id);
             str+=parseSentence(token['tokens'],id,true);
