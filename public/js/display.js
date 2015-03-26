@@ -89,7 +89,7 @@ function parseSentence(sent, vid,e){
             if(e==4)
                 return ;
             str+=getOpenTag('span','Exception',id);
-            str+=parseSentence(token['tokens'],id,true);
+            str+=parseSentence(token['tokens'],id,e);
             console.log('Exception: '+str);
             str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){
