@@ -79,7 +79,7 @@ function parseSentence(sent, vid,e){
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
-        console.log('token: '+token);
+        console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
             if(e)
