@@ -86,7 +86,7 @@ function parseSentence(sent, vid,e){
         console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
-            if(e==2)
+            if(e==4)
                 return ;
             str+=getOpenTag('span','Exception',id);
             str+=parseSentence(token['tokens'],id,true);
