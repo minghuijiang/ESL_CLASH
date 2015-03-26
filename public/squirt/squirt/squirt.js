@@ -556,6 +556,7 @@ function e(t, n, r) {
 							{
 								if(token['tagged']=='Symbol'){
 									var w = token['word'];
+                                    console.log(w);
 									switch(w){
 										case '.':
 										case '!':
