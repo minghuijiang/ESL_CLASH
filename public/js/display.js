@@ -93,7 +93,10 @@ function parseSentence(sent, vid){
             //}
             //str+="</span>";
             str+=getOpenTag('span','Exception',id);
-            //console.log('exception:' +token.tokens);
+
+            console.log('exception:' +token.tokens);
+            console.log('exception:' +token);
+            return ;
             str+=parseSentence(token['tokens'],id);
             //console.log('Exception: '+str);
             str+=getCloseTag('span');
