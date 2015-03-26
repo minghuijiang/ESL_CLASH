@@ -60,7 +60,7 @@ function parseJSON(json){
 		var para = contents[i];
 		for(j=0;j<para.length;j++){
             var id = i+'_'+j;
-            console.log(id);
+            //console.log(id);
 			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
@@ -93,9 +93,9 @@ function parseSentence(sent, vid){
             //}
             //str+="</span>";
             str+=getOpenTag('span','Exception',id);
-            console.log('exception:' +token.tokens);
-            //str+=parseSentence(token['tokens'],id);
-            console.log('Exception: '+str);
+            //console.log('exception:' +token.tokens);
+            str+=parseSentence(token['tokens'],id);
+            //console.log('Exception: '+str);
             str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){
             str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
