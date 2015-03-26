@@ -48,6 +48,7 @@ function getCloseTag(tag){
     return "</"+tag+">";
 }
 
+//The word weather means “the atmospheric conditions at a specific place and time.” The weather can vary from day to day.
 function parseJSON(json){
 	var contents = json.contents;
 	var str = "";
@@ -63,7 +64,7 @@ function parseJSON(json){
 			str+=getOpenTag('span','sentence')+"\n";
 			
 			var sent = para[j].tokens;
-			str+=parseSentence(sent,id,1);
+			str+=parseSentence(sent,id);
 			
 			str+=getCloseTag('span');
 		}
@@ -74,24 +75,26 @@ function parseJSON(json){
 	return str;
 }
 
-function parseSentence(sent, vid,e){
-    if(!e)
-        e=0;
-    else
-        e+=1;
-    console.log("sent: "+sent);
+function parseSentence(sent, vid){
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
    //     console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
-            if(e==3)
-                return ;
-            str+=getOpenTag('span','Exception',id);
-            str+=parseSentence(token['tokens'],id,e);
+            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
+            var nestTokens = token['tokens'];
+            for(y=0;y<nestTokens.length;y++){
+                var ntoken = nestTokens[y];
+                str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
+                if(y!= nestTokens.length-1)
+                    str+=" ";
+            }
+            str+="</span>";
+            //str+=getOpenTag('span','Exception',id);
+            //str+=parseSentence(token['tokens'],id);
       //      console.log('Exception: '+str);
-            str+=getCloseTag('span');
+      //      str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){
             str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
             if(z!= sent.length-2)
