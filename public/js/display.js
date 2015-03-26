@@ -75,7 +75,7 @@ function parseJSON(json){
 }
 
 function parseSentence(sent, vid,e){
-    console.log(sent);
+    console.log("sent: "+sent);
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
