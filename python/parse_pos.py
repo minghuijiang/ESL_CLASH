@@ -9,7 +9,7 @@ tagger = load(_POS_TAGGER)  # same tagger as using nltk.pos_tag
 
 regexp_tagger = nltk.tag.RegexpTagger(
     [
-        (r'\(|\)', ':'),(r'\"','"')
+        (r'\(|\)', ':')
     ], backoff = tagger)
 
 def parse_text(inputText):
@@ -28,7 +28,7 @@ def parse_text(inputText):
             token = nltk.word_tokenize(sent);
          #   process(token);
             for (word,tag) in regexp_tagger.tag(token):
-                sList.append(word)
+                sList.append(word.replace('``','"')
                 sList.append(tag)
             pList.append(sList)
         out.append(pList)
