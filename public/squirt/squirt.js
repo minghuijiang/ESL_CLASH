@@ -28,7 +28,7 @@ function e(t, n, r) {
 	// event handling, dispatch squirt event to different handler.
     1: [function(require, module, exports) {
         var evt = require('./evt');
-		
+
         evt.on(window, 'message', function(e) {
             var data = e.data;
             var event = data.event;
@@ -464,9 +464,9 @@ function e(t, n, r) {
             dom.injectStylesheet('squirt/css/frame.outer.css');
 
             // inject reader iframe
-           
 
-            var iframeSrc = 
+
+            var iframeSrc =
                 'squirt/views/iframe.html';
 
             sq.innerFrame = createIframe(iframeSrc, _.compose(
@@ -512,7 +512,7 @@ function e(t, n, r) {
         function createIframe(src, onLoad) {
             var frame = dom.makeEl('iframe', {
                 src: src,
-				style: "top:20%",
+				//style: "top:20%",
                 class: 'sq-frame'
             }, document.body);
             frame.style.border = 0
@@ -538,8 +538,8 @@ function e(t, n, r) {
                     node.classList.remove('sq-blur');
                 });
         }
-		
-		
+
+
 		function getTextFromJson(){
 				var contents = json.contents;
 				var text ="";
@@ -549,7 +549,7 @@ function e(t, n, r) {
 				var attachRight = false;
 				for(i=0; i<contents.length;i++){
 					var para = contents[i];
-					for(j=0;j<para.length;j++){						
+					for(j=0;j<para.length;j++){
 						var sent = para[j].tokens;
 						for(z=0;z<sent.length;z++){
 							var token = sent[z];
@@ -576,7 +576,7 @@ function e(t, n, r) {
 											str+= " "+w;
 											break;
 										case '"':
-											if(openDouble){ // close double quotes attach to right 
+											if(openDouble){ // close double quotes attach to right
 												str+=w;
 											}else{     // open quote attach to left;
 												str+=" "+w;
@@ -613,18 +613,18 @@ function e(t, n, r) {
 									text+=str.trim()+"\n"+tokenDelimiter;
 								else
 									text+=str.trim()+tokenDelimiter;
-								str = "";								
+								str = "";
 							}
 						}
-						
-					}	
+
+					}
 					//text+="\n"+tokenDelimiter;
 					//str="";
 				}
 				console.log(text+" "+str);
 				return text+" "+str;
 		}
-		
+
 
         function setText() {
             var text = getTextFromJson();//sq.demoText || dom.getSelectedText() || sq.pageContent;
@@ -633,9 +633,9 @@ function e(t, n, r) {
                 text: text
             });
         }
-		
-		
-		
+
+
+
 
         sq.again = function(didWaitForBlur) {
             // handle the situation where the user clicks the bookmarklet immediately
@@ -1470,9 +1470,9 @@ function e(t, n, r) {
                 show: function() {
                     var loadingHtml = Buffer("PGRpdiBjbGFzcz0nbG9hZGluZy13cmFwcGVyJz4KICA8c3R5bGU+CiAgICAuc3EtbG9hZGluZyB7CiAgICAgIHdpZHRoOiAxMDAlOwogICAgICBoZWlnaHQ6IDEwMCU7CiAgICAgIHBvc2l0aW9uOiBmaXhlZDsKICAgICAgbGVmdDogMDsKICAgICAgdG9wOiAwOwogICAgICBvcGFjaXR5OiAwOwoKICAgICAgdHJhbnNpdGlvbjogb3BhY2l0eSAxLjJzIGVhc2UtaW4tb3V0IDA7CiAgICAgIC1tb3otdHJhbnNpdGlvbjogb3BhY2l0eSAxLjJzIGVhc2UtaW4tb3V0IDA7CiAgICAgIC13ZWJraXQtdHJhbnNpdGlvbjogb3BhY2l0eSAxLjJzIGVhc2UtaW4tb3V0IDA7CiAgICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMjA5LCAyMDksIDIwOSwgMC4zKTsKICAgIH0KCiAgICAudmlzaWJsZSB7CiAgICAgIG9wYWNpdHk6IDE7CiAgICB9CgogIDwvc3R5bGU+CiAgPGRpdiBjbGFzcz0ic3EtbG9hZGluZyI+CiAgPC9kaXY+CjwvZGl2Pgo=", "base64"
 					//"PGRpdiBjbGFzcz0nbG9hZGluZy13cmFwcGVyJyBzdHlsZT0ncG9zaXRpb246IHJlbGF0aXZlO3RvcDo1MCUnPg0KICA8c3R5bGU+DQogICAgLnNxLWxvYWRpbmcgew0KICAgICAgd2lkdGg6IDEwMCU7DQogICAgICBoZWlnaHQ6IDEwMCU7DQogICAgICBwb3NpdGlvbjogZml4ZWQ7DQogICAgICBsZWZ0OiAwOw0KICAgICAgdG9wOiAwOw0KICAgICAgb3BhY2l0eTogMDsNCg0KICAgICAgdHJhbnNpdGlvbjogb3BhY2l0eSAxLjJzIGVhc2UtaW4tb3V0IDA7DQogICAgICAtbW96LXRyYW5zaXRpb246IG9wYWNpdHkgMS4ycyBlYXNlLWluLW91dCAwOw0KICAgICAgLXdlYmtpdC10cmFuc2l0aW9uOiBvcGFjaXR5IDEuMnMgZWFzZS1pbi1vdXQgMDsNCiAgICAgIGJhY2tncm91bmQtY29sb3I6IHJnYmEoMjA5LCAyMDksIDIwOSwgMC4zKTsNCiAgICB9DQoNCiAgICAudmlzaWJsZSB7DQogICAgICBvcGFjaXR5OiAxOw0KICAgIH0NCg0KICA8L3N0eWxlPg0KICA8ZGl2IGNsYXNzPSJzcS1sb2FkaW5nIj4NCiAgPC9kaXY+DQo8L2Rpdj4=","base64"
-					
-					
-					
+
+
+
 					);
                     loading.wrapperEl = dom.compileHtml(loadingHtml);
 				//	;position: relative;top: 50%;transform: translateY(-50%)
@@ -3716,7 +3716,7 @@ function e(t, n, r) {
 							catch(err) {
 								console.log('assign prop ['+prop+'] with ['+source[prop]+'] with err: '+err);
 							}
-								
+
                         }
                     }
                 });
