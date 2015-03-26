@@ -122,7 +122,7 @@ function parseSentence(sent, vid){
                     break;
                 default :
                     str+=" "+parseToken(token,id);
-                    console.log('defaul symbol=========================  '+token.word);
+                    console.log('default symbol=========================  '+token.word);
                     break;
             }
         }
