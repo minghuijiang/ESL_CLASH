@@ -55,10 +55,10 @@ function parseJSON(json){
     var openDouble = false;   // if double qoute is open, next double qoute attach to word in left, else attach to right
     var openSingle = false;  // as above
     var attachRight = false; //
-	for(i=0; i<contents.length;i++){
+	for(var i=0; i<contents.length;i++){
 		str+=getOpenTag('p','paragraph')+"\n";
 		var para = contents[i];
-		for(j=0;j<para.length;j++){
+		for(var j=0;j<para.length;j++){
             var id = i+'_'+j;
             //console.log(id);
 			str+=getOpenTag('span','sentence')+"\n";
@@ -79,7 +79,7 @@ function parseJSON(json){
 function parseSentence(sent, vid){
     console.log('in json: '+sent);
     var str="";
-    for(z=0;z<sent.length;z++){
+    for(var z=0;z<sent.length;z++){
         var token = sent[z];
         //console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
