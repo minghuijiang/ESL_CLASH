@@ -76,25 +76,27 @@ function parseJSON(json){
 }
 
 function parseSentence(sent, vid){
+    console.log('in json: '+Json.parse(sent));
     var str="";
     for(z=0;z<sent.length;z++){
         var token = sent[z];
    //     console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
         if(token['tagged']=="Exception"){
-            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
-            var nestTokens = token['tokens'];
-            for(y=0;y<nestTokens.length;y++){
-                var ntoken = nestTokens[y];
-                str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
-                if(y!= nestTokens.length-1)
-                    str+=" ";
-            }
-            str+="</span>";
-            //str+=getOpenTag('span','Exception',id);
+            //str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
+            //var nestTokens = token['tokens'];
+            //for(y=0;y<nestTokens.length;y++){
+            //    var ntoken = nestTokens[y];
+            //    str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
+            //    if(y!= nestTokens.length-1)
+            //        str+=" ";
+            //}
+            //str+="</span>";
+            str+=getOpenTag('span','Exception',id);
+            console.log('exception:' +Json.parse(token['tokens']))
             //str+=parseSentence(token['tokens'],id);
-      //      console.log('Exception: '+str);
-      //      str+=getCloseTag('span');
+            console.log('Exception: '+str);
+            str+=getCloseTag('span');
         }else if(token['tagged']=='Punctuation'){
             str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
             if(z!= sent.length-2)
