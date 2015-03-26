@@ -101,6 +101,7 @@ function parseSentence(sent, vid){
                     str+=" "+parseToken(token,id);
                     break;
                 case '"':
+                case "''":
                     if(openDouble){ // close double quotes attach to left
                         str+=parseToken(token,id);
                     }else{     // open quote attach to right;
