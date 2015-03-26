@@ -582,7 +582,7 @@ function e(t, n, r) {
 											}
 											openDouble=!openDouble;
 											break;
-										case '"':
+										case '\'':
 											if(openSingle){ // close single, attach to right
 												str+=w;
 											}else{  // open single, a

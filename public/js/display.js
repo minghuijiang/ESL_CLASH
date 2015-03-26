@@ -48,25 +48,23 @@ function getCloseTag(tag){
     return "</"+tag+">";
 }
 
+function parseToken(token,id){
+    return getOpenTag('span','word '+token['tagged'],id)+token['word']+getCloseTag('span');
+}
+
 //The word weather means “the atmospheric conditions at a specific place and time.” The weather can vary from day to day.
 function parseJSON(json){
 	var contents = json.contents;
 	var str = "";
-    var openDouble = false;   // if double qoute is open, next double qoute attach to word in left, else attach to right
-    var openSingle = false;  // as above
-    var attachRight = false; //
+
 	for(var i=0; i<contents.length;i++){
 		str+=getOpenTag('p','paragraph')+"\n";
 		var para = contents[i];
 		for(var j=0;j<para.length;j++){
             var id = i+'_'+j;
-            //console.log(id);
 			str+=getOpenTag('span','sentence')+"\n";
-			
 			var sent = para[j].tokens;
-            console.log(id);
 			str+=parseSentence(sent,id);
-			
 			str+=getCloseTag('span');
 		}
 		
@@ -77,45 +75,65 @@ function parseJSON(json){
 }
 
 function parseSentence(sent, vid){
-    console.log('in json: '+sent);
     var str="";
+    var openDouble = false;   // if double qoute is open, next double qoute attach to word in left, else attach to right
+    var openSingle = false;  // as above
+    var attachRight = false; //
     for(var z=0;z<sent.length;z++){
         var token = sent[z];
-        //console.log('token: '+token['word']+ ' '+token['tagged']);
         var id =vid+ "_"+z;
-        console.log(id);
         if(token['tagged']=="Exception"){
-            //str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">";
-            //var nestTokens = token['tokens'];
-            //for(y=0;y<nestTokens.length;y++){
-            //    var ntoken = nestTokens[y];
-            //    str+="<span class=\""+ntoken['tagged']+"\">"+ntoken['word']+"</span>";
-            //    if(y!= nestTokens.length-1)
-            //        str+=" ";
-            //}
-            //str+="</span>";
             str+=getOpenTag('span','Exception',id);
-
-            //console.log('exception:' +token.tokens);
-            //console.log('exception:' +token);
-
             str+=parseSentence(token['tokens'],id);
-            //console.log('Exception: '+str);
             str+=getCloseTag('span');
-        }else if(token['tagged']=='Punctuation'){
-            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
-            if(z!= sent.length-2)
-                str+=" ";
-        }else{
-            str+="<span class=\""+token['tagged']+"\" id=\""+id+"\">"+token['word']+"</span>";
-            if(z!= sent.length-2)
-                str+=" ";
+        }else if(token['tagged']=='Symbol'){
+            var w = token['word'];
+            switch(w){
+                case '.':case '!':case '?':
+                case ',':case ';':case ':':
+                case ')':case ']':case '>': // those punctuation attach to word on left.
+                //str+="<span class=\""+token['tagged']"+\" id=\""+id+"\">"+token['word']+"</span>";
+                    str+=parseToken(token,id);
+                    break;
+                case '(':
+                case '[':
+                    attachRight = true;
+                    str+=" "+parseToken(token,id);
+                    break;
+                case '"':
+                    if(openDouble){ // close double quotes attach to left
+                        str+=parseToken(token,id);
+                    }else{     // open quote attach to right;
+                        str+=" "+parseToken(token,id);
+                        attachRight = true;
+                    }
+                    openDouble=!openDouble;
+                    break;
+                case '\'':
+                    if(openSingle){ // close single, attach to right
+                        str+=parseToken(token,id);
+                    }else{  // open single, a
+                        str+=" "+parseToken(token,id);
+                        attachRight = true;
+                    }
+                    openSingle=!openSingle;
+                    break;
+            }
         }
+        else{
+            if(attachRight){
+                str+=parseToken(token,id);
+                attachRight = false;
+            }
+            else{
+                str+=" "+parseToken(token,id);
+            }
+        }
+
         if(token['slashed']=='true'){
-            str+="<span class=\"Slash\">/</span>";
+            str+=getOpenTag('span','Slash')+'/'+getCloseTag('span')+' ';
         }
     }
- //  console.log('finish sentence: '+str);
     return str;
 }
 
