@@ -3,7 +3,16 @@
 import sys
 import nltk 
 import json
+from nltk.data import load
+_POS_TAGGER = 'taggers/maxent_treebank_pos_tagger/english.pickle'
+tagger = load(_POS_TAGGER)  # same tagger as using nltk.pos_tag
 
+regexp_tagger = nltk.tag.RegexpTagger(
+    [
+        (r'\(|\)', ':')
+    ], backoff = tagger)
+
+(nltk.word_tokenize(text))
 def parse_text(inputText):
     out = list()
     for para in inputText.splitlines():
@@ -19,7 +28,7 @@ def parse_text(inputText):
             sList = list()
             token = nltk.word_tokenize(sent);
          #   process(token);
-            for (word,tag) in nltk.pos_tag(token):
+            for (word,tag) in regexp_tagger.tag(token):
                 sList.append(word)
                 sList.append(tag)
             pList.append(sList)
