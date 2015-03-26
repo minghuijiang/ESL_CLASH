@@ -122,10 +122,12 @@ function parseSentence(sent, vid){
         }
         else{
             if(attachRight){
+                console.log('attach right: '+token.word);
                 str+=parseToken(token,id);
                 attachRight = false;
             }
             else{
+                console.log('attach left: '+token.word);
                 str+=" "+parseToken(token,id);
             }
         }
