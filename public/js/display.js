@@ -17,6 +17,7 @@ function changeColor(type,color,isChecked,bgcolor,isbold){
 }
 
 function hideSlash(isChecked){
+    console.log('slash trigger: '+isChecked);
 	if(isChecked){
 		$(".Slash").show();
 	}else{

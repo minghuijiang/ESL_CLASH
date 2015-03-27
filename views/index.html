@@ -10,9 +10,10 @@
 <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
 
 <script src="js/display.js"></script>
-
+    <script src="js/jquery.contextMenu.js"></script>
+    <script src="js/jquery.ui.position.js"></script>
 <link rel="stylesheet" href="css/style.css">
-
+    <link rel="stylesheet" href="css/jquery.contextMenu.css">
     <title></title>
 	<script>
 		var json;
@@ -68,30 +69,31 @@
 		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />	
 			<span style="font-weight:bold">Exception</span><br />
 		
-		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS','#008CFF',this.checked,'white',true)" />
+		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS,Noun','#008CFF',this.checked,'white',true)" />
 			<span style="color:#008CFF; font-weight:bold">Noun</span><br />
 		
-		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT','white',this.checked, '#008CFF')">
+		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT,Pronoun','white',this.checked, '#008CFF')">
 			<span class="white-font" style="background-color:#008CFF">Pronoun</span><br />
 
-		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD','#990000',this.checked)">
+		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD,Verb','#990000',this.checked)">
 			<span style="color:#990000">Verb</span><br />
 					
-		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB','white',this.checked, '#990000')">
+		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB,Adverb','white',this.checked, '#990000')">
 			<span class="white-font" style="background-color:#990000">Adverb</span><br />
 						
-		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS','#437A00',this.checked)">
+		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS,Adjective','#437A00',this.checked)">
 			<span style="color:#437A00">Adjective</span><br />
 						
-		<input type="checkbox" id="Conjunction" onclick="changeColor('CC','white', this.checked,'#437A00')">
+		<input type="checkbox" id="Conjunction" onclick="changeColor('CC,Conjunction','white', this.checked,'#437A00')">
 			<span class="white-font" style="background-color:#437A00">Conjunction</span><br />
 						
-		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN','purple',this.checked)">
+		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN,Preposition','purple',this.checked)">
 			<span style="color:purple">Preposition </span><br />
 						
-		<input type="checkbox" id="Article" onclick="changeColor('DT','white', this.checked,'purple')">
+		<input type="checkbox" id="Article" onclick="changeColor('DT,Article','white', this.checked,'purple')">
 			<span class="white-font" style="background-color:purple">Article</span><br />
-		
+           <input type="checkbox" id="edit" onclick="addClick()">
+                <span>Edit Mode</span><br />
          
       </div>
       <div id="dash">
