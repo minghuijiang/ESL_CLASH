@@ -1,5 +1,10 @@
 function changeColor(type,color,isChecked,bgcolor,isbold){
-	var list = type.split(',');
+    console.log('change color trigger: '+type);
+    console.log('change color trigger: '+color);
+    console.log('change color trigger: '+isChecked);
+    console.log('change color trigger: '+bgcolor);
+    console.log('change color trigger: '+isbold);
+    var list = type.split(',');
 	if(isChecked){
 		for(i=0; i<list.length;i++){
 			if(bgcolor)
@@ -17,7 +22,6 @@ function changeColor(type,color,isChecked,bgcolor,isbold){
 }
 
 function hideSlash(isChecked){
-    console.log('slash trigger: '+isChecked);
 	if(isChecked){
 		$(".Slash").show();
 	}else{

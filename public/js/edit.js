@@ -10,7 +10,68 @@ function getTokenById(idList){
     }
     return null;
 }
-function addClick(){
+
+function slashCallBack(key,options){
+    var id  = currentTarget.id;
+    var idList = id.split('_');
+    var token = getTokenById(idList);// grep a reference to the associated json element
+    if(token){  // if token exists
+        var next;
+        var insertAfterID = id;
+        if(token.tagged=='Exception'){  // add/remove slash after exception, never add slash within exception
+            // get current word's parent and get nextElement.
+            next = currentTarget.parentElement.nextElementSibling;
+            insertAfterID =currentTarget.parentElement.id;
+        }else{
+            next = currentTarget.nextElementSibling;
+        }
+        if(key =='add'){
+            token.slashed= 'true';
+            if(next ==null || next.className!='Slash'){
+                $('<span class="Slash" style="display: inline;"> /</span>').insertAfter($("#"+insertAfterID));
+            }
+        }else if(key =='remove'){
+            token.slashed = 'false';
+            if(next !=null && next.className=='Slash'){
+                next.remove();
+            }
+        }
+    }
+}
+function changePOS(key, options) {
+    var keys = key.split(' ');
+    var id  = currentTarget.id;
+    var idList = id.split('_');
+    var token = getTokenById(idList);
+    if(token){
+        if(token.tagged=='Exception'){
+            //nested token.
+            token = token.tokens[idList[3]];
+        }
+        var old = token.tagged;
+        token.tagged = keys[1];  // set pos in json.
+
+        // notes:
+        //could add implementation to log change pos event
+        //to help improve the nltk performance.
+
+
+        //change current div to new Class
+        $('#'+id).removeClass(old).addClass(keys[1]);
+
+        // re-colorized text;
+        if(keys[0]!='Other'){
+            $("#"+keys[0]).trigger('click').trigger('click');
+        }else{ // set text to black/white
+            $('#'+id).css('color','black').css('background-color','white').css('font-weight','inherit');
+        }
+    }
+}
+
+function addClick(enable){
+    if(!enable){
+        $.contextMenu( 'destroy', selector );
+    }
     $('.word').on('contextmenu',function( event ) {
         currentTarget = event.currentTarget;
         console.log(json);
@@ -19,47 +80,7 @@ function addClick(){
 
     $.contextMenu({
         selector: '.word',
-        callback: function(key, options) {
-            console.log(options);
-            for(var i=0;i<options.length;i++)
-                console.log(options[i]);
-            console.log(key+' selected');
-            var id  = currentTarget.id;
-            //var class =
-            var idList = id.split('_');
-            var token = getTokenById(idList);
-            if(token){
-                if(key =='add'){
-                    token.slashed= 'true';
-                    var next;
-                    var insertAfterID = id;
-                    if(token.tagged=='Exception'){
-                        next = currentTarget.parentElement.nextElementSibling;
-                        insertAfterID =currentTarget.parentElement.id;
-                    }else{
-                        next = currentTarget.nextElementSibling;
-                    }
-                    if(next ==null || next.className!='Slash'){
-                        $('<span class="Slash" style="display: inline;"> /</span>').insertAfter($("#"+insertAfterID));
-                    }
-                }else if(key =='remove'){
-                    token.slashed = 'false';
-                    var next;
-                    if(token.tagged=='Exception'){
-                        next = currentTarget.parentElement.nextElementSibling;
-                    }else{
-                        next = currentTarget.nextElementSibling;
-                    }
-                    if(next !=null && next.className=='Slash'){
-                        next.remove();
-                    }
-                }else{ // modify type
-                    var old = token.tagged;
-                    token.tagged = key;
-                    // can do some logging of   change from old to key;
-                }
-            }
-        },
+        callback: changePOS,
         items: {
 
     //Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#008CFF
@@ -75,94 +96,94 @@ function addClick(){
             "Noun": { //Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#008CFF
                 name: "Noun",
                 items: {
-                    "Noun":{  name:"Noun" },
-                    "NN":{  name:"Noun, singular or mass" },
-                    "NNS":{  name:"Noun, plural" },
-                    "NNP":{  name:"Proper noun, singular" },
-                    "NNPS":{  name:"Proper noun, plural" }
+                    "Noun Noun":{  name:"Noun" },
+                    "Noun NN":{  name:"Noun, singular or mass" },
+                    "Noun NNS":{  name:"Noun, plural" },
+                    "Noun NNP":{  name:"Proper noun, singular" },
+                    "Noun NNPS":{  name:"Proper noun, plural" }
                 }
             },
             "Pronoun": {//Pronoun			white-blue 			"PRP,PRP\\$,WP\\$,WP,WDT PNOUN"
                 name: "Pronoun",
                 items: {
-                    "Pronoun":{  name:"Pronoun" },
-                    "PRP":{  name:"Personal pronoun" },
-                    "PRP$":{  name:"Possessive pronoun" },
-                    "WP":{  name:"Wh­pronoun" },
-                    "WP$":{  name:"Possessive wh­pronoun" },
-                    "WDT":{  name:"Wh­determiner" }
+                    "Pronoun Pronoun":{  name:"Pronoun" },
+                    "Pronoun PRP":{  name:"Personal pronoun" },
+                    "Pronoun PRP$":{  name:"Possessive pronoun" },
+                    "Pronoun WP":{  name:"Wh­pronoun" },
+                    "Pronoun WP$":{  name:"Possessive wh­pronoun" },
+                    "Pronoun WDT":{  name:"Wh­determiner" }
                 }
             },
             "Verb": {//Verb			red					"VB,VBD,VBG,VBN,VBP,VBZ,MD VERB"
                 name: "Verb",
                 items: {
-                    "Verb":{  name:"Verb" },
-                    "VB":{  name:"Verb, base form" },
-                    "VBD":{  name:"Verb, past tense" },
-                    "VBG":{  name:"Verb, gerund or present participle" },
-                    "VBN":{  name:"Verb, past participle" },
-                    "VBP":{  name:"Verb, non­3rd person singular present" },
-                    "VBZ":{  name:"Verb, 3rd person singular present" },
-                    "MD":{  name:"Modal" }
+                    "Verb Verb":{  name:"Verb" },
+                    "Verb VB":{  name:"Verb, base form" },
+                    "Verb VBD":{  name:"Verb, past tense" },
+                    "Verb VBG":{  name:"Verb, gerund or present participle" },
+                    "Verb VBN":{  name:"Verb, past participle" },
+                    "Verb VBP":{  name:"Verb, non­3rd person singular present" },
+                    "Verb VBZ":{  name:"Verb, 3rd person singular present" },
+                    "Verb MD":{  name:"Modal" }
                 }
             },
             "Adverb": {//Adverb			white-red			"RB,RBR,RBS,WRB ADV"
                 name: "Adverb",
                 items: {
-                    "RB":{  name:"Adverb" },
-                    "RBR":{  name:"Adverb, comparative" },
-                    "RBS":{  name:"Adverb, superlative" },
-                    "WRB":{  name:"Wh­adverb" }
+                    "Adverb RB":{  name:"Adverb" },
+                    "Adverb RBR":{  name:"Adverb, comparative" },
+                    "Adverb RBS":{  name:"Adverb, superlative" },
+                    "Adverb WRB":{  name:"Wh­adverb" }
                 }
             },
             "Adjective": {//Adjective		green				"JJ,JJR,JJS ADJ"
                 name: "Adjective",
                 items: {
-                    "JJ":{  name:"Adjective" },
-                    "JJR":{  name:"Adjective, comparative" },
-                    "JJS":{  name:"Adjective, superlative" }
+                    "Adjective JJ":{  name:"Adjective" },
+                    "Adjective JJR":{  name:"Adjective, comparative" },
+                    "Adjective JJS":{  name:"Adjective, superlative" }
                 }
             },
             "Conjunction": {//Conjunction     white-green			"CC CONJ"
                 name: "Conjunction",
                 items: {
-                    "Conjunction":{  name:"Conjunction" },
-                    "CC":{  name:"Coordinating conjunction" }
+                    "Conjunction Conjunction":{  name:"Conjunction" },
+                    "Conjunction CC":{  name:"Coordinating conjunction" }
                 }
             },
             "Preposition": {//Preposition     Burgundy			"TO,IN PREP"
                 name: "Preposition",
                 items: {
-                    "Preposition":{  name:"Preposition" },
-                    "TO":{  name:"To" },
-                    "IN":{  name:"Preposition or subordinating conjunction" }
+                    "Preposition Preposition":{  name:"Preposition" },
+                    "Preposition TO":{  name:"To" },
+                    "Preposition IN":{  name:"Preposition or subordinating conjunction" }
                 }
             },
             "Article": {//Article         white-Burgundy		"DT ART"
                 name: "Article",
                 items: {
-                    "Article":{  name:"Article" },
-                    "DT":{  name:"Determiner" }
+                    "Article Article":{  name:"Article" },
+                    "Article DT":{  name:"Determiner" }
                 }
             },
             "Other": {
                 name: "Other",
                 items: {
-                    "CD":{  name:"Cardinal number" },
-                    "EX":{  name:"Existential there" },
-                    "FW":{  name:"Foreign word" },
-                    "LS":{  name:"List item marker" },
-                    "PDT":{  name:"Predeterminer" },
-                    "POS":{  name:"Possessive ending" },
-                    "RP":{  name:"Particle" },
-                    "SYM":{  name:"Symbol" },
-                    "UH":{  name:"Interjection" },
-                    "Other":{  name:"Other" }
+                    "Other CD":{  name:"Cardinal number" },
+                    "Other EX":{  name:"Existential there" },
+                    "Other FW":{  name:"Foreign word" },
+                    "Other LS":{  name:"List item marker" },
+                    "Other PDT":{  name:"Predeterminer" },
+                    "Other POS":{  name:"Possessive ending" },
+                    "Other RP":{  name:"Particle" },
+                    "Other SYM":{  name:"Symbol" },
+                    "Other UH":{  name:"Interjection" },
+                    "Other Other":{  name:"Other" }
                 }
             },
             "sep1": "---------",
-            "add":{ name:"add Slash"},
-            "remove":{name:"remove Slash"}
+            "add":{ name:"add Slash", callback: slashCallBack},
+            "remove":{name:"remove Slash", callback: slashCallBack}
         }
     });
 }
