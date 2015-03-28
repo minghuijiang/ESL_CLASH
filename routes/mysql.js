@@ -5,9 +5,7 @@ exports.addUser = function(req,res){
     var input = JSON.parse(JSON.stringify(req.body));
 
     req.getConnection(function (err, connection) {
-
         var data = {
-
             name    : input.name,
             address : input.address,
             email   : input.email,
