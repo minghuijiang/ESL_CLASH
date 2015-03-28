@@ -1,9 +1,4 @@
 function changeColor(type,color,isChecked,bgcolor,isbold){
-    console.log('change color trigger: '+type);
-    console.log('change color trigger: '+color);
-    console.log('change color trigger: '+isChecked);
-    console.log('change color trigger: '+bgcolor);
-    console.log('change color trigger: '+isbold);
     var list = type.split(',');
 	if(isChecked){
 		for(i=0; i<list.length;i++){
@@ -133,12 +128,10 @@ function parseSentence(sent, vid){
         }
         else{
             if(attachRight){
-                console.log('attach right: '+token.word);
                 str+=parseToken(token,id);
                 attachRight = false;
             }
             else{
-                console.log('attach left: '+token.word);
                 str+=" "+parseToken(token,id);
             }
         }

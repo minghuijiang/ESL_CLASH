@@ -65,7 +65,6 @@ function e(t, n, r) {
                     style: "visibility: hidden"
                 }, document.body);
                 container.innerHTML = html;
-				console.log('html: '+html);
                 var children = container.children;
                 container.remove();
                 return children.length > 1 ? js.array(children) : children[0];
@@ -556,7 +555,6 @@ function e(t, n, r) {
 							{
 								if(token['tagged']=='Symbol'){
 									var w = token['word'];
-                                    console.log(w);
 									switch(w){
 										case '.':
 										case '!':
@@ -568,7 +566,6 @@ function e(t, n, r) {
 										case ']':
 										case '>': // those punctuation attach to word on left.
 											str+=w;
-                                            console.log(str);
 											break;
 										case '(':
 										case '[':
@@ -621,7 +618,6 @@ function e(t, n, r) {
 					//text+="\n"+tokenDelimiter;
 					//str="";
 				}
-				console.log(text+" "+str);
 				return text+" "+str;
 		}
 
@@ -1476,7 +1472,6 @@ function e(t, n, r) {
 					);
                     loading.wrapperEl = dom.compileHtml(loadingHtml);
 				//	;position: relative;top: 50%;transform: translateY(-50%)
-					console.log('wrapper: '+dom.compileHtml(loadingHtml));
                     document.body.appendChild(loading.wrapperEl);
                     dom.addClass(dom.qs('.sq-loading'), 'visible');
                 },

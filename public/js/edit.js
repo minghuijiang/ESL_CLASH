@@ -70,12 +70,11 @@ function changePOS(key, options) {
 
 function addClick(enable){
     if(!enable){
-        $.contextMenu( 'destroy', selector );
+        $.contextMenu( 'destroy', '.word' );
+        return ;
     }
     $('.word').on('contextmenu',function( event ) {
         currentTarget = event.currentTarget;
-        console.log(json);
-        console.log(event);
     });
 
     $.contextMenu({
