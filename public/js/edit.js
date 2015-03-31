@@ -31,7 +31,7 @@ function slashCallBack(key,options){
                 $('<span class="Slash" style="display: inline;"> /</span>').insertAfter($("#"+insertAfterID));
             }
         }else if(key =='remove'){
-            token.slashed = 'false';
+            delete token['slashed'];
             if(next !=null && next.className=='Slash'){
                 next.remove();
             }
@@ -182,7 +182,37 @@ function addClick(enable){
             },
             "sep1": "---------",
             "add":{ name:"add Slash", callback: slashCallBack},
-            "remove":{name:"remove Slash", callback: slashCallBack}
+            "remove":{name:"remove Slash", callback: slashCallBack},
+            "sep2": "---------",
+            "stress":{name:"Stress", callback:stressCallBack},
+            "unstress":{name:"Unstress", callback:stressCallBack},
+            "addVo":{name:"add vocabulary", callback:vocabCallBack},
+            "delVo":{name:"delete vocabulary", callback:vocabCallBack}
         }
     });
+}
+
+function stressCallBack(key, options){
+    var id  = currentTarget.id;
+    var idList = id.split('_');
+    var token = getTokenById(idList);// grep a reference to the associated json element
+    if(token){
+        if(key=='stress'){
+            $('#'+id).addClass('stress').css('font-weight','bold');
+        }else{
+            $('#'+id).removeClass('stress').css('font-weight','inherit');
+        }
+    }
+}
+function vocabCallBack(key, options){
+    var id  = currentTarget.id;
+    var idList = id.split('_');
+    var token = getTokenById(idList);// grep a reference to the associated json element
+    if(token){
+        if(key=='addVo'){
+            $('#'+id).addClass('vocab').css('font-style','italic');
+        }else{
+            $('#'+id).removeClass('vocab').css('font-style','inherit');
+        }
+    }
 }

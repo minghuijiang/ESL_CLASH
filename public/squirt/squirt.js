@@ -605,7 +605,7 @@ function e(t, n, r) {
 									}
 								}
 							}
-							if(token['slashed']=='true'){
+							if(token['slashed']){
 								if(z==sent.length-1&&j == para.length-1)
 									text+=str.trim()+"\n"+tokenDelimiter;
 								else

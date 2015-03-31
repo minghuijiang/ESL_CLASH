@@ -55,13 +55,13 @@
 
 		<br />
 		<!--
-			Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#008CFF
+			Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#40 100 225
 			Pronoun			white-blue 			"PRP,PRP\\$,WP\\$,WP,WDT PNOUN" 	
-			Verb			red					"VB,VBD,VBG,VBN,VBP,VBZ,MD VERB"	#990000
+			Verb			red					"VB,VBD,VBG,VBN,VBP,VBZ,MD VERB"	#230 0 0
 			Adverb			white-red			"RB,RBR,RBS,WRB ADV"	
-			Adjective		green				"JJ,JJR,JJS ADJ"					#437A00
+			Adjective		green				"JJ,JJR,JJS ADJ"					#0 150 30
 			Conjunction     white-green			"CC CONJ"
-			Preposition     Burgundy			"TO,IN PREP"						purple
+			Preposition     Burgundy			"TO,IN PREP"						#115 55 155
 			Article         white-Burgundy		"DT ART"
 		-->
 		<input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />
@@ -69,28 +69,28 @@
 		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />	
 			<span style="font-weight:bold">Exception</span><br />
 		
-		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS,Noun','#008CFF',this.checked,'white',true)" />
+		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS,Noun','rgb(40,100,225)',this.checked,'white',true)" />
 			<span style="color:#008CFF; font-weight:bold">Noun</span><br />
 		
-		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT,Pronoun','white',this.checked, '#008CFF')">
+		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT,Pronoun','white',this.checked, 'rgb(40,100,225)')">
 			<span class="white-font" style="background-color:#008CFF">Pronoun</span><br />
 
-		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD,Verb','#990000',this.checked)">
+		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD,Verb','rgb(230,0,0)',this.checked)">
 			<span style="color:#990000">Verb</span><br />
 					
-		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB,Adverb','white',this.checked, '#990000')">
+		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB,Adverb','white',this.checked, 'rgb(230,0,0)')">
 			<span class="white-font" style="background-color:#990000">Adverb</span><br />
 						
-		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS,Adjective','#437A00',this.checked)">
+		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS,Adjective','rgb(0,150,30)',this.checked)">
 			<span style="color:#437A00">Adjective</span><br />
 						
-		<input type="checkbox" id="Conjunction" onclick="changeColor('CC,Conjunction','white', this.checked,'#437A00')">
+		<input type="checkbox" id="Conjunction" onclick="changeColor('CC,Conjunction','white', this.checked,'rgb(0,150,30)')">
 			<span class="white-font" style="background-color:#437A00">Conjunction</span><br />
 						
-		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN,Preposition','purple',this.checked)">
+		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN,Preposition','rgb(115,55,155)',this.checked)">
 			<span style="color:purple">Preposition </span><br />
 						
-		<input type="checkbox" id="Article" onclick="changeColor('DT,Article','white', this.checked,'purple')">
+		<input type="checkbox" id="Article" onclick="changeColor('DT,Article','white', this.checked,'rgb(115,55,155)')">
 			<span class="white-font" style="background-color:purple">Article</span><br />
            <input type="checkbox" id="edit" onclick="addClick(this.checked)">
                 <span>Edit Mode</span><br />
