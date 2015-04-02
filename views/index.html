@@ -68,32 +68,26 @@
 			<span>S/l/a/s/h</span><br />
 		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />	
 			<span style="font-weight:bold">Exception</span><br />
-		
-		<input type="checkbox" id="Noun" onclick="changeColor('NN,NNS,NNP,NNPS,Noun','rgb(40,100,225)',this.checked,'white',true)" />
-			<span style="color:#008CFF; font-weight:bold">Noun</span><br />
-		
-		<input type="checkbox" id="Pronoun" onclick="changeColor('PRP,PRP\\$,WP\\$,WP,WDT,Pronoun','white',this.checked, 'rgb(40,100,225)')">
-			<span class="white-font" style="background-color:#008CFF">Pronoun</span><br />
+        <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">
+           <span style="font-style:italic">Vocabulary</span><br />
+        <input type="checkbox" id="stress" onclick="showStress(this.checked)">
+           <span style="font-weight: bold">Stress</span><br />
+        <input type="checkbox" id="edit" onclick="addClick(this.checked)">
+           <span>Edit Mode</span><br />
+        <input type="checkbox" id="postrigger" onclick="enablePOS(this.checked);" /> <span>Parts-of-speech</span><br />
+        <div id="pos">
+            <input type="checkbox" id="All" onclick="toggleAllPOS(this.checked);" />
+                <span class='All'>All</span><br />
+            <input type="checkbox" id="Noun" onclick="changeColor(this)" />            <span class='Noun'>Noun</span><br />
+            <input type="checkbox" id="Pronoun" onclick="changeColor(this)" />        <span class='Pronoun'>Pronoun</span><br />
+            <input type="checkbox" id="Verb" onclick="changeColor(this)" />           <span class='Verb'>Verb</span><br />
+            <input type="checkbox" id="Adverb" onclick="changeColor(this)" />         <span class='Adverb'>Adverb</span><br />
+            <input type="checkbox" id="Adjective" onclick="changeColor(this)" />      <span class='Adjective'>Adjective</span><br />
+            <input type="checkbox" id="Conjunction" onclick="changeColor(this)" />   <span class='Conjunction'>Conjunction</span><br />
+            <input type="checkbox" id="Preposition" onclick="changeColor(this)" />   <span class='Preposition'>Preposition</span><br />
+            <input type="checkbox" id="Article" onclick="changeColor(this)" />        <span class='Article'>Article</span><br />
+        </div>
 
-		<input type="checkbox" id="Verb" onclick="changeColor('VB,VBD,VBG,VBN,VBP,VBZ,MD,Verb','rgb(230,0,0)',this.checked)">
-			<span style="color:#990000">Verb</span><br />
-					
-		<input type="checkbox" id="Adverb" onclick="changeColor('RB,RBR,RBS,WRB,Adverb','white',this.checked, 'rgb(230,0,0)')">
-			<span class="white-font" style="background-color:#990000">Adverb</span><br />
-						
-		<input type="checkbox" id="Adjective" onclick="changeColor('JJ,JJR,JJS,Adjective','rgb(0,150,30)',this.checked)">
-			<span style="color:#437A00">Adjective</span><br />
-						
-		<input type="checkbox" id="Conjunction" onclick="changeColor('CC,Conjunction','white', this.checked,'rgb(0,150,30)')">
-			<span class="white-font" style="background-color:#437A00">Conjunction</span><br />
-						
-		<input type="checkbox" id="Preposition" onclick="changeColor('TO,IN,Preposition','rgb(115,55,155)',this.checked)">
-			<span style="color:purple">Preposition </span><br />
-						
-		<input type="checkbox" id="Article" onclick="changeColor('DT,Article','white', this.checked,'rgb(115,55,155)')">
-			<span class="white-font" style="background-color:purple">Article</span><br />
-           <input type="checkbox" id="edit" onclick="addClick(this.checked)">
-                <span>Edit Mode</span><br />
          
       </div>
       <div id="dash">
@@ -127,7 +121,7 @@
 		socket.on('response', function(msg){
 			console.log('response recieved ' + msg);
 			json = JSON.parse(msg);
-			var str =(parseJSON(json));
+			var str =parseJSON(json);
 			document.getElementById("content").innerHTML = str;
 			hideSlash();
 		});

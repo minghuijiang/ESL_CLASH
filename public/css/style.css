@@ -11,21 +11,21 @@
     margin-left: 15%;
 }
 #nav {
+    top: 0;
+    bottom:0;
     line-height:30px;
-    height: 80%;
-    width:20%;
     float:left;
-    padding:5px;
-    position: absolute;
-    padding-top: 0px;
+    position:fixed;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 #section {
-    width:80%;
+    width:75%;
     height: 20%;
     float:right;
     padding:10px;
     position: absolute;
-    margin-left: 17%;
+    margin-left: 20%;
     margin-top: 5%;
 }
 
@@ -47,4 +47,10 @@ p {
 #content {
 	margin-bottom: 2cm;
 	margin-right: 2cm;
+}
+
+#pos{
+    margin-left:15px;
+    display:none;
+
 }

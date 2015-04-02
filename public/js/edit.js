@@ -187,7 +187,10 @@ function addClick(enable){
             "stress":{name:"Stress", callback:stressCallBack},
             "unstress":{name:"Unstress", callback:stressCallBack},
             "addVo":{name:"add vocabulary", callback:vocabCallBack},
-            "delVo":{name:"delete vocabulary", callback:vocabCallBack}
+            "delVo":{name:"delete vocabulary", callback:vocabCallBack},
+            "sep3": "---------",
+            'delete':{ name:"Remove", callback:removeCallBack}
+            //"delVo":{name:"delete vocabulary", callback:vocabCallBack},
         }
     });
 }
@@ -198,8 +201,10 @@ function stressCallBack(key, options){
     var token = getTokenById(idList);// grep a reference to the associated json element
     if(token){
         if(key=='stress'){
+            token['stress']=true;
             $('#'+id).addClass('stress').css('font-weight','bold');
         }else{
+            delete token['stress'];
             $('#'+id).removeClass('stress').css('font-weight','inherit');
         }
     }
@@ -208,11 +213,35 @@ function vocabCallBack(key, options){
     var id  = currentTarget.id;
     var idList = id.split('_');
     var token = getTokenById(idList);// grep a reference to the associated json element
+
     if(token){
         if(key=='addVo'){
+            token['vocab']=true;
             $('#'+id).addClass('vocab').css('font-style','italic');
         }else{
+            delete token['vocab'];
             $('#'+id).removeClass('vocab').css('font-style','inherit');
         }
     }
+}
+
+function removeCallBack(key, options){
+    var id  = currentTarget.id;
+    var idList = id.split('_');
+    console.log('id: '+id);
+    if(json){
+        var result = confirm('you sure you want to delete "'+$("#"+id).text()+'"? This action cannot be undone.')
+        if(result==true) {
+            var token = json.contents[idList[0]][idList[1]].tokens[idList[2]];
+            if(token.tagged=='Exception'){
+                delete token.tokens[idList[3]];
+            }else{
+                delete json.contents[idList[0]][idList[1]].tokens[idList[2]];
+            }
+            $('#' + id).remove();
+
+        }
+        console.log(json);
+    }
+
 }

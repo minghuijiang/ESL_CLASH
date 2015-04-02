@@ -1,19 +1,46 @@
-function changeColor(type,color,isChecked,bgcolor,isbold){
-    var list = type.split(',');
-	if(isChecked){
-		for(i=0; i<list.length;i++){
-			if(bgcolor)
-				if(isbold)
-					$("."+list[i]).css("color",color).css("font-weight",'bold');
-				else
-					$("."+list[i]).css("color",color).css("background-color",bgcolor);
-			else
-				$("."+list[i]).css("color",color);
-		}
-	}else{
-		for(i=0; i<list.length;i++)
-			$("."+list[i]).css("color","black").css("background-color","white").css("font-weight",'inherit');
-	}
+
+var posMapper = {
+    "Noun":{            color:"rgb(40,100,225)",       classes:"NN,NNS,NNP,NNPS,Noun"    },
+    "Pronoun":{          bc:"rgb(40,100,225)",              classes:"PRP,PRP\\$,WP\\$,WP,WDT,Pronoun"     },
+    "Verb":{            color:"rgb(230,0,0)",           classes:"VB,VBD,VBG,VBN,VBP,VBZ,MD,Verb"    },
+    "Adverb":{          bc:"rgb(230,0,0)",              classes:"RB,RBR,RBS,WRB,Adverb"    },
+    "Adjective":{      color:"rgb(0,150,30)",          classes:"JJ,JJR,JJS,Adjective"    },
+    "Conjunction":{    bc:"rgb(0,150,30)",             classes:"CC,Conjunction"    },
+    "Preposition":{    color:"rgb(115,55,155)",       classes:"TO,IN,Preposition"    },
+    "Article":{         bc:"rgb(115,55,155)",          classes:"DT,Article"    }
+}
+function changeColor(checkbox){
+    var data = posMapper[checkbox.id];
+    var cl = "."+replaceAll(',',',.',data['classes']);
+    console.log(cl);
+    console.log(checkbox.checked);
+    if(checkbox.checked){
+        if(data['color']){// color font, bold, white background.
+            $(cl).css("color",data['color']);//.css("font-weight",'bold');
+        }else{ // white font, color background.
+            $(cl).css("color","white").css("background-color",data['bc']);
+        }
+    }else{
+        $(cl).css("color","black").css("background-color","white").css("font-weight",'inherit');
+    }
+}
+
+function enablePOS(ischecked){
+    if(ischecked)
+        $('#pos').show();
+    else
+        $('#pos').hide();
+}
+
+function toggleAllPOS(ischecked){
+    var objs  = $('#pos').find("input" );
+    objs.each(function( index ) {
+        if($(this)[0]['checked']!=ischecked)
+            $(this).trigger('click');
+    })
+}
+function replaceAll(find, replace, str) {
+    return str.replace(new RegExp(find, 'g'), replace);
 }
 
 function hideSlash(isChecked){
@@ -30,6 +57,14 @@ function boldException(isChecked){
 	}else{
 		$(".Exception").css("font-weight","normal");
 	}
+}
+
+function showVocab(isChecked){
+    $(".vocab").css("font-style",isChecked?"italic":"inherit");
+}
+
+function showStress(isChecked){
+    $(".stress").css("font-weight",isChecked?"bold":"inherit");
 }
 
 function getOpenTag(tag,clazz, id){
@@ -49,7 +84,12 @@ function getCloseTag(tag){
 }
 
 function parseToken(token,id){
-    return getOpenTag('span','word '+token['tagged'],id)+token['word']+getCloseTag('span');
+    var clazz = 'word '+token['tagged'];
+    if(token['vocab'])   // if vocabulary
+        clazz+=' vocab';
+    if(token['stress'])  // if stressed.
+        clazz+=' stress';
+    return getOpenTag('span',clazz,id)+token['word']+getCloseTag('span');
 }
 
 //The word weather means “the atmospheric conditions at a specific place and time.” The weather can vary from day to day.
@@ -136,7 +176,7 @@ function parseSentence(sent, vid){
             }
         }
 
-        if(token['slashed']=='true'){
+        if(token['slashed']){
             str+=' '+getOpenTag('span','Slash')+'/'+getCloseTag('span')+' ';
         }
     }
@@ -158,3 +198,4 @@ function startReader(){
 	document.body.appendChild(s);
   }
 }
+
