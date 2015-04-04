@@ -13,8 +13,10 @@ var connection = mysql.createConnection({
     user     : 'root',
     password : ''
 });
-
+console.log('after connection')
 connection.query('USE CLASH');
+
+console.log('after query');
 
 // expose this function to our app using module.exports
 module.exports = function(passport) {
@@ -27,12 +29,15 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
+        console.log('serialized '+user);
         done(null, user.id);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
-        connection.query("select * from users where id = "+id,function(err,rows){
+        console.log('deserializeUser '+id);
+        connection.query("select * from users where username = "+id,function(err,rows){
+            console.log('deserializeUser in query '+id);
             done(err, rows[0]);
         });
     });
@@ -94,8 +99,9 @@ module.exports = function(passport) {
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, email, password, done) { // callback with email and password from our form
-
+            console.log('login before query '+email);
             connection.query("SELECT * FROM `USER` WHERE `username` = '" + email + "'",function(err,rows){
+                console.log('login inside query '+rows);
                 if (err)
                     return done(err);
                 if (!rows.length) {

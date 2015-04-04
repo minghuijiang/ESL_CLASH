@@ -25,7 +25,9 @@ var sessionsConnections = {};
 var 
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
-  methodOverride = require('method-override');
+  methodOverride = require('method-override'),
+    cookieParser = require('cookie-parser'),
+    session = require('express-session');
   
 
   app.use(morgan('combined'));
@@ -36,22 +38,22 @@ var flash    = require('connect-flash');
 
 require('./routes/passport')(passport); // pass passport for configuration
 
-app.configure(function() {
+
 
     // set up our express application
-    app.use(express.logger('dev')); // log every request to the console
-    app.use(express.cookieParser()); // read cookies (needed for auth)
-    app.use(express.bodyParser()); // get information from html forms
+    app.use(cookieParser()); // read cookies (needed for auth)
+    app.use(bodyParser()); // get information from html forms
 
-    app.set('view engine', 'ejs'); // set up ejs for templating
-
+    //app.set('view engine', 'ejs'); // set up ejs for templating
+    //
     // required for passport
-    app.use(express.session({ secret: 'vidyapathaisalwaysrunning' } )); // session secret
+    app.use(session({
+        secret: 'keyboard cat'
+    })); // session secret
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
 
-});
 
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
