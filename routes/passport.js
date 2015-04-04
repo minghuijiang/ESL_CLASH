@@ -92,15 +92,16 @@ module.exports = function(passport) {
     // we are using named strategies since we have one for login and one for signup
     // by default, if there was no name, it would just be called 'local'
 
-    passport.use('local-login', new LocalStrategy({
-            // by default, local strategy uses username and password, we will override with email
-            usernameField : 'email',
-            passwordField : 'password',
-            passReqToCallback : true // allows us to pass back the entire request to the callback
-        },
-        function(req, email, password, done) { // callback with email and password from our form
-            console.log('login before query '+email);
-            connection.query("SELECT * FROM `USER` WHERE `username` = '" + email + "'",function(err,rows){
+    passport.use('local-login', new LocalStrategy(
+        //{
+        //    // by default, local strategy uses username and password, we will override with email
+        //    usernameField : 'email',
+        //    passwordField : 'password',
+        //    passReqToCallback : true // allows us to pass back the entire request to the callback
+        //},
+        function(username, password, done) { // callback with email and password from our form
+            console.log('login before query '+username);
+            connection.query("SELECT * FROM `USER` WHERE `username` = '" + username + "'",function(err,rows){
                 console.log('login inside query '+rows);
                 if (err)
                     return done(err);
@@ -109,8 +110,8 @@ module.exports = function(passport) {
                 }
 
                 // if the user is found but the password is wrong
-                if (!( rows[0].password == password))
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                //if (!( rows[0].password == password))
+                //    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
                 // all is well, return successful user
                 return done(null, rows[0]);

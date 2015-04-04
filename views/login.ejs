@@ -20,7 +20,9 @@
             <% } %>
 
             <!-- LOGIN FORM -->
-            <form action="/dev/login" method="post">
+            <form action="/dev/logins"
+                  enctype="application/x-www-form-urlencoded"
+                  method="get">
                 <div class="form-group">
                     <label>Username</label>
                     <input type="text" class="form-control" name="username">

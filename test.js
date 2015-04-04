@@ -31,7 +31,7 @@ var
   
 
   app.use(morgan('combined'));
-  app.use(bodyParser.json());
+  //app.use(bodyParser.json());
   app.use(methodOverride('X-HTTP-Method-Override'));
 var passport = require('passport');
 var flash    = require('connect-flash');
@@ -42,7 +42,7 @@ require('./routes/passport')(passport); // pass passport for configuration
 
     // set up our express application
     app.use(cookieParser()); // read cookies (needed for auth)
-    app.use(bodyParser()); // get information from html forms
+    app.use(bodyParser.urlencoded() ); // get information from html forms
 
     //app.set('view engine', 'ejs'); // set up ejs for templating
     //
