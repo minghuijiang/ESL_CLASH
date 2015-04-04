@@ -29,15 +29,16 @@ module.exports = function(passport) {
 
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
-        console.log('serialized '+user);
-        done(null, user.id);
+        console.log(user);
+        done(null, user.USERNAME);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         console.log('deserializeUser '+id);
-        connection.query("select * from users where username = "+id,function(err,rows){
-            console.log('deserializeUser in query '+id);
+        connection.query("select * from USER where username = '"+id+"'",function(err,rows){
+            console.log('deserializeUser in query '+rows);
+            console.log(rows);
             done(err, rows[0]);
         });
     });
@@ -93,13 +94,12 @@ module.exports = function(passport) {
     // by default, if there was no name, it would just be called 'local'
 
     passport.use('local-login', new LocalStrategy(
-        //{
-        //    // by default, local strategy uses username and password, we will override with email
-        //    usernameField : 'email',
-        //    passwordField : 'password',
-        //    passReqToCallback : true // allows us to pass back the entire request to the callback
-        //},
-        function(username, password, done) { // callback with email and password from our form
+        {
+            // by default, local strategy uses username and password, we will override with email
+
+            passReqToCallback : true // allows us to pass back the entire request to the callback
+        },
+        function(req, username, password, done) { // callback with email and password from our form
             console.log('login before query '+username);
             connection.query("SELECT * FROM `USER` WHERE `username` = '" + username + "'",function(err,rows){
                 console.log('login inside query '+rows);
