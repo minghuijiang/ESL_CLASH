@@ -6,7 +6,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http,{ resource: '/dev/socket.io' });
-
+var connection  = require('express-myconnection');
 var PythonShell = require('python-shell');
 var mysql = require('mysql');
 var java = require("java");
@@ -53,7 +53,13 @@ require('./routes/passport')(passport); // pass passport for configuration
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
-
+    app.use(connection(mysql,{
+        host: 'localhost',
+        user: 'root',
+        password : '',
+        port : 3306, //port mysql
+        database:'CLASH'
+    },'request'));
 
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport

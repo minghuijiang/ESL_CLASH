@@ -69,6 +69,9 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect(prefix+'/login');
     });
+
+    var DB = require('./DB');
+    app.get('/api/addUser',DB.addUser());
 };
 
 // route middleware to make sure

@@ -4,31 +4,53 @@
 
 //ADD_USER(USERNAME, PASSWORD, USERTYPE);
 
+function checkPermission(req, minLevel){
+    var result = {
+        data:""
+    };
+    if(req.user!=undefined){
+        if(req.user.USERTYPE<=minLevel){ // user with minimal permission.
+
+        }else{
+            result.error = "Unauthorized action.";
+        }
+    }else{  // requests from unknown source.
+        result.error="Login first.";
+    }
+    return result;
+}
+
 exports.addUser = function(req,res){
     var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        // check permission level 1 can only create user with level 0,
+        // permission 2 can create user with level 1 or 2.
+        //TODO
 
-    req.getConnection(function (err, connection) {
-        var data = {
-            name    : input.name,
-            address : input.address,
-            email   : input.email,
-            phone   : input.phone
+        req.getConnection(function (err, connection) {
+            var data = {
+                USERNAME    : input.username,
+                PASSWORD : input.password,
+                USERTYPE   : input.usertype
+            };
 
-        };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
-        var query = connection.query("INSERT INTO user set ? ",data, function(err, rows)
-        {
-
-            if (err)
-                console.log("Error inserting : %s ",err );
-
-            res.redirect('/customers');
+            });
 
         });
+    }
 
-        // console.log(query.sql); get raw query
-
-    });
 };
 //DEL_USER(USERNAME);
 
@@ -122,125 +144,3 @@ exports.delFile = function(req, res){
 //
 //
 //
-
-
-
-
-
-/*
- * GET customers listing.
- */
-exports.list = function(req, res){
-    req.getConnection(function(err,connection){
-
-        connection.query('SELECT * FROM customer',function(err,rows)     {
-
-            if(err)
-                console.log("Error Selecting : %s ",err );
-
-            res.render('customers',{page_title:"Customers - Node.js",data:rows});
-
-        });
-
-    });
-
-};
-
-
-
-exports.add = function(req, res){
-    res.render('add_customer',{page_title:"Add Customers-Node.js"});
-};
-exports.edit = function(req, res){
-
-    var id = req.params.id;
-    req.getConnection(function(err,connection){
-        connection.query('SELECT * FROM customer WHERE id = ?',[id],function(err,rows)
-        {
-
-            if(err)
-                console.log("Error Selecting : %s ",err );
-
-            res.render('edit_customer',{page_title:"Edit Customers - Node.js",data:rows});
-
-        });
-
-    });
-};
-/*Save the customer*/
-exports.save = function(req,res){
-
-    var input = JSON.parse(JSON.stringify(req.body));
-
-    req.getConnection(function (err, connection) {
-
-        var data = {
-
-            name    : input.name,
-            address : input.address,
-            email   : input.email,
-            phone   : input.phone
-
-        };
-
-        var query = connection.query("INSERT INTO customer set ? ",data, function(err, rows)
-        {
-
-            if (err)
-                console.log("Error inserting : %s ",err );
-
-            res.redirect('/customers');
-
-        });
-
-        // console.log(query.sql); get raw query
-
-    });
-};/*Save edited customer*/
-exports.save_edit = function(req,res){
-
-    var input = JSON.parse(JSON.stringify(req.body));
-    var id = req.params.id;
-
-    req.getConnection(function (err, connection) {
-
-        var data = {
-
-            name    : input.name,
-            address : input.address,
-            email   : input.email,
-            phone   : input.phone
-
-        };
-
-        connection.query("UPDATE customer set ? WHERE id = ? ",[data,id], function(err, rows)
-        {
-
-            if (err)
-                console.log("Error Updating : %s ",err );
-
-            res.redirect('/customers');
-
-        });
-
-    });
-};
-
-exports.delete_customer = function(req,res){
-
-    var id = req.params.id;
-
-    req.getConnection(function (err, connection) {
-
-        connection.query("DELETE FROM customer  WHERE id = ? ",[id], function(err, rows)
-        {
-
-            if(err)
-                console.log("Error deleting : %s ",err );
-
-            res.redirect('/customers');
-
-        });
-
-    });
-};
