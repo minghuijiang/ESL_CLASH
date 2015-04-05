@@ -32,14 +32,7 @@ module.exports = function(app, passport) {
         }),
         function(req, res) {
             console.log("hello");
-
-            if (req.body.remember) {
-                req.session.cookie.maxAge = 1000 * 60 * 3
-                console.log(req.session);
-            } else {
-                req.session.cookie.expires = false;
-            }
-            res.redirect('/');
+            res.redirect(prefix+'/login');
         });
 
     // =====================================
@@ -73,20 +66,19 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
-        console.log('logout!!!');
         req.logout();
-        res.redirect(prefix+'/');
+        res.redirect(prefix+'/login');
     });
 };
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
-    console.log('islogin = '+req.isAuthenticated());
-    console.log(req.isAuthenticated);
-    // if user is authenticated in the session, carry on
-    if (req.isAuthenticated())
+
+    if (req.isAuthenticated()) {
+        console.log('after authenticated');
         return next();
+    }
 
     // if they aren't redirect them to the home page
-    res.redirect(prefix+'/');
+    res.redirect(prefix+'/login');
 }
