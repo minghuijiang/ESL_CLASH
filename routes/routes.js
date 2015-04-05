@@ -2,6 +2,8 @@
  * Created by Ming on 4/4/2015 0004.
  */
 // app/routes.js
+
+var prefix = '/dev';
 module.exports = function(app, passport) {
 
     // =====================================
@@ -24,15 +26,16 @@ module.exports = function(app, passport) {
 
     // process the login form
     app.get('/logins', passport.authenticate('local-login', {
-            successRedirect : '/dev/profile', // redirect to the secure profile section
-            failureRedirect : '/dev/login', // redirect back to the signup page if there is an error
+            successRedirect : prefix+'/profile', // redirect to the secure profile section
+            failureRedirect : prefix+'/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }),
         function(req, res) {
             console.log("hello");
 
             if (req.body.remember) {
-                req.session.cookie.maxAge = 1000 * 60 * 3;
+                req.session.cookie.maxAge = 1000 * 60 * 3
+                console.log(req.session);
             } else {
                 req.session.cookie.expires = false;
             }
@@ -50,8 +53,8 @@ module.exports = function(app, passport) {
 
     // process the signup form
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/profile', // redirect to the secure profile section
-        failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        successRedirect : prefix+'/profile', // redirect to the secure profile section
+        failureRedirect : prefix+'/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
 
@@ -70,18 +73,20 @@ module.exports = function(app, passport) {
     // LOGOUT ==============================
     // =====================================
     app.get('/logout', function(req, res) {
+        console.log('logout!!!');
         req.logout();
-        res.redirect('/');
+        res.redirect(prefix+'/');
     });
 };
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
-
+    console.log('islogin = '+req.isAuthenticated());
+    console.log(req.isAuthenticated);
     // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
 
     // if they aren't redirect them to the home page
-    res.redirect('/');
+    res.redirect(prefix+'/');
 }

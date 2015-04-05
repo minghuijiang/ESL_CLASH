@@ -30,14 +30,13 @@ module.exports = function(passport) {
     // used to serialize the user for the session
     passport.serializeUser(function(user, done) {
         console.log(user);
-        done(null, user.USERNAME);
+        done(null, user.USERID);
     });
 
     // used to deserialize the user
     passport.deserializeUser(function(id, done) {
         console.log('deserializeUser '+id);
-        connection.query("select * from USER where username = '"+id+"'",function(err,rows){
-            console.log('deserializeUser in query '+rows);
+        connection.query("select * from USER where USERID = "+id,function(err,rows){
             console.log(rows);
             done(err, rows[0]);
         });
@@ -108,11 +107,13 @@ module.exports = function(passport) {
                 if (!rows.length) {
                     return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
                 }
-
+                //console.log(rows[0].PASSWORD);
+                //console.log(password);
                 // if the user is found but the password is wrong
-                //if (!( rows[0].password == password))
-                //    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-
+                if (!( rows[0].PASSWORD == password))
+                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                //req.res.cookie('test','this is a test cookie');
+                //console.log(req.res);
                 // all is well, return successful user
                 return done(null, rows[0]);
 
