@@ -174,25 +174,275 @@ exports.delFile = function(req,res){
 };
 
 //ADD_EXCEPTION
+exports.addException = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //REMOVE_EXCEPTION
+exports.delException = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //UPDATE_EXCEPTION
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //PRINT_EXCEPTION
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //ADD_CLASS
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //DELETE_CLASS
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //ADD_STUDENT_TO_CLASS
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //DELETE_STUDENT_FROM_CLASS
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //ADD_RECORD
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //GET_RECORD
+exports.addUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(req.user.USERTYPE==1&&input.usertype!=2){
+        result.error="Instructor cannot create account other than student.";
+    }
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var data = {
+            };
+            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
 
+            });
+
+        });
+    }
+};
 //GET_FILELIST(USERID);
 exports.getFiles = function(req,res){
     var input = req.query;
