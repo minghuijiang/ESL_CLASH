@@ -227,8 +227,8 @@ exports.delException = function(req,res){
         });
     }
 };
-//UPDATE_EXCEPTION
-exports.addUser = function(req,res){
+//UPDATE_EXCEPTION    -- should be called from java program,
+exports.updateException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -255,7 +255,7 @@ exports.addUser = function(req,res){
     }
 };
 //PRINT_EXCEPTION
-exports.addUser = function(req,res){
+exports.printException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -282,7 +282,7 @@ exports.addUser = function(req,res){
     }
 };
 //ADD_CLASS
-exports.addUser = function(req,res){
+exports.addClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -309,7 +309,7 @@ exports.addUser = function(req,res){
     }
 };
 //DELETE_CLASS
-exports.addUser = function(req,res){
+exports.delClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -336,7 +336,7 @@ exports.addUser = function(req,res){
     }
 };
 //ADD_STUDENT_TO_CLASS
-exports.addUser = function(req,res){
+exports.addStudentToClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -363,7 +363,7 @@ exports.addUser = function(req,res){
     }
 };
 //DELETE_STUDENT_FROM_CLASS
-exports.addUser = function(req,res){
+exports.delStudentFromClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -390,7 +390,7 @@ exports.addUser = function(req,res){
     }
 };
 //ADD_RECORD
-exports.addUser = function(req,res){
+exports.addRecord = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){
@@ -417,7 +417,7 @@ exports.addUser = function(req,res){
     }
 };
 //GET_RECORD
-exports.addUser = function(req,res){
+exports.getRecord = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
     if(req.user.USERTYPE==1&&input.usertype!=2){

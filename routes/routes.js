@@ -70,8 +70,8 @@ module.exports = function(app, passport) {
         res.redirect(prefix+'/login');
     });
 
-    //var DB = require('./DB');
-    //app.get('/api/addUser',DB.addUser());
+    var DB = require('./DB');
+    app.get('/api/addUser',DB.addUser);
 };
 
 // route middleware to make sure
