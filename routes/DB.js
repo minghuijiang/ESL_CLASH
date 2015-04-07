@@ -2,8 +2,12 @@
  * Created by Ming on 4/4/2015 0004.
  */
 
-//ADD_USER(USERNAME, PASSWORD, USERTYPE);
-
+/**
+ *  helper funtion to determine if minimum privilege met.
+ * @param req
+ * @param minLevel
+ * @returns {{}}
+ */
 function checkPermission(req, minLevel){
     var result = {};
     if(req.user){
@@ -18,11 +22,26 @@ function checkPermission(req, minLevel){
     return result;
 }
 
+/**
+ * ADD  user,
+ *      Instructor mode
+ *          - username
+ *          - password
+ *      Admin Mode
+ *          - username
+ *          - password
+ *          - usertype   (optional)
+ * @param req
+ * @param res
+ */
 exports.addUser = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
+    var usertype = 2; // default account with student privilege.
+    if(input.usertype)
+        usertype=input.usertype;
+    if(input.usertype!=2&&req.user.USERTYPE==1){
+        result.error="Instructor can only create student account";
     }
     if(result.error){
         res.send(result);
@@ -33,11 +52,11 @@ exports.addUser = function(req,res){
             var data = {
                 USERNAME    : input.username,
                 PASSWORD : input.password,
-                USERTYPE   : input.usertype
+                USERTYPE   : usertype
             };
 
             //TODO verify if username already exist before do a insert,
-
+            // not necessary for prototype
             connection.query("INSERT INTO USER set ? ",data, function(err, rows){
                 if (err){
                     result.error=err;
@@ -52,8 +71,16 @@ exports.addUser = function(req,res){
     }
 
 };
-//DEL_USER(USERNAME);
 
+/**
+ * remove user,
+ *      -Instructor
+ *          -username
+ *      -admin
+ *          -username
+ * @param req
+ * @param res
+ */
 exports.delUser = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
@@ -71,7 +98,10 @@ exports.delUser = function(req,res){
                     result.error = err;
                     res.send(result);
                 }else if(rows.length!=1) {
-                    result.error ="Cannot delete multiple account at once.";
+                    if(rows.length==0)
+                        result.error="Request account '"+username+"' do not exist.";
+                    else
+                        result.error ="Cannot delete multiple accounts at once.";
                     res.send(result);
                 }else{
                     if(req.user.USERTYPE==0   // admin
@@ -96,7 +126,17 @@ exports.delUser = function(req,res){
 
 };
 
-//ADD_FILE(USERID,FILENAME,JSON);
+/**
+ * add a file
+ *      -instructor
+ *          -filename
+ *          -contents
+ *      -admin
+ *          -filename
+ *          -contents
+ * @param req
+ * @param res
+ */
 exports.addFile = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
@@ -134,7 +174,16 @@ exports.addFile = function(req,res){
     }
 };
 
-//DEL_FILE(USERID,FILENAME);
+/**
+ * del a file
+ *      -instructor
+ *          -filename
+ *      -admin
+ *          -filename
+ *          -userid  (optional)
+ * @param req
+ * @param res
+ */
 exports.delFile = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
@@ -173,21 +222,36 @@ exports.delFile = function(req,res){
     }
 };
 
-//ADD_EXCEPTION
+/**
+ * add exception
+ *      -instructor
+ *          -exception
+ *      -admin
+ *          -exception
+ * @param req
+ * @param res
+ */
 exports.addException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
+            /*
+             CREATE TABLE EXCEPTION(
+                 USERID INT(15) NOT NULL,
+                 EX_STR VARCHAR(128) NOT NULL,
+                 COUNT INT(8) NOT NULL DEFAULT 0,
+             );
+             */
             var data = {
+                USERID: req.user.USERID,
+                EX_STR: input.exception,
+                COUNT: 0
             };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("INSERT INTO EXCEPTION set ? ",data, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -200,34 +264,43 @@ exports.addException = function(req,res){
         });
     }
 };
-//REMOVE_EXCEPTION
+
+/**
+ * del exception
+ *      -instructor
+ *          -exception
+ *      -admin
+ *          -exception
+ * @param req
+ * @param res
+ */
 exports.delException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            /*
+             CREATE TABLE EXCEPTION(
+             USERID INT(15) NOT NULL,
+             EX_STR VARCHAR(128) NOT NULL,
+             COUNT INT(8) NOT NULL DEFAULT 0,
+             );
+             */
+            connection.query("DELETE FROM EXCEPTION WHERE USERID = ? AND EX_STR = ?",[req.user.USERID, input.exception], function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
                     result.data=rows;
                 }
                 res.send(result);
-
             });
-
         });
     }
 };
-//UPDATE_EXCEPTION    -- should be called from java program,
+//UPDATE_EXCEPTION    -- should be called from java program,  TODO
 exports.updateException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
@@ -254,21 +327,23 @@ exports.updateException = function(req,res){
         });
     }
 };
-//PRINT_EXCEPTION
+
+/**
+ * return user's exception list order by count.
+ *      no data need.
+ * @param req
+ * @param res
+ */
 exports.printException = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT",req.user.USERID, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -281,21 +356,39 @@ exports.printException = function(req,res){
         });
     }
 };
-//ADD_CLASS
+/**
+ * add new class
+ *      -instructor
+ *          -crn
+ *          -classname
+ *      -admin
+ *          -crn
+ *          -classname
+ * @param req
+ * @param res
+ */
 exports.addClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
+            /*
+             CREATE TABLE CLASS(
+                 CRN INT(15) NOT NULL UNIQUE,
+                 INSTRUCTOR INT(15) NOT NULL,
+                 CLASSNAME VARCHAR(32),
+             );
+             */
             var data = {
+                CRN : input.crn,
+                INSTRUCTOR: req.user.USERID,
+                CLASSNAME: input.classname
             };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("INSERT INTO CLASS set ? ",data, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -308,21 +401,30 @@ exports.addClass = function(req,res){
         });
     }
 };
-//DELETE_CLASS
+
+/**
+ * del a class
+ *      -instructor
+ *          -crn
+ *      -admin
+ *          -crn
+ *          -instructor
+ * @param req
+ * @param res
+ */
 exports.delClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
+    var instructor = req.user.USERID;
+    if(req.user.USERTYPE==0&&input.instructor){
+        instructor = input.instructor;
     }
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("DELETE FROM CLASS WHERE CRN = ? AND INSTRUCTOR = ?",[input.crn,instructor], function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -335,75 +437,193 @@ exports.delClass = function(req,res){
         });
     }
 };
-//ADD_STUDENT_TO_CLASS
-exports.addStudentToClass = function(req,res){
+/**
+ * add student to a class.
+ *      -instructor
+ *          -crn
+ *          -student
+ *      -admin
+ *          -crn
+ *          -student
+ * @param req
+ * @param res
+ */
+exports.addStudent = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
+            /*
+             CREATE TABLE STUDENT(
+                 CRN INT(15) NOT NULL,
+                 STUDENT INT(15) NOT NULL,
+             );
+             CREATE TABLE CLASS(
+             CRN INT(15) NOT NULL UNIQUE,
+             INSTRUCTOR INT(15) NOT NULL,
+             CLASSNAME VARCHAR(32),
+             );
+             */
+            //        admin can add student to anyone's class.
+            var data={
+                CRN:input.crn,
+                STUDENT:input.student
             };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
+            if(req.user.USERTYPE==0){   //admin
+                connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
 
-            });
+                });
+            }else{ // instructor]
+                connection.query("SELECT * FROM CLASS WHERE CRN = ?",input.crn,function(err,rows){
+                    if(err){
+                        result.error= err;
+                        res.send(result);
+                    }else if(rows[1].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
+                        connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
+                            if (err){
+                                result.error=err;
+                            }else{
+                                result.data=rows;
+                            }
+                            res.send(result);
+                        });
+                    }else{
+                        result.error="Instructor can only add student to own class.";
+                        res.send(result);
+                    }
+
+                });
+
+            }
+
 
         });
     }
 };
-//DELETE_STUDENT_FROM_CLASS
-exports.delStudentFromClass = function(req,res){
+/**
+ * del a student from class
+ *      -instructor
+ *          -crn
+ *          -student
+ *      -admin
+ *          -crn
+ *          -student
+ * @param req
+ * @param res
+ */
+exports.delStudent = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
+            /*
+             CREATE TABLE STUDENT(
+             CRN INT(15) NOT NULL,
+             STUDENT INT(15) NOT NULL,
+             );
+             CREATE TABLE CLASS(
+             CRN INT(15) NOT NULL UNIQUE,
+             INSTRUCTOR INT(15) NOT NULL,
+             CLASSNAME VARCHAR(32),
+             );
+             */
+            //        admin can remove student from anyone's class.
+            if(req.user.USERTYPE==0){   //admin
+                connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input,student], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
 
-            });
+                });
+            }else{ // instructor]
+                connection.query("SELECT * FROM CLASS WHERE CRN = ?",input.crn,function(err,rows){
+                    if(err){
+                        result.error= err;
+                        res.send(result);
+                    }else if(rows[1].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
+                        connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input,student], function(err, rows){
+                            if (err){
+                                result.error=err;
+                            }else{
+                                result.data=rows;
+                            }
+                            res.send(result);
+                        });
+                    }else{
+                        result.error="Instructor cannot delete student from other instructor's class.";
+                        res.send(result);
+                    }
+
+                });
+
+            }
+
 
         });
     }
 };
-//ADD_RECORD
+/**
+ * add a record
+ *  -all
+ *      -instructor
+ *      -filename
+ *      -timeSpend
+ *      -wordRead
+ *      -lbRead
+ *      -regression
+ *      -fixation
+ * @param req
+ * @param res
+ */
 exports.addRecord = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+    var result = checkPermission(req, 2);
+
     if(result.error){
         res.send(result);
         return ;
     }else{
+        /*
+         CREATE TABLE RECORD(
+             USERID INT(15) NOT NULL,
+             INSTRUCTORID INT(15) NOT NULL,
+             FILENAME VARCHAR(32) NOT NULL,
+             TIME_SPENT_SEC INTEGER NOT NULL,
+             WORD_READ INT NOT NULL,
+             LB_READ INT NOT NULL,
+             REGRESSION INT NOT NULL,
+             FIXATION INT NOT NULL
+         );
+         */
         req.getConnection(function (err, connection) {
             var data = {
+                USERID: req.user.USERID,
+                INSTRUCTORID: input.instructor,
+                FILENAME: input.filename,
+                TIME_SPENT_SEC: input.timeSpend,
+                WORD_READ: input.wordRead,
+                LB_READ: input.lbRead,
+                REGRESSION: input.regression,
+                FIXATION: input.fixation
             };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("INSERT INTO RECORD set ? ",data, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -419,18 +639,13 @@ exports.addRecord = function(req,res){
 //GET_RECORD
 exports.getRecord = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
+    var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
         return ;
     }else{
         req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+            connection.query("SELECT FROM RECORD WHERE USERID = ? ",req.user.USERID, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
