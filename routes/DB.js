@@ -704,55 +704,24 @@ exports.getFiles = function(req,res){
         });
     }
 };
-//GET_FILE(USERID,FILENAME);
+
+
+//-- login ----student   	-- getListFile   done
+//-- getReport    done
 //
-//
-//
-//ADD_CLASS(CRN,INSTRUCTOR); in progress
-//DEL_CLASS(CRN);   in progress
-//
-//ADD_STUDENT(CRN, STUDENT); in progress
-//DEL_STUDENT(CRN,STUDENT);  in progress
-//GET_CLASS(STUDENT);  necessary?
-//
-//ADD_RECORD(USERID,INSTRUCTORID, FILENAME,TIME_SPENT_SEC,WORD_READ,LB_READ,REGRESSION,FIXATION);
-//
-//INSERT INTO RECORD VALUES(USERID, INSTRUCTORID, FILENAME,TIME_SPENT_SEC,WORD_READ,LB_READ,REGRESSION,FIXATION);
-//
-//GET_RECORD(STUDENT);
-//SELECT * FROM RECORD WHERE USERID = STUDENT;
-//
-//GET_RECORD(STUDENT,INSTRUCTOR);
-//SELECT * FROM RECORD WHERE USERID = STUDENT AND INSTRUCTORID = INSTRUCTOR;
-//
-//
-//ADD_EXCEPTION(USERID,EX_STR);
-//INSERT INTO EXCEPTION VALUES(USERID, EX_STR,0);
-//
-//INC_COUNT(USERID,EX_STR,NUM);
-//UPDATE EXCEPTION
-//SET COUNT = COUNT + NUM
-//WHERE
-//DEL_EXCEPTION(USERID,EX_STR);
-//PRINT(USERID);
-//
-//
-//-- login ----student   	-- getListFile
-//-- getReport
-//
-//----Instructor -- add student
-//-- add class  INPROGRESS
+//----Instructor -- add student done
+//-- add class  done
 //-- add file done
 //-- list class
 //-- list student
-//-- list file
+//-- list file      done
 //-- remove file   done
 //-- remove student  done
-//-- remove class
+//-- remove class   done
 //-- get student report
-//-- add exception
-//-- remove exception
-//-- list exception by frequency
+//-- add exception    done
+//-- remove exception    done
+//-- list exception by frequency    done
 //
 //
 //

@@ -53,13 +53,16 @@ require('./routes/passport')(passport); // pass passport for configuration
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
-    app.use(connection(mysql,{
-        host: 'localhost',
-        user: 'root',
-        password : '',
-        port : 3306, //port mysql
-        database:'CLASH'
-    },'request'));
+    //app.use(connection(mysql,{
+    //    host: 'localhost',
+    //    user: 'root',
+    //    password : '',
+    //    port : 3306, //port mysql
+    //    database:'CLASH'
+    //},'request'));
+
+
+
 
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport

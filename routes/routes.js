@@ -72,6 +72,20 @@ module.exports = function(app, passport) {
 
     var DB = require('./DB');
     app.get('/api/addUser',DB.addUser);
+    app.get('/api/delUser',DB.delUser);
+    app.get('/api/addFile',DB.addFile);
+    app.get('/api/delFile',DB.delFile);
+    app.get('/api/addException',DB.addException);
+    app.get('/api/delException',DB.delException);
+    app.get('/api/printException',DB.printException);
+    app.get('/api/addClass',DB.addClass);
+    app.get('/api/delClass',DB.delClass);
+    app.get('/api/addStudent',DB.addStudent);
+    app.get('/api/delStudent',DB.delStudent);
+    app.get('/api/addRecord',DB.addRecord);
+    app.get('/api/getRecord',DB.getRecord);
+    app.get('/api/getFiles',DB.getFiles);
+
 };
 
 // route middleware to make sure
