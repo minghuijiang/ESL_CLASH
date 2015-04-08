@@ -3,6 +3,7 @@
  */
 
 function addUser(form, callback){
+    console.log(form);
     registerSubmit(form,'api/addUser?',callback);
 }
 function delUser(form, callback){
@@ -45,7 +46,8 @@ function getFiles(form, callback){
     registerSubmit(form,'api/getFiles?',callback);
 }
 
-function registerSubmit(obj, url, callback){
+function registerSubmit(form, url, callback){
+    var obj = $(form);
     if(obj.is('form'))
         obj.on('submit',function(ev){
             ev.preventDefault();

@@ -5,7 +5,7 @@
 var express = require('express'),
     app = express(),
     http = require('http').Server(app),
-    io = require('socket.io')(http,{ resource: '/dev/socket.io' }),
+    io = require('socket.io')(http,{ resource: '/socket.io' }),
     connection  = require('express-myconnection'),
     PythonShell = require('python-shell'),
     mysql = require('mysql'),
@@ -24,6 +24,13 @@ var express = require('express'),
     java.classpath.push("java/slash.jar");
     var slash = java.newInstanceSync("main.Slash");
 
+    app.use(connection(mysql,{
+        host: 'localhost',
+        user: 'root',
+        password : '',
+        port : 3306, //port mysql
+        database:'CLASH'
+    },'request')); //TODO  use pool?
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
 
@@ -49,13 +56,7 @@ var express = require('express'),
     app.use(passport.initialize());
     app.use(passport.session()); // persistent login sessions
     app.use(flash()); // use connect-flash for flash messages stored in session
-    app.use(connection(mysql,{
-        host: 'localhost',
-        user: 'root',
-        password : '',
-        port : 3306, //port mysql
-        database:'CLASH'
-    },'request')); //TODO  use pool?
+
 
 // open public folder
 app.use(express.static(__dirname + '/public'));
@@ -64,13 +65,7 @@ app.use(express.static(__dirname + '/public'));
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
   
-  app.get( '/', function ( request, response ) {
-      response.render('index.html');
-    });
-  //test2.html
-  app.get('/test2.html', function (request, response){
-    response.render('index.html');
-  });
+
 
 
 

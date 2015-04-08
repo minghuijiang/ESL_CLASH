@@ -114,7 +114,7 @@
 	  
     <script>
     	
-		var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/dev/socket.io' });
+		var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
 	  $('#button').click(function(){
 		console.log('trying to emit...');
 		socket.emit('text', $('#resizable').val());

@@ -22,10 +22,13 @@ module.exports = function(passport) {
     });
 
     // used to deserialize the user
-    passport.deserializeUser(function(id, req,done) {
-        req.getConnections().query("select * from USER where USERID = "+id,function(err,rows){
-            console.log(rows);
-            done(err, rows[0]);
+    passport.deserializeUser(function(req,id,done) {
+
+        req.getConnection(function(error,connection){
+            connection.query("select * from USER where USERID = "+id,function(err,rows){
+                console.log(rows);
+                done(err, rows[0]);
+            });
         });
     });
 
@@ -46,30 +49,32 @@ module.exports = function(passport) {
 
             // find a user whose email is the same as the forms email
             // we are checking to see if the user trying to login already exists
-            req.getConnections().query("select * from USER where username = '"+email+"'",function(err,rows){
-                console.log(rows);
-                console.log("above row object");
-                if (err)
-                    return done(err);
-                if (rows.length) {
-                    return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
-                } else {
+            req.getConnection(function(error, connection){
+                connection.query("select * from USER where username = '"+email+"'",function(err,rows){
+                    console.log(rows);
+                    console.log("above row object");
+                    if (err)
+                        return done(err);
+                    if (rows.length) {
+                        return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+                    } else {
 
-                    // if there is no user with that email
-                    // create the user
-                    var newUserMysql = new Object();
+                        // if there is no user with that email
+                        // create the user
+                        var newUserMysql = new Object();
 
-                    newUserMysql.email    = email;
-                    newUserMysql.password = password; // use the generateHash function in our user model
+                        newUserMysql.email    = email;
+                        newUserMysql.password = password; // use the generateHash function in our user model
 
-                    var insertQuery = "INSERT INTO users ( email, password ) values ('" + email +"','"+ password +"')";
-                    console.log(insertQuery);
-                    req.getConnections().query(insertQuery,function(err,rows){
-                        newUserMysql.id = rows.insertId;
+                        var insertQuery = "INSERT INTO users ( email, password ) values ('" + email +"','"+ password +"')";
+                        console.log(insertQuery);
+                        req.getConnections().query(insertQuery,function(err,rows){
+                            newUserMysql.id = rows.insertId;
 
-                        return done(null, newUserMysql);
-                    });
-                }
+                            return done(null, newUserMysql);
+                        });
+                    }
+                });
             });
         }));
 
@@ -81,30 +86,29 @@ module.exports = function(passport) {
 
     passport.use('local-login', new LocalStrategy(
         {
-            // by default, local strategy uses username and password, we will override with email
-
             passReqToCallback : true // allows us to pass back the entire request to the callback
         },
         function(req, username, password, done) { // callback with email and password from our form
-            req.getConnections().query("SELECT * FROM `USER` WHERE `username` = '" + username + "'",function(err,rows){
-                console.log('login inside query '+rows);
-                if (err)
-                    return done(err);
-                if (!rows.length) {
-                    return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
-                }
-                //console.log(rows[0].PASSWORD);
-                //console.log(password);
-                // if the user is found but the password is wrong
-                if (!( rows[0].PASSWORD == password))
-                    return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-                //req.res.cookie('test','this is a test cookie');
-                //console.log(req.res);
-                // all is well, return successful user
-                return done(null, rows[0]);
+            req.getConnection(function(error, connection){
+                connection.query("SELECT * FROM `USER` WHERE `username` = '" + username + "'", function (err, rows) {
+                    console.log('login inside query ' + rows);
+                    if (err)
+                        return done(err);
+                    if (!rows.length) {
+                        return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
+                    }
+                    //console.log(rows[0].PASSWORD);
+                    //console.log(password);
+                    // if the user is found but the password is wrong
+                    if (!( rows[0].PASSWORD == password))
+                        return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+                    //req.res.cookie('test','this is a test cookie');
+                    //console.log(req.res);
+                    // all is well, return successful user
+                    return done(null, rows[0]);
 
+                });
             });
-
 
 
         }));

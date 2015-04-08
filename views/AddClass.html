@@ -7,7 +7,7 @@
         div { width: 50%; height: 50%; float: left; text-align:center;line-height:30px; }
     </style>
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="/js/api.js"></script>
+    <script src="js/api.js"></script>
 </head>
 <body>
 
@@ -57,17 +57,29 @@
     </textarea>
 </div>
     <script>
-        addUser($("#addUser"),function(data){
-            $("#show").text(data);
+        console.log($("#addUser"));
+        console.log(addUser());
+        addUser("#addUser",function(data){
+            if(data.error)
+                $("#show").text('error: '+data.error);
+            else{
+                $("#show").text('\nData: '+data.data[0]);
+            }
             console.log(data);
         });
-        addClass($("#addClass"),function(data){
-            $("#show").text(data);
-            console.log(data);
+        addClass("#addClass",function(data){
+            if(data.error)
+                $("#show").text('error: '+data.error);
+            else{
+                $("#show").text('\nData: '+data.data[0]);
+            }            console.log(data);
         });
-        addStudent($("#addStudent"),function(data){
-            $("#show").text(data);
-            console.log(data);
+        addStudent("#addStudent",function(data){
+            if(data.error)
+                $("#show").text('error: '+data.error);
+            else{
+                $("#show").text('\nData: '+data.data[0]);
+            }            console.log(data);
         });
     </script>
 
