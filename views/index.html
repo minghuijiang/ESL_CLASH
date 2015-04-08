@@ -102,7 +102,7 @@
 		<div for="resizable" id="characterLeft"></div>
 			<button type="button" id="button">CLASH IT!</button>	
 			<button type="button" id="read" onclick="startReader()">Start Read</button>
-            <input type="file" val="select a file" />
+            <input type="file" val="select a file" id="select" />
             <button type="button" id="upload">Upload</button>
 		</div>
 		<div id ='content' style ="font-size:30px">
@@ -128,28 +128,29 @@
 			hideSlash();
 		});
 
-          $('input[type=file]').on('change', prepareUpload);
 
-          // Grab the files and set them to our variable
-          function prepareUpload(event)
-          {
-              files = event.target.files;
-              console.log(event);
-              console.log(files);
-          }
-
-          $('#upload').on('click', uploadFiles);
-
-          // Catch the form submit and upload the files
-          function uploadFiles(event)
-          {
-              event.stopPropagation(); // Stop stuff happening
-              event.preventDefault(); // Totally stop stuff happening
-              socket.emit('file',files);
-          }
 	  });
 
+        $('#select').on('change', prepareUpload);
 
+        // Grab the files and set them to our variable
+        function prepareUpload(event)
+        {
+            files = event.target.files;
+            console.log(event);
+            console.log(files);
+        }
+
+        $('#upload').on('click', uploadFiles);
+
+        // Catch the form submit and upload the files
+        function uploadFiles(event)
+        {
+            event.stopPropagation(); // Stop stuff happening
+            event.preventDefault(); // Totally stop stuff happening
+            console.log('upload');
+            socket.emit('file',files);
+        }
 
 		</script>
        <script src="js/edit.js"></script>

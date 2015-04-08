@@ -1,14 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>AddClass</title>
+    <title>Add</title>
+    <style>
+        html, body { height: 100%; padding: 0; margin: 0; }
+        div { width: 50%; height: 50%; float: left; text-align:center;line-height:30px; }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="/js/api.js"></script>
 </head>
 <body>
-<FORM action="addclass.php" enctype="multipart/form-data" method="post">
-  Classname: <input type="text" name="email"><br>
-  Instuctor: <input type="text" name="Instuctor"><br>
-  CRN: <input type="text" name="CRN"><br>
-  <button type="submit" formaction="addclass.php">Submit</button>
-</form>
+
+<div id="div1">
+    <h1>User Creation</h1>
+    <form id="addUser">
+        <input type="text" name="username" value="" placeholder="Username">
+        <br />
+        <input type="password" id='addUserPassword' name="password" value="" placeholder="Password">
+        <br />
+        <input type="checkbox" onchange="document.getElementById('addUserPassword').type =
+                this.checked ? 'text' : 'password'"> Show password
+        <br />
+        <select>
+            <option value="0">Admin</option>
+            <option value="1">Instructor</option>
+            <option value="2" selected="selected">Student</option>
+        </select>
+        <br>
+        <input type="submit" value="Create Account">
+    </form>
+</div>
+<div id="div2">
+    <h1>Class Creation</h1>
+    <form id="addClass">
+        <input type="text" name="crn" value="" placeholder="CRN">
+        <br>
+        <input type="text" name="classname" value="" placeholder="Class Name">
+        <br>
+        <input type="submit" value="Create Class">
+    </form>
+</div>
+
+<div id="div3">
+    <h1>Class Creation</h1>
+    <form id="addStudent">
+        <input type="text" name="crn" value="" placeholder="CRN">
+        <br>
+        <input type="text" name="student" value="" placeholder="Student email">
+        <br>
+        <input type="submit" value="Add Student">
+    </form>
+</div>
+<div id="div4">
+    <textarea id="show">
+
+    </textarea>
+</div>
+    <script>
+        addUser($("#addUser"),function(data){
+            $("#show").text(data);
+            console.log(data);
+        });
+        addClass($("#addClass"),function(data){
+            $("#show").text(data);
+            console.log(data);
+        });
+        addStudent($("#addStudent"),function(data){
+            $("#show").text(data);
+            console.log(data);
+        });
+    </script>
+
 </body>
 </html>

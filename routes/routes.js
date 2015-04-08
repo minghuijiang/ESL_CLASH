@@ -62,6 +62,23 @@ module.exports = function(app, passport) {
         });
     });
 
+
+    app.get('/add', isLoggedIn, function(req, res) {
+        res.render('profile.ejs');
+    });
+
+    app.get('/delete', isLoggedIn, function(req, res) {
+        res.render('profile.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
+    app.get('/record', isLoggedIn, function(req, res) {
+        res.render('profile.ejs', {
+            user : req.user // get the user out of session and pass to template
+        });
+    });
+
     // =====================================
     // LOGOUT ==============================
     // =====================================
