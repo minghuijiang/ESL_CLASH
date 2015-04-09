@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get( '/',isLoggedIn, function ( request, response ) {
-        response.render('index.html');
+        response.render('index.ejs',{user: request.user});
     });
 
     // =====================================
