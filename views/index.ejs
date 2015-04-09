@@ -3,7 +3,6 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>CLASH Text Submit Test</title>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/redmond/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
@@ -11,12 +10,14 @@
     <link rel="stylesheet" href="css/style.css">
 
     <script src="js/display.js"></script>
-    <% if (user.USERTYPE > 1) { %>
+    <% if (user.USERTYPE <= 1) { %>
         <script src="js/jquery.contextMenu.js"></script>
         <script src="js/jquery.ui.position.js"></script>
         <link rel="stylesheet" href="css/jquery.contextMenu.css">
+        <script src="js/edit.js"></script>
+
     <% } %>
-    <title>CLASH</title>
+    <title>CLASH- <% user.USERNAME %></title>
 	<script>
 		var json;
 		var tokenDelimiter = 'ˇ';
@@ -140,6 +141,5 @@
         }
 
 		</script>
-       <script src="js/edit.js"></script>
   </body>
 </html>

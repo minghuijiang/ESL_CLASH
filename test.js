@@ -64,11 +64,6 @@ app.use(express.static(__dirname + '/public'));
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-  
-
-
-
-
 //Socket.IO and python-shell
 
 var sessionsConnections = {};
