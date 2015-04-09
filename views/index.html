@@ -2,19 +2,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>CLASH Text Submit Test</title>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/redmond/jquery-ui.css">
-<script src="//code.jquery.com/jquery-1.10.2.js"></script>
-<script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
-<script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+    <meta charset="utf-8">
+    <title>CLASH Text Submit Test</title>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/redmond/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
+    <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 
-<script src="js/display.js"></script>
-    <script src="js/jquery.contextMenu.js"></script>
-    <script src="js/jquery.ui.position.js"></script>
-<link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/jquery.contextMenu.css">
-    <title></title>
+    <script src="js/display.js"></script>
+    <% if (user.USERTYPE > 1) { %>
+        <script src="js/jquery.contextMenu.js"></script>
+        <script src="js/jquery.ui.position.js"></script>
+        <link rel="stylesheet" href="css/jquery.contextMenu.css">
+    <% } %>
+    <title>CLASH</title>
 	<script>
 		var json;
 		var tokenDelimiter = 'ˇ';
@@ -54,30 +56,15 @@
 		<br />
 
 		<br />
-		<!--
-			Noun 			blue				"NN,NNS,NNP,NNPS NOUN"				#40 100 225
-			Pronoun			white-blue 			"PRP,PRP\\$,WP\\$,WP,WDT PNOUN" 	
-			Verb			red					"VB,VBD,VBG,VBN,VBP,VBZ,MD VERB"	#230 0 0
-			Adverb			white-red			"RB,RBR,RBS,WRB ADV"	
-			Adjective		green				"JJ,JJR,JJS ADJ"					#0 150 30
-			Conjunction     white-green			"CC CONJ"
-			Preposition     Burgundy			"TO,IN PREP"						#115 55 155
-			Article         white-Burgundy		"DT ART"
-		-->
-		<input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />
-			<span>S/l/a/s/h</span><br />
-		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />	
-			<span style="font-weight:bold">Exception</span><br />
-        <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">
-           <span style="font-style:italic">Vocabulary</span><br />
-        <input type="checkbox" id="stress" onclick="showStress(this.checked)">
-           <span style="font-weight: bold">Stress</span><br />
-        <input type="checkbox" id="edit" onclick="addClick(this.checked)">
-           <span>Edit Mode</span><br />
+
+		<input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />			<span>S/l/a/s/h</span><br />
+		<input type="checkbox" id="Exception" onclick="boldException(this.checked)" />				<span style="font-weight:bold">Exception</span><br />
+        <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">           <span style="font-style:italic">Vocabulary</span><br />
+        <input type="checkbox" id="stress" onclick="showStress(this.checked)">           <span style="font-weight: bold">Stress</span><br />
+        <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span><br />
         <input type="checkbox" id="postrigger" onclick="enablePOS(this.checked);" /> <span>Parts-of-speech</span><br />
         <div id="pos">
-            <input type="checkbox" id="All" onclick="toggleAllPOS(this.checked);" />
-                <span class='All'>All</span><br />
+            <input type="checkbox" id="All" onclick="toggleAllPOS(this.checked);" />  <span class='All'>All</span><br />
             <input type="checkbox" id="Noun" onclick="changeColor(this)" />            <span class='Noun'>Noun</span><br />
             <input type="checkbox" id="Pronoun" onclick="changeColor(this)" />        <span class='Pronoun'>Pronoun</span><br />
             <input type="checkbox" id="Verb" onclick="changeColor(this)" />           <span class='Verb'>Verb</span><br />
@@ -105,7 +92,7 @@
             <input type="file" val="select a file" id="select" />
             <button type="button" id="upload">Upload</button>
 		</div>
-		<div id ='content' style ="font-size:30px">
+		<div id ='content printable' style ="font-size:30px">
 
 		</div>
       </div>
