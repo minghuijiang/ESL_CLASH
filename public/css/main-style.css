@@ -1,0 +1,84 @@
+@media print {
+}
+body{
+    height: auto;
+    width: auto;
+
+}
+#nav {
+    top:11%;
+    bottom:5%;
+    left:20px;
+    font-size:0.9em;
+    font-family:sans-serif;
+    line-height:30px;
+    float:left;
+    position:fixed;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width:175px;
+}
+
+.tab-content {
+    height:100%;
+}
+span .word:hover {
+    -webkit-box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.3);
+}
+
+html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px; overflow-y:hidden;}
+
+#content p {
+    text-indent: 50px;
+}
+
+#content {
+    /*float:left;*/
+    padding:10px;
+    /*position: absolute;*/
+    margin-left: 150px;
+    overflow-y:auto;
+    height:85%;
+}
+
+#pos{
+    margin-left:15px;
+    display:none;
+
+}
+
+
+/* delete css  */
+.container, INPUT[type="text"] {
+    width: 200px;
+    box-sizing: border-box;
+}
+.container {
+    padding: 20px;
+    background-color: white;
+    overflow: auto;
+}
+.container > DIV {
+    float: left;
+    padding: 1px;
+}
+.container > DIV + DIV {
+    width: 80px;
+    text-align: center;
+}
+
+.right {
+    float: left;
+}
+
+.left {
+    float: left; /* not needed, just for clarification */
+
+    overflow: hidden;
+}
+
+
+.verticalLine {
+    border-left: thick solid black;
+}

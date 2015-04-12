@@ -70,6 +70,14 @@ module.exports = function(app, passport) {
     app.get('/api/getRecord',DB.getRecord);
     app.get('/api/getFiles',DB.getFiles);
 
+    app.post('/',function(req,res){
+       res.send('Post success');
+    });
+
+    app.get('/main',function(req,res){
+        res.render('main.ejs',{user:req.user});
+    })
+
 };
 
 // route middleware to make sure

@@ -1,23 +1,23 @@
 @media print {
-    body * {
-        display:none;
+    /* Removes unwanted elements */
+    #nav, #dash, #enter
+    {
+        display: none;
     }
-    #printable{
-        display:block;
+
+    /* printable elements */
+    .printable
+    {
+        width: 100%; margin: 0; float: none;
     }
 }
 
-#main{
-    height: auto;
-    width: auto;
-        
-    }    
 #dash {
     text-align:left;
     padding: 50px;
     height: 15%;
     position: relative;
-    margin-left: 15%;
+    margin-left: 20%;
 }
 #nav {
     top: 0;
@@ -29,13 +29,13 @@
     overflow-x: hidden;
 }
 #section {
-    width:75%;
-    height: 20%;
-    float:right;
+    /*width:75%;*/
+    /*height: 20%;*/
+    float:left;
     padding:10px;
-    position: absolute;
+    /*position: absolute;*/
     margin-left: 20%;
-    margin-top: 5%;
+    /*margin-top: 5%;*/
 }
 
 .white-font{

@@ -17,7 +17,7 @@
         <script src="js/edit.js"></script>
 
     <% } %>
-    <title>CLASH- <% user.USERNAME %></title>
+    <title>CLASH- <%= user.USERNAME %></title>
 	<script>
 		var json;
 		var tokenDelimiter = 'ˇ';
@@ -76,7 +76,7 @@
             <input type="checkbox" id="Article" onclick="changeColor(this)" />        <span class='Article'>Article</span><br />
         </div>
 
-         
+
       </div>
       <div id="dash">
 		<form action="" style="float: right;padding-top: 3px">
@@ -88,20 +88,20 @@
 		<div id="enter">
 		<textarea id="resizable" cols="30" rows="10" wrap="physical" name="text" maxlength="30000" placeholder="Enter text to CLASH"></textarea>
 		<div for="resizable" id="characterLeft"></div>
-			<button type="button" id="button">CLASH IT!</button>	
+			<button type="button" id="button">CLASH IT!</button>
 			<button type="button" id="read" onclick="startReader()">Start Read</button>
             <input type="file" val="select a file" id="select" />
             <button type="button" id="upload">Upload</button>
 		</div>
-		<div id ='content printable' style ="font-size:30px">
+		<div id ='content' class="printable" style ="font-size:30px">
 
 		</div>
       </div>
-	 
-	  
-	  
+
+
+
     <script>
-    	
+
 		var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
 	  $('#button').click(function(){
 		console.log('trying to emit...');
@@ -114,6 +114,9 @@
 			var str =parseJSON(json);
 			document.getElementById("content").innerHTML = str;
 			hideSlash();
+            if($('#edit')[0]['checked']!=true){
+                $('#edit').trigger('click');
+            }
 		});
 
 

@@ -70,7 +70,7 @@ var sessionsConnections = {};
 io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
-    console.log('connected to client -======================');
+    console.log('connected to client -= =====================');
     socket.on('file',function(msg){
         console.log('new file');
         console.log(msg);
