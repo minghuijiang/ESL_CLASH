@@ -12,7 +12,7 @@
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>Delete</title>
   
-  <script type='text/javascript' src='//code.jquery.com/jquery-1.9.1.js'></script>
+  <script type='text/javascript' src='http://code.jquery.com/jquery-1.9.1.js'></script>
   
   
   
@@ -24,46 +24,20 @@
     width: 200px;
     box-sizing: border-box;
 }
-SECTION {
+    .container {
     padding: 20px;
     background-color: white;
     overflow: auto;
 }
-SECTION > DIV {
+    .container > DIV {
     float: left;
     padding: 1px;
 }
-SECTION > DIV + DIV {
+.container > DIV + DIV {
     width: 80px;
     text-align: center;
 }
   </style>
-  
-
-
-<script type='text/javascript'>//<![CDATA[ 
-$(function(){
-$("#btnLeft").click(function () {
-    var selectedItem = $("#rightValues option:selected");
-    $("#leftValues").append(selectedItem);
-    console.log($('#file'));
-});
-
-$("#btnRight").click(function () {
-    var selectedItem = $("#leftValues option:selected");
-    $("#rightValues").append(selectedItem);
-    console.log($('#file'));
-});
-
-$("#rightValues").change(function () {
-    var selectedItem = $("#rightValues option:selected");
-    $("#txtRight").val(selectedItem.text());
-
-    console.log($('#file'));
-});
-});//]]>  
-
-</script>
 
 
 </head>
@@ -72,10 +46,10 @@ $("#rightValues").change(function () {
 <h3>To delete a decoment move it from the right column to  the left column using the arrows<p>
     </p>To add a decoment move it from the left column to  the right column using the arrows 
  </h3>
-<section class="container">
+<div class="container">
     
     <div>
-        <select id="leftValues" size="20" multiple>
+        <select id="leftValues" size="10" multiple>
             <option>Document 1</option>
             <option>Document 2</option>
             <option>Document 3</option>
@@ -89,22 +63,16 @@ $("#rightValues").change(function () {
         </select>
     </div>
     <div>
-        <br>
-        </br>
-        <br>
-        </br>
-        <br>
-        </br>
+        <br /><br /><br />
         <input type="button" id="btnLeft" value="&lt;&lt;" />
-        <br>
-        </br>
+        <br />
         <input type="button" id="btnRight" value="&gt;&gt;" />
     </div>
     <div>
-        <select id="rightValues" size="20" multiple>
+        <select id="rightValues" size="10" multiple>
         </select>
     </div>
-</section>
+</div>
 
 
 <form action="demo_form.asp">
@@ -112,38 +80,6 @@ $("#rightValues").change(function () {
   <input type="submit">
 </form>
 
-
-    <script>
-        // Add events
-        $('input[type=file]').on('change', prepareUpload);
-
-        // Grab the files and set them to our variable
-        function prepareUpload(event)
-        {
-            files = event.target.files;
-            console.log(event);
-            console.log(files);
-        }
-        $('form').on('submit', uploadFiles);
-
-        // Catch the form submit and upload the files
-        function uploadFiles(event)
-        {
-            event.stopPropagation(); // Stop stuff happening
-            event.preventDefault(); // Totally stop stuff happening
-            console.log(event);
-            // START A LOADING SPINNER HERE
-
-            // Create a formdata object and add the files
-            var data = new FormData();
-            console.log(data);
-            $.each(files, function(key, value)
-            {
-                data.append(key, value);
-            });
-            console.log(data);
-        }
-        </script>
 </body>
 
 

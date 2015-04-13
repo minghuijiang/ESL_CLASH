@@ -106,6 +106,47 @@
                 </ul>
                 <div id="class-tab" class="tab-content">
 
+                    <div class="left add" style="width:30%">
+                        <h1>Create Class</h1>
+                        <br />
+                        <form id="addClass">
+                            <input type="text" name="crn" value="" placeholder="CRN" >
+                            <br />
+                            <input type="text" name="classname" value="" placeholder="Class Name">
+                            <br />
+                            <input type="text" name="instructor" value="" placeholder="instructor (optional)" /><br />
+                            <input type="submit" value="Create Class" />
+                        </form>
+                    </div>
+                    <div class="verticalLine">
+                    </div>
+                    <div class="right delete" style="width:60%">
+                        <h1>Delete User</h1>
+                        <div class="container">
+                            <div>
+                                <h3>Class List</h3>
+                                <select id="leftValues" size="10" multiple>
+                                    <option>Class 1</option>
+                                    <option>Class 2</option>
+                                </select>
+                            </div>
+                            <div class="center">  <br /><br /><br /><br />
+                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                            </div>
+                            <div>
+                                <h3>Remove List</h3>
+                                <select id="rightValues" size="10" multiple>
+                                </select>
+                            </div>
+                            <div class="center">
+                                <br /><br /><br /><br />
+                                <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
+                                <input type="button" class="submit" value="Delete User"/>
+                            </div>
+                        </div>
+
+                    </div>
                 </div>
                 <div id="student-tab" class="tab-content">
 
@@ -117,10 +158,11 @@
 
                 </div>
                 <div id="user-tab" class="tab-content" style="overflow-y: scroll;height:80%;">
-                    <div class="left">
+                    <div class="left add" style="width:25%">
                         <h1>User Creation</h1>
+                        <br />
                         <form id="addUser">
-                            <input type="text" name="username" value="" placeholder="Username">
+                            <input type="text" name="username" value="" placeholder="Username" >
                             <br />
                             <input type="password" id='addUserPassword' name="password" value="" placeholder="Password">
                             <br />
@@ -138,33 +180,35 @@
                             <input type="submit" value="Create Account">
                         </form>
                     </div>
-                    <div class="right">
+                    <div class="verticalLine">
+                    </div>
+                    <div class="right delete" style="width:60%">
+                        <h1>Delete User</h1>
                         <div class="container">
                             <div>
+                                <h3>User List</h3>
                                 <select id="leftValues" size="10" multiple>
-                                    <option>Document 1</option>
-                                    <option>Document 2</option>
-                                    <option>Document 3</option>
-                                    <option>Document 4</option>
-                                    <option>Document 5</option>
-                                    <option>Document 6</option>
-                                    <option>Document 7</option>
-                                    <option>Document 8</option>
-                                    <option>Document 9</option>
-                                    <option>Document 10</option>
+                                    <option>User 1</option>
+                                    <option>User 2</option>
+                                    <option>User 3</option>
                                 </select>
                             </div>
-                            <div>
-                                <br /><br /><br />
-                                <input type="button" id="btnRight" value="&gt;&gt;" />
-                                <br />
-                                <input type="button" id="btnLeft" value="&lt;&lt;" />
+                            <div class="center">  <br /><br /><br /><br />
+                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
                             </div>
                             <div>
-                                <select id="rightValues" size="20" multiple>
+                                <h3>Remove List</h3>
+                                <select id="rightValues" size="10" multiple>
                                 </select>
+                            </div>
+                            <div class="center">
+                                <br /><br /><br /><br />
+                                <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
+                                <input type="button" class="submit" value="Delete User"/>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

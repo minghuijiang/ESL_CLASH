@@ -47,25 +47,38 @@ html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px; overflow-y:
     display:none;
 
 }
+/* add css*/
+.add {
+    width: 100%;
+    height: 100%;
+    float: left;
+
+    line-height:40px; }
 
 
 /* delete css  */
-.container, INPUT[type="text"] {
+.delete select{
     width: 200px;
+    height:250px;
+    overflow: auto;
     box-sizing: border-box;
 }
+
+.delete {
+    margin-left: 20px;
+}
 .container {
-    padding: 20px;
-    background-color: white;
-    overflow: auto;
+    overflow-y: auto;
 }
 .container > DIV {
     float: left;
-    padding: 1px;
 }
-.container > DIV + DIV {
-    width: 80px;
-    text-align: center;
+.center { /* center buttons */
+    margin:2px 20px 2px 20px;
+}
+
+.tab-content h1,.tab-content h3{
+    margin: 2px 0 10px 0;
 }
 
 .right {
@@ -74,11 +87,17 @@ html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px; overflow-y:
 
 .left {
     float: left; /* not needed, just for clarification */
-
     overflow: hidden;
 }
 
 
-.verticalLine {
-    border-left: thick solid black;
+div.verticalLine{
+    width: 1px; /* Line width */
+    background-color: black; /* Line color */
+    height: 95%; /* Override in-line if you want specific height. */
+    float: left; /* Causes the line to float to left of content.
+    You can instead use position:absolute or display:inline-block
+    if this fits better with your design */
+    margin:10px 20px 10px 20px;
+
 }
