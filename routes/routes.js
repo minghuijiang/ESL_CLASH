@@ -71,10 +71,11 @@ module.exports = function(app, passport) {
     app.get('/api/getFiles',DB.getFiles);
 
     app.post('/',function(req,res){
+        console.log(req);
        res.send('Post success');
     });
 
-    app.get('/main',function(req,res){
+    app.get('/main',isLoggedIn,function(req,res){
         res.render('main.ejs',{user:req.user});
     })
 

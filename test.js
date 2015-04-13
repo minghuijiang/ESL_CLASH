@@ -16,7 +16,8 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    multer  = require('multer');
 
 
 
@@ -31,6 +32,8 @@ var express = require('express'),
         port : 3306, //port mysql
         database:'CLASH'
     },'request')); //TODO  use pool?
+
+    app.use((multer({ dest: './uploads/'})));
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
 

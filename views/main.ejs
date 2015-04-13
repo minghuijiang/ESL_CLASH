@@ -7,6 +7,8 @@
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.2/jquery-ui.js"></script>
     <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="/javascripts/jquery.form.js"></script>
+    <script src="/javascripts/upload.js"></script>
     <link rel="stylesheet" href="css/main-style.css">
 
     <script src="js/display.js"></script>
@@ -88,8 +90,13 @@
                     <div for="resizable" id="characterLeft"></div>
                     <button type="button" id="button">CLASH IT!</button>
                     <br /> <br />
-                    <input type="file" val="select a file" id="select" accept=".doc,.docx" /><br /><br />
-                    <button type="button" id="upload">Upload</button>
+                    <form action="/" method="post" enctype="multipart/form-data">
+                        <input type="file" val="select a file" id="select" name="files" accept=".doc,.docx" /><br /><br />
+                        <input type="submit" />
+                    </form>
+
+
+                    <!--<button type="button" id="upload">Upload</button>-->
                 </div>
         </div>
 
@@ -121,13 +128,44 @@
                     <div class="verticalLine">
                     </div>
                     <div class="right delete" style="width:60%">
-                        <h1>Delete User</h1>
+                        <h1>Class Management</h1>
                         <div class="container">
                             <div>
                                 <h3>Class List</h3>
-                                <select id="leftValues" size="10" multiple>
+                                <select id="leftValues" size="10">
                                     <option>Class 1</option>
                                     <option>Class 2</option>
+                                </select>
+                            </div>
+
+                            <div class="center">
+                                <br /><br /><br /><br />
+                                <!--<input type="button" class="reload" value="Reload Data"/> <br /><br /><br />-->
+                                <input type="button" class="submit" value="Delete Class"/>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div id="student-tab" class="tab-content">
+                    <div class="right delete" style="width:100%">
+                        <h1>Delete File</h1>
+                        <div class="container">
+                            <div>
+                                <h3>Class List</h3>
+                                <select id="leftValues" size="10">
+                                    <option>Class 1</option>
+                                    <option>Class 2</option>
+                                    <option>Class 3</option>
+                                </select>
+                            </div>
+                            <div class="center"></div>
+                            <div>
+                                <h3>Student List</h3>
+                                <select id="leftValues" size="10" multiple>
+                                    <option>Student 1</option>
+                                    <option>Student 2</option>
+                                    <option>Student 3</option>
                                 </select>
                             </div>
                             <div class="center">  <br /><br /><br /><br />
@@ -142,20 +180,72 @@
                             <div class="center">
                                 <br /><br /><br /><br />
                                 <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
-                                <input type="button" class="submit" value="Delete User"/>
+                                <input type="button" class="submit" value="Delete File"/>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                <div id="student-tab" class="tab-content">
-
-                </div>
                 <div id="file-tab" class="tab-content">
+                    <div class="right delete" style="width:100%">
+                        <h1>Delete File</h1>
+                        <div class="container">
+                            <div>
+                                <h3>File List</h3>
+                                <select id="leftValues" size="10" multiple>
+                                    <option>File 1</option>
+                                    <option>File 2</option>
+                                    <option>File 3</option>
+                                </select>
+                            </div>
+                            <div class="center">  <br /><br /><br /><br />
+                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                            </div>
+                            <div>
+                                <h3>Remove List</h3>
+                                <select id="rightValues" size="10" multiple>
+                                </select>
+                            </div>
+                            <div class="center">
+                                <br /><br /><br /><br />
+                                <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
+                                <input type="button" class="submit" value="Delete File"/>
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
                 <div id="exception-tab" class="tab-content">
+                    <div class="right delete" style="width:100%">
+                        <h1>Delete Exception</h1>
+                        <div class="container">
+                            <div>
+                                <h3>Exception List</h3>
+                                <select id="leftValues" size="10" multiple>
+                                    <option>Exception 1</option>
+                                    <option>Exception 2</option>
+                                    <option>Exception 3</option>
+                                </select>
+                            </div>
+                            <div class="center">  <br /><br /><br /><br />
+                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                            </div>
+                            <div>
+                                <h3>Remove List</h3>
+                                <select id="rightValues" size="10" multiple>
+                                </select>
+                            </div>
+                            <div class="center">
+                                <br /><br /><br /><br />
+                                <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
+                                <input type="button" class="submit" value="Delete Exception"/><br /><br /><br />
+                                <input type="button" class="print" value="Print" />
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
                 <div id="user-tab" class="tab-content" style="overflow-y: scroll;height:80%;">
                     <div class="left add" style="width:25%">
@@ -276,25 +366,25 @@
         console.log(event);
         console.log(files);
     }
-    $('form').on('submit', uploadFiles);
-
-    // Catch the form submit and upload the files
-    function uploadFiles(event)
-    {
-        event.stopPropagation(); // Stop stuff happening
-        event.preventDefault(); // Totally stop stuff happening
-        console.log(event);
-        // START A LOADING SPINNER HERE
-
-        // Create a formdata object and add the files
-        var data = new FormData();
-        console.log(data);
-        $.each(files, function(key, value)
-        {
-            data.append(key, value);
-        });
-        console.log(data);
-    }
+//    $('form').on('submit', uploadFiles);
+//
+//    // Catch the form submit and upload the files
+//    function uploadFiles(event)
+//    {
+//        event.stopPropagation(); // Stop stuff happening
+//        event.preventDefault(); // Totally stop stuff happening
+//        console.log(event);
+//        // START A LOADING SPINNER HERE
+//
+//        // Create a formdata object and add the files
+//        var data = new FormData();
+//        console.log(data);
+//        $.each(files, function(key, value)
+//        {
+//            data.append(key, value);
+//        });
+//        console.log(data);
+//    }
 </script>
 </body>
 </html>
