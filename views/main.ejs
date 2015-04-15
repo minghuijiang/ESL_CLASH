@@ -53,6 +53,18 @@
                 <br />
 
                 <button type="button" id="read" onclick="startReader()">Start Read</button> <br />
+
+                <input type="text" id="newException" /> <button id="addEx">add Exception</button>
+                <script>
+                    $('#addEx').on('click',function(ev){
+                        var text = $('#newException').text();
+                        $('#newException').text('');
+                        $.get('api/addException?exception=' + text,function(data){
+                            console.log(data);
+                        });
+                    })
+                </script>
+
                 <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span><br />
                 <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
                 <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Exception</span><br />
@@ -343,6 +355,7 @@
     printException("#reloadException",function(data){
         var select= $('#leftException');
         select.text('');
+        console.log(data);
         for(var i=0;i<data.data.length;i++){
             console.log(data.data[0]);
             var option = document.createElement('option');
