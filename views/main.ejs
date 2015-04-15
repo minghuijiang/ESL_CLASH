@@ -357,9 +357,8 @@
         select.text('');
         console.log(data);
         for(var i=0;i<data.data.length;i++){
-            console.log(data.data[0]);
             var option = document.createElement('option');
-            option.text = data.data[i].USERNAME;
+            option.text = data.data[i].EX_STR;
             select.append(option);
         }
 
