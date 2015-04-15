@@ -244,8 +244,8 @@
                         </div>
                         <div class="center">
                             <br /><br /><br /><br />
-                            <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
-                            <input type="button" class="submit" value="Delete Exception"/><br /><br /><br />
+                            <button type="button" id="reloadException" >Reload Data</button> <br /><br /><br />
+                            <button type="button" id="submitDeleteException">Delete User</button><br /><br /><br />
                             <input type="button" class="print" value="Print" />
                         </div>
                     </div>
@@ -339,7 +339,18 @@
         for(var i= 0;i<selectedItem.length;i++)
             console.log(selectedItem[i].text());
 
-    })
+    });
+    printException("#reloadException",function(data){
+        var select= $('#leftException');
+        select.text('');
+        for(var i=0;i<data.data.length;i++){
+            console.log(data.data[0]);
+            var option = document.createElement('option');
+            option.text = data.data[i].USERNAME;
+            select.append(option);
+        }
+
+    });
 
 
     $(function() {
