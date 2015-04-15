@@ -47,7 +47,15 @@ function getFiles(form, callback){
 }
 
 function getUser(button,callback){
-    registerSubmit(button,'api/getUser?',callback);
+    registerSubmit(button,'api/listUser?',callback);
+}
+
+function call(url, callback){
+    $.get(url,callback);
+}
+
+function deleteUser(username,callback){
+    call('api/delUser?username='+username,callback);
 }
 
 function registerSubmit(form, url, callback){
@@ -58,6 +66,7 @@ function registerSubmit(form, url, callback){
             $.get(url + obj.serialize(),callback);
         });
     else if(obj.is('button')){
+        console.log('is button')
         obj.on('click',function(ev){
             ev.preventDefault();
             $.get(url + obj.serialize(),callback);

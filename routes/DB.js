@@ -84,6 +84,7 @@ exports.addUser = function(req,res){
 exports.delUser = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 1);
+    console.log('try to delete' +input.username);
     if(result.error){
         res.send(result);
         return ;
@@ -93,8 +94,10 @@ exports.delUser = function(req,res){
             // if the username is a selector, return error,
             // else  instructor can only delete student account.
 
-            connection.query("SELECT FROM USER WHERE USERNAME = ? ",input.username, function(err,rows){
+            connection.query("SELECT * FROM USER WHERE USERNAME = ? ",input.username, function(err,rows){
+                console.log(rows);
                 if(err){
+                    console.log(err);
                     result.error = err;
                     res.send(result);
                 }else if(rows.length!=1) {
@@ -104,6 +107,7 @@ exports.delUser = function(req,res){
                         result.error ="Cannot delete multiple accounts at once.";
                     res.send(result);
                 }else{
+                    console.log(rows);
                     if(req.user.USERTYPE==0   // admin
                         ||(req.user.USERTYPE==1&&rows[0].USERTYPE==2)){  // instructor try to delete student.
                         connection.query("DELETE FROM USER WHERE USERID = ? ",rows[0].USERID, function(err2, rows2){

@@ -9,7 +9,7 @@ module.exports = function(app, passport) {
     // HOME PAGE (with login links) ========
     // =====================================
     app.get( '/',isLoggedIn, function ( request, response ) {
-        response.render('index.ejs',{user: request.user});
+        response.render('main.ejs',{user:request.user});
     });
 
     // =====================================
@@ -17,7 +17,6 @@ module.exports = function(app, passport) {
     // =====================================
     // show the login form
     app.get('/login', function(req, res) {
-        console.log('render /login');
         // render the page and pass in any flash data if it exists
         res.render('login.ejs', { message: req.flash('loginMessage') });
     });

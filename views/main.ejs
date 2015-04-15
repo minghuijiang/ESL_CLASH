@@ -299,8 +299,8 @@
                             </div>
                             <div class="center">
                                 <br /><br /><br /><br />
-                                <input type="button" id="reloadUser" value="Reload Data"/> <br /><br /><br />
-                                <input type="button" class="submit" value="Delete User"/>
+                                <button type="button" id="reloadUser" >Reload Data</button> <br /><br /><br />
+                                <button type="button" id="submitDeleteUser">Delete User</button>
                             </div>
                         </div>
 
@@ -324,8 +324,25 @@
         console.log(data);
     });
     getUser("#reloadUser",function(data){
-    console.log(data);
+        var select= $('#leftUser');
+        select.text('');
+        for(var i=0;i<data.data.length;i++){
+            var option = document.createElement('option');
+            option.text = data.data[i].USERNAME;
+            select.append(option);
+        }
+
     });
+    $("#submitDeleteUser").on('click',function(){
+        var selectedItem = $("#rightUser")[0];
+        for(var i= 0;i<selectedItem.length;i++) {
+            console.log('submit: '+selectedItem[i].innerHTML);
+            deleteUser(selectedItem[i].innerHTML, function (data) {
+                console.log(data);
+            });
+        }
+
+    })
 
     $(function() {
         $( "#main-tabs" ).tabs();
