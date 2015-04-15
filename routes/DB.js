@@ -255,6 +255,7 @@ exports.addException = function(req,res){
                 EX_STR: input.exception,
                 COUNT: 0
             };
+            console.log(data);
             connection.query("INSERT INTO EXCEPTION set ? ",data, function(err, rows){
                 if (err){
                     result.error=err;

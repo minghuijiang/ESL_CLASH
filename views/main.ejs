@@ -54,12 +54,12 @@
 
                 <button type="button" id="read" onclick="startReader()">Start Read</button> <br />
 
-                <input type="text" id="newException" /> <button id="addEx">add Exception</button>
+                <input type="text" id="newException" name="exception" /> <button id="addEx">add Exception</button><br />
                 <script>
                     $('#addEx').on('click',function(ev){
-                        var text = $('#newException').text();
-                        $('#newException').text('');
-                        $.get('api/addException?exception=' + text,function(data){
+                        var text = $('#newException').serialize();
+                        console.log(text);
+                        $.get('api/addException?' + text,function(data){
                             console.log(data);
                         });
                     })
