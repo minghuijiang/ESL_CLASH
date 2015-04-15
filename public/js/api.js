@@ -46,6 +46,10 @@ function getFiles(form, callback){
     registerSubmit(form,'api/getFiles?',callback);
 }
 
+function getUser(button,callback){
+    registerSubmit(button,'api/getUser?',callback);
+}
+
 function registerSubmit(form, url, callback){
     var obj = $(form);
     if(obj.is('form'))

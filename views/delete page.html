@@ -80,6 +80,22 @@
   <input type="submit">
 </form>
 
+<script>
+    $(function(){
+        $("#btnLeft").click(function () {
+            var selectedItem = $("#rightValues option:selected");
+            $("#leftValues").append(selectedItem);
+            console.log($('#file'));
+        });
+
+        $("#btnRight").click(function () {
+            var selectedItem = $("#leftValues option:selected");
+            $("#rightValues").append(selectedItem);
+            console.log($('#file'));
+        });
+
+    });
+</script>
 </body>
 
 

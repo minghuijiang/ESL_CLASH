@@ -707,6 +707,33 @@ exports.getFiles = function(req,res){
 };
 
 
+exports.listUser = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 0);
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+
+            connection.query("SELECT USERNAME FROM USER ",
+            //"WHERE USERID IN "+
+            //	"(SELECT STUDENT FROM STUDENT WHERE CRN IN " +
+            //	"(SELECT CRN FROM CLASS WHERE INSTRUCTOR = ? ))" ,INSTRUCTOR,
+            function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
+
+            });
+
+        });
+    }
+};
+
 //-- login ----student   	-- getListFile   done
 //-- getReport    done
 //

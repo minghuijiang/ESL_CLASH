@@ -15,6 +15,8 @@
     <% if (user.USERTYPE <= 1) { %>
     <script src="js/jquery.contextMenu.js"></script>
     <script src="js/jquery.ui.position.js"></script>
+    <script src="js/event.js"></script>
+    <script src="js/api.js"></script>
     <link rel="stylesheet" href="css/jquery.contextMenu.css">
     <script src="js/edit.js"></script>
 
@@ -103,6 +105,9 @@
 
     </div>
     <div id="management-tab" class="tab-content">
+        <div id="error">
+
+        </div>
             <div id="manageTabs" style="height:85%">
                 <ul id="nest-tabHeader">
                     <li><a href="#class-tab">Class</a></li>
@@ -132,7 +137,7 @@
                         <div class="container">
                             <div>
                                 <h3>Class List</h3>
-                                <select id="leftValues" size="10">
+                                <select id="classLeft" size="10">
                                     <option>Class 1</option>
                                     <option>Class 2</option>
                                 </select>
@@ -162,19 +167,19 @@
                             <div class="center"></div>
                             <div>
                                 <h3>Student List</h3>
-                                <select id="leftValues" size="10" multiple>
+                                <select id="leftStudent" size="10" multiple>
                                     <option>Student 1</option>
                                     <option>Student 2</option>
                                     <option>Student 3</option>
                                 </select>
                             </div>
                             <div class="center">  <br /><br /><br /><br />
-                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
-                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                                <input type="button" id="studentRightButton" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="studentLeftButton" value="&lt;&lt;"/>
                             </div>
                             <div>
                                 <h3>Remove List</h3>
-                                <select id="rightValues" size="10" multiple>
+                                <select id="rightStudent" size="10" multiple>
                                 </select>
                             </div>
                             <div class="center">
@@ -192,19 +197,19 @@
                         <div class="container">
                             <div>
                                 <h3>File List</h3>
-                                <select id="leftValues" size="10" multiple>
+                                <select id="leftFile" size="10" multiple>
                                     <option>File 1</option>
                                     <option>File 2</option>
                                     <option>File 3</option>
                                 </select>
                             </div>
                             <div class="center">  <br /><br /><br /><br />
-                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
-                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                                <input type="button" id="fileRightButton" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="fileLeftButton" value="&lt;&lt;"/>
                             </div>
                             <div>
                                 <h3>Remove List</h3>
-                                <select id="rightValues" size="10" multiple>
+                                <select id="rightFile" size="10" multiple>
                                 </select>
                             </div>
                             <div class="center">
@@ -222,19 +227,19 @@
                         <div class="container">
                             <div>
                                 <h3>Exception List</h3>
-                                <select id="leftValues" size="10" multiple>
+                                <select id="leftException" size="10" multiple>
                                     <option>Exception 1</option>
                                     <option>Exception 2</option>
                                     <option>Exception 3</option>
                                 </select>
                             </div>
                             <div class="center">  <br /><br /><br /><br />
-                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
-                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                                <input type="button" id="exceptionRightButton" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="exceptionLeftButton" value="&lt;&lt;"/>
                             </div>
                             <div>
                                 <h3>Remove List</h3>
-                                <select id="rightValues" size="10" multiple>
+                                <select id="rightException" size="10" multiple>
                                 </select>
                             </div>
                             <div class="center">
@@ -277,24 +282,24 @@
                         <div class="container">
                             <div>
                                 <h3>User List</h3>
-                                <select id="leftValues" size="10" multiple>
+                                <select id="leftUser" size="10" multiple>
                                     <option>User 1</option>
                                     <option>User 2</option>
                                     <option>User 3</option>
                                 </select>
                             </div>
                             <div class="center">  <br /><br /><br /><br />
-                                <input type="button" id="btnRight" value="&gt;&gt;"/><br /> <br />
-                                <input type="button" id="btnLeft" value="&lt;&lt;"/>
+                                <input type="button" id="userRightButton" value="&gt;&gt;"/><br /> <br />
+                                <input type="button" id="userLeftButton" value="&lt;&lt;"/>
                             </div>
                             <div>
                                 <h3>Remove List</h3>
-                                <select id="rightValues" size="10" multiple>
+                                <select id="rightUser" size="10" multiple>
                                 </select>
                             </div>
                             <div class="center">
                                 <br /><br /><br /><br />
-                                <input type="button" class="reload" value="Reload Data"/> <br /><br /><br />
+                                <input type="button" id="reloadUser" value="Reload Data"/> <br /><br /><br />
                                 <input type="button" class="submit" value="Delete User"/>
                             </div>
                         </div>
@@ -306,6 +311,22 @@
     </div>
 </div>
 <script>
+    registerDel('leftUser','userLeftButton','rightUser','userRightButton');
+    registerDel('leftException','exceptionLeftButton','rightException','exceptionRightButton');
+    registerDel('leftFile','fileLeftButton','rightFile','fileRightButton');
+    registerDel('leftStudent','studentLeftButton','rightStudent','studentRightButton');
+    addUser("#addUser",function(data){
+        if(data.error)
+            $("#error").text('Error: '+data.error.code);
+        else{
+            $("#error").text('Account created!');
+        }
+        console.log(data);
+    });
+    getUser("#reloadUser",function(data){
+    console.log(data);
+    });
+
     $(function() {
         $( "#main-tabs" ).tabs();
         $( "#manageTabs" ).tabs();
@@ -334,26 +355,7 @@
 
 
     //delete script
-    $(function(){
-        $("#btnLeft").click(function () {
-            var selectedItem = $("#rightValues option:selected");
-            $("#leftValues").append(selectedItem);
-            console.log($('#file'));
-        });
 
-        $("#btnRight").click(function () {
-            var selectedItem = $("#leftValues option:selected");
-            $("#rightValues").append(selectedItem);
-            console.log($('#file'));
-        });
-
-        $("#rightValues").change(function () {
-            var selectedItem = $("#rightValues option:selected");
-            $("#txtRight").val(selectedItem.text());
-
-            console.log($('#file'));
-        });
-    });
 
 
     // Add events

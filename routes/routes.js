@@ -69,7 +69,7 @@ module.exports = function(app, passport) {
     app.get('/api/addRecord',DB.addRecord);
     app.get('/api/getRecord',DB.getRecord);
     app.get('/api/getFiles',DB.getFiles);
-
+    app.get('/api/listUser',DB.listUser);
     app.post('/',function(req,res){
         console.log(req);
        res.send('Post success');
