@@ -689,24 +689,46 @@ exports.getFiles = function(req,res){
         //get class crn, then, find all instructor to this account, then fetch all file from the instructors.
         req.getConnection(function (err, connection) {
             var userid = req.user.userid;
-            if(input.userid){
-                userid = input.userid;
+
+
+            if(req.user.USERTYPE==2){// STUDENT
+                //TODO not sure if nested query work, if not, split to three queries.
+                connection.query("SELECT * FROM FILE WHERE USERID IN " +
+                    "(SELECT INSTRUCTOR FROM CLASS WHERE CRN IN " +
+                    "(SELECT CRN FROM STUDENT WHERE STUDENT = ?))"
+                    ,userid, function(err, rows){
+                        if (err){
+                            console.log(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
+
+                    });
+            }else if(req.user.USERTYPE==1){ // INSTRUCTOR
+                connection.query('SELECT FILENAME FROM FILE WHERE USERID = ?',req.user.USERID,function(err, rows){
+                    if (err){
+                        console.log(err);
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+            }else if(req.user.USERTYPE==0){ // admin
+                connection.query('SELECT USERID,FILENAME FROM FILE',function(err, rows){
+                    if (err){
+                        console.log(err);
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
             }
-            //TODO not sure if nested query work, if not, split to three queries.
-            connection.query("SELECT * FROM FILE WHERE USERID IN " +
-                                "(SELECT INSTRUCTOR FROM CLASS WHERE CRN IN " +
-                                    "(SELECT CRN FROM STUDENT WHERE STUDENT = ?))"
-                                            ,userid, function(err, rows){
-                if (err){
-                    console.log(err);
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
-
-            });
-
         });
     }
 };
