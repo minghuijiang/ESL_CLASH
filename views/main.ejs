@@ -260,6 +260,7 @@
                             <button type="button" id="reloadException" >Reload Data</button> <br /><br /><br />
                             <button type="button" id="submitDeleteException">Delete User</button><br /><br /><br />
                             <input type="button" class="print" value="Print" />
+
                         </div>
                     </div>
 
@@ -356,7 +357,7 @@
     });
 
     bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);
-
+    bindDel('submitDeleteException','rightException','api/delException?exception=',removeParen,onError);
 
 
     addException('#addEx',function(data){
