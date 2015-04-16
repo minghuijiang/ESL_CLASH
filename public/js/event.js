@@ -19,6 +19,7 @@ function bindLoad(button, panel, url,callback){
         $.get(url,function(data){
             var select= $('#'+panel);
             select.text('');
+            console.log(data);
             for(var i=0;i<data.data.length;i++){
                 var option = document.createElement('option');
                 option.text =callback(data.data[i]);

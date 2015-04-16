@@ -698,6 +698,7 @@ exports.getFiles = function(req,res){
                                     "(SELECT CRN FROM STUDENT WHERE STUDENT = ?))"
                                             ,userid, function(err, rows){
                 if (err){
+                    console.log(err);
                     result.error=err;
                 }else{
                     result.data=rows;
