@@ -15,7 +15,7 @@ function registerDel(leftPane,leftButton, rightPane, rightButton){
 }
 
 function bindLoad(button, panel, url,callback){
-    $('#'+button).onclick(function(){
+    $('#'+button).on('click',function(){
         $.get(url,function(data){
             var select= $('#'+panel);
             select.text('');
