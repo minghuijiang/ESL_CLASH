@@ -3,8 +3,7 @@
  *
  * manage message display
  */
-var multiMessage = false; //if multiple message is allowed. for batch process.
-var message = "#message" // where to put message
+var message = "#message"; // where to put message
 function showMessage(msg){
     $(message).append('<div>'+msg+'</div>');
     runClean(3000);
@@ -18,6 +17,7 @@ function showError(err){
 function runClean(time){
     setTimeout(clearMessage,time);  // clear message after 5 second.
 }
+
 function clearMessage(){
     $(message).children()[0].remove();
 }
