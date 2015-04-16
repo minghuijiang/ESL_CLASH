@@ -19,5 +19,5 @@ function runClean(time){
     setTimeout(clearMessage,time);  // clear message after 5 second.
 }
 function clearMessage(){
-    $(message)[0].remove();
+    $(message).children()[0].remove();
 }
