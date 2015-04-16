@@ -718,7 +718,7 @@ exports.getFiles = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==0){ // admin
-                connection.query('SELECT USERID,FILENAME FROM FILE',function(err, rows){
+                connection.query('SELECT FILENAME ,USERNAME FROM FILE JOIN USER ON(FILE.USERID = USER.USERID)',function(err, rows){
                     if (err){
                         console.log(err);
                         result.error=err;
