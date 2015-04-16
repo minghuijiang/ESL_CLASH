@@ -696,7 +696,7 @@ exports.getFiles = function(req,res){
             connection.query("SELECT * FROM FILE WHERE USERID IN " +
                                 "(SELECT INSTRUCTOR FROM CLASS WHERE CRN IN " +
                                     "(SELECT CRN FROM STUDENT WHERE STUDENT = ?))"
-                                            ,[userid, input,filename], function(err, rows){
+                                            ,userid, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
