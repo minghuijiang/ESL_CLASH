@@ -28,6 +28,7 @@
 
 <body>
 <div id="main-tabs" style="height:95%">
+    <!--  tab header -->
     <ul id="tabHeader">
         <li><a href="#read-tab">Read</a></li>
         <li><a href="#statistic-tab">Statistic</a></li>
@@ -40,6 +41,12 @@
 
         <div id ='content' class="printable" style ="font-size:30px">
             This is a test
+        </div>
+        <div id="editBar">
+            <input type="text" id="newException" name="exception" size="8" />
+            <button id="addEx">add Exception</button>
+            <input type="text" id="fileName" value="File Name" size="8" />
+            <button id="saveFile">Save</button>
         </div>
         <div id="nav-wrapper">
             <div id="nav">
@@ -55,8 +62,6 @@
 
                 <button type="button" id="read" onclick="startReader()">Start Read</button> <br />
 
-                <input type="text" id="newException" name="exception" /> <br />
-                <button id="addEx">add Exception</button><br />
 
                 <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span><br />
                 <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
@@ -80,9 +85,11 @@
 
 
     </div>
+
     <div id="statistic-tab" class="tab-content">
         statistic information
     </div>
+
     <div id="upload-tab" class="tab-content">
         <div id="section">
             <h2>Insert Text Below</h2>
@@ -109,6 +116,7 @@
 
 
     </div>
+
     <div id="management-tab" class="tab-content">
         <div id="message" style ="text-align: center;">
 
@@ -315,6 +323,7 @@
         </div>
 
     </div>
+
 </div>
 <script>
 
