@@ -538,6 +538,7 @@ function e(t, n, r) {
                 });
         }
 
+        var tokenDelimiter='ˇ';
 
 		function getTextFromJson(){
 				var contents = json.contents;

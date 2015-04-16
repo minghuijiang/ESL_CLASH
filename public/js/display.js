@@ -162,7 +162,7 @@ function parseSentence(sent, vid){
                     break;
                 default :
                     str+=" "+parseToken(token,id);
-                    console.log('default symbol=========================  '+token.word);
+                    console.log('unknown symbol =  '+token.word);
                     break;
             }
         }
