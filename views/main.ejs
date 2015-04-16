@@ -326,9 +326,9 @@
 
     addUser("#addUser",function(data){
         if(data.error)
-            $("#error").text('Error: '+data.error.code);
+           showError('Error: '+data.error.code);
         else{
-            $("#error").text('Account created!');
+           showMessage('Account created!');
         }
         console.log(data);
     });
@@ -347,7 +347,9 @@
     $("#submitDeleteUser").on('click',function(){
         var selectedItem = $("#rightUser")[0];
         for(var i= 0;i<selectedItem.length;i++)
-            console.log(selectedItem[i].innerHTML);
+            deleteUser(selectedItem[i].innerHTML, function(data){
+                console.log(data);
+            });
 
     });
     printException("#reloadException",function(data){
