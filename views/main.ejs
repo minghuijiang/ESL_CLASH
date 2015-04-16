@@ -337,6 +337,8 @@
         return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
     });
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
+        if(obj.USERNAME)
+            return obj.FILENAME+'('+obj.USERNAME+')';
         return obj.FILENAME;
     });
 
