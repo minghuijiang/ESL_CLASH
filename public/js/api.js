@@ -70,7 +70,7 @@ function registerSubmit(form, url, callback,field){
         obj.on('click',function(ev){
             ev.preventDefault();
             if(field){
-                if($(field).text().length>0)
+                if($(field).val().length>0)
                     $.get(url + $(field).serialize(),callback);
 
             }

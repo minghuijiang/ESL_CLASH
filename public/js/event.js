@@ -40,6 +40,7 @@ function bindDel(button,panel,url,processItem,callback){
             var text = processItem(selectedItem[i]);
             $.get(url+text,callback);
         }
+        $("#"+panel).text('');
     })
 }
 
