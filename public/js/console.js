@@ -14,7 +14,7 @@ function showMessage(msg){
 function showError(err){
     if(!multiMessage)
         clearMessage();
-    $(message).append('<div style="color:red;">'+msg+'</div>');
+    $(message).append('<div style="color:red;">'+err+'</div>');
 
 }
 
