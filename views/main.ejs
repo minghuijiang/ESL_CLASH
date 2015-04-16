@@ -333,6 +333,16 @@
         console.log(data);
     });
 
+    bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
+        return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
+    });
+    bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
+        return obj.FILENAME;
+    });
+
+    bindLoad('reloadException','leftException','api/printException?',function(obj){
+        return obj.EX_STR+'('+obj.COUNT+')';
+    });
 
     getUser("#reloadUser",function(data){
         var select= $('#leftUser');

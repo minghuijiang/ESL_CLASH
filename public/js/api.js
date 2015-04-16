@@ -50,6 +50,14 @@ function getUser(button,callback, field){
     registerSubmit(button,'api/listUser?',callback, field);
 }
 
+function call(url,callback){
+    $.get(url,callback);
+}
+
+function deleteUser(username,callback){
+    call('api/delUser?username='+username,callback);
+}
+
 function registerSubmit(form, url, callback,field){
     var obj = $(form);
     if(obj.is('form'))
