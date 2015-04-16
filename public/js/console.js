@@ -6,14 +6,20 @@
 var multiMessage = false; //if multiple message is allowed. for batch process.
 var message = "#message" // where to put message
 function showMessage(msg){
-    if(!multiMessage)
+    if(!multiMessage){
+        runClean(3000);
         clearMessage();
+    }
+
     $(message).append('<div>'+msg+'</div>');
+
 }
 
 function showError(err){
-    if(!multiMessage)
+    if(!multiMessage){
+        runClean(3000);
         clearMessage();
+    }
     $(message).append('<div style="color:red;">'+err+'</div>');
 
 }

@@ -96,28 +96,24 @@
 
     <div id="upload-tab" class="tab-content">
         <div id="section">
-            <h2>Insert Text Below</h2>
-            <br />
-            <input type="text" name="filename" value="" placeholder="File Name" />
-            <br />
-            <br />
-
             <div id="enter">
-                    <textarea id="resizable" cols="100" rows="10"
-                              wrap="physical" name="text" maxlength="30000" placeholder="Enter text to CLASH"></textarea>
+                <h2>Insert Text Below</h2>
+                    <textarea id="resizable" cols="60" rows="10"
+                              wrap="physical" name="text" maxlength="30000" placeholder="Enter text to SLASH"></textarea>
                 <div for="resizable" id="characterLeft"></div>
                 <button type="button" id="button">SLASH IT!</button>
-                <br /> <br />
-                <form action="/" method="post" enctype="multipart/form-data">
-                    <input type="file" val="select a file" id="select" name="files" accept=".doc,.docx" /><br /><br />
-                    <input type="submit" />
-                </form>
+
 
 
                 <!--<button type="button" id="upload">Upload</button>-->
             </div>
+            <hr />
+            <br />
+            <form action="/" method="post" enctype="multipart/form-data">
+                <input type="file" val="select a file" id="select" name="files" accept=".doc,.docx" /><br /><br />
+                <input type="submit" />
+            </form>
         </div>
-
 
     </div>
 
@@ -361,10 +357,14 @@
 
     $("#submitDeleteUser").on('click',function(){
         var selectedItem = $("#rightUser")[0];
-        for(var i= 0;i<selectedItem.length;i++)
+        for(var i= 0;i<selectedItem.length;i++){
+            console.log(selectedItem[i].innerHTML);
             deleteUser(selectedItem[i].innerHTML, function(data){
                 console.log(data);
             });
+        }
+
+
 
     });
 
