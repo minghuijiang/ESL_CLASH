@@ -25,6 +25,7 @@ body{
     left: 20%;
     float:left;
     position:fixed;
+    width:70%;
 }
 
 .tab-content {
