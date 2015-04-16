@@ -32,3 +32,13 @@ function bindLoad(button, panel, url,callback){
         })
     })
 }
+
+function bindDel(button,panel,url,processItem,callback){
+    $('#'+button).on('click',function(){
+        var selectedItem = $("#"+panel)[0];
+        for(var i= 0;i<selectedItem.length;i++){
+            var text = processItem(selectedItem[i]);
+            $.get(url+text,callback);
+        }
+    })
+}
