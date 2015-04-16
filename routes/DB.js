@@ -693,10 +693,10 @@ exports.getFiles = function(req,res){
 
             if(req.user.USERTYPE==2){// STUDENT
                 //TODO not sure if nested query work, if not, split to three queries.
-                connection.query("SELECT * FROM FILE WHERE USERID IN " +
-                    "(SELECT INSTRUCTOR FROM CLASS WHERE CRN IN " +
-                    "(SELECT CRN FROM STUDENT WHERE STUDENT = ?))"
-                    ,userid, function(err, rows){
+                connection.query("SELECT FILENAME,CLASS.CLASSNAME FROM FILE JOIN CLASS ON(FILE.USERID=CLASS.INSTRUCTOR)" +
+                    "WHERE CLASS.CRN IN " +
+                    "(SELECT CRN FROM STUDENT WHERE STUDENT = ?)"
+                    ,req.user.USERID, function(err, rows){
                         if (err){
                             console.log(err);
                             result.error=err;
@@ -718,7 +718,8 @@ exports.getFiles = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==0){ // admin
-                connection.query('SELECT FILENAME ,USERNAME FROM FILE JOIN USER ON(FILE.USERID = USER.USERID)',function(err, rows){
+                connection.query('SELECT FILENAME ,USERNAME FROM FILE ' +
+                '                   JOIN USER ON(FILE.USERID = USER.USERID) ORDER BY USERNAME',function(err, rows){
                     if (err){
                         console.log(err);
                         result.error=err;
