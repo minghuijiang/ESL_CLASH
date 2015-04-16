@@ -110,7 +110,7 @@
 
     </div>
     <div id="management-tab" class="tab-content">
-        <div id="message">
+        <div id="message" style ="text-align: center;">
 
         </div>
         <div id="manageTabs" style="height:85%">
@@ -346,16 +346,6 @@
         return obj.EX_STR+'('+obj.COUNT+')';
     });
 
-    getUser("#reloadUser",function(data){
-        var select= $('#leftUser');
-        select.text('');
-        for(var i=0;i<data.data.length;i++){
-            var option = document.createElement('option');
-            option.text = data.data[i].USERNAME;
-            select.append(option);
-        }
-
-    });
     $("#submitDeleteUser").on('click',function(){
         var selectedItem = $("#rightUser")[0];
         for(var i= 0;i<selectedItem.length;i++)
@@ -364,17 +354,7 @@
             });
 
     });
-    printException("#reloadException",function(data){
-        var select= $('#leftException');
-        select.text('');
-        console.log(data);
-        for(var i=0;i<data.data.length;i++){
-            var option = document.createElement('option');
-            option.text = data.data[i].EX_STR +' ('+data.data[i].COUNT+')';
-            select.append(option);
-        }
 
-    });
 
     addException('#addEx',function(data){
         console.log(data);
