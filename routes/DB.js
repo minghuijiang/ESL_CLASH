@@ -202,19 +202,30 @@ exports.delFile = function(req,res){
          );
          */
         req.getConnection(function (err, connection) {
-            var userid = req.user.userid;
-            if(input.userid){
-                userid = input.userid;
-            }
-            connection.query("DELETE FROM FILE WHERE USERID = ? AND FILENAME = ?",[userid, input,filename], function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
+            if(req.user.USERTYPE==1){// INSTRUCTOR
+                connection.query("DELETE FROM FILE WHERE FILENAME = ? AND USERID =? ",
+                                            [input.filename,req.user.USERID], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
 
-            });
+                });
+            }else if(req.user.USERTYPE==0){// ADMIN
+                connection.query("DELETE FROM FILE WHERE FILENAME = ? AND USERID IN " +
+                "(SELECT USERID FROM USER WHERE USERNAME = ?)",[input.filename,input.username], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+            }
+
 
         });
     }

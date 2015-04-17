@@ -227,9 +227,11 @@
                         </div>
                         <div class="center">
                             <br /><br /><br /><br />
-                            <button type="button" id="reloadFile">Reload Data</button> <br /><br /><br />
+                            <button type="button" id="reloadFile">Reload Files</button> <br /><br /><br />
                             <button type="button" id="submitDeleteFile">Delete File</button>
                         </div>
+                        bindDel('submitDeleteFile','rightFile','api/delFile?exception=',removeParen,onError);
+
                     </div>
 
                 </div>
