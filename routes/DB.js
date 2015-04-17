@@ -136,7 +136,6 @@ exports.delUser = function(req,res){
  * @param res
  */
 exports.addFile = function(req,res){
-    console.log(req);
     var input = req.body;  // use body for post request.
     var result = checkPermission(req, 1);
     if(result.error){
@@ -158,7 +157,6 @@ exports.addFile = function(req,res){
                 FILENAME : input.filename,
                 JSON   : input.contents
             };
-            console.log(data);
 
             connection.query("INSERT INTO FILE set ? ",data, function(err, rows){
                 if (err){

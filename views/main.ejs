@@ -28,6 +28,9 @@
 
 <body>
 <div id="main-tabs" style="height:95%">
+    <div id="message" style ="text-align: center;">
+
+    </div>
     <!--  tab header -->
     <ul id="tabHeader">
         <li><a href="#read-tab">Read</a></li>
@@ -119,9 +122,7 @@
     </div>
 
     <div id="management-tab" class="tab-content">
-        <div id="message" style ="text-align: center;">
 
-        </div>
         <div id="manageTabs" style="height:85%">
             <ul id="nest-tabHeader">
                 <li><a href="#class-tab">Class</a></li>
@@ -151,7 +152,7 @@
                     <div class="container">
                         <div>
                             <h3>Class List</h3>
-                            <select id="classLeft" size="10">
+                            <select id="leftClass" size="10">
                                 <option>Class 1</option>
                                 <option>Class 2</option>
                             </select>
@@ -159,7 +160,7 @@
 
                         <div class="center">
                             <br /><br /><br /><br />
-                            <!--<input type="button" class="reload" value="Reload Data"/> <br /><br /><br />-->
+                            <button id="reloadClass">Reload Class</button> <br /><br /><br />
                             <input type="button" class="submit" value="Delete Class"/>
                         </div>
                     </div>
@@ -358,13 +359,15 @@
         var contents = JSON.stringify(json);
         console.log(contents);
         $.post('api/addFile',{filename: name,contents:contents},function(data){
-            console.log(data);
+            onError(data);
         })
     });
 
     bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
         return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
     });
+
+//    bindLoad('reloadClass','leftClass')
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
             return obj.FILENAME+'('+obj.USERNAME+')';
