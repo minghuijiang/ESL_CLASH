@@ -230,7 +230,7 @@
                             <button type="button" id="reloadFile">Reload Files</button> <br /><br /><br />
                             <button type="button" id="submitDeleteFile">Delete File</button>
                         </div>
-                        bindDel('submitDeleteFile','rightFile','api/delFile?exception=',removeParen,onError);
+
 
                     </div>
 
@@ -360,7 +360,13 @@
 
     bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);
     bindDel('submitDeleteException','rightException','api/delException?exception=',removeParen,onError);
-
+    bindDel('submitDeleteFile','rightFile','api/delFile?filename=',function(item){
+        var split = item.innerHTML.split('(');
+        if(split.length==1)
+            return split[0];
+        else
+            return split[0]+'username='+split[1].split(')')[0];
+    },onError);
 
     addException('#addEx',function(data){
         console.log(data);
