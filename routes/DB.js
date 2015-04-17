@@ -137,7 +137,7 @@ exports.delUser = function(req,res){
  */
 exports.addFile = function(req,res){
     console.log(req);
-    var input = req.query;
+    var input = req.body;  // use body for post request.
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
