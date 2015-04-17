@@ -136,6 +136,7 @@ exports.delUser = function(req,res){
  * @param res
  */
 exports.addFile = function(req,res){
+    console.log(req);
     var input = req.query;
     var result = checkPermission(req, 1);
     if(result.error){

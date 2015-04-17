@@ -56,7 +56,7 @@ module.exports = function(app, passport) {
     var DB = require('./DB');
     app.get('/api/addUser',DB.addUser);
     app.get('/api/delUser',DB.delUser);
-    app.get('/api/addFile',DB.addFile);
+    app.post('/api/addFile',DB.addFile);
     app.get('/api/delFile',DB.delFile);
     app.get('/api/addException',DB.addException);
     app.get('/api/delException',DB.delException);

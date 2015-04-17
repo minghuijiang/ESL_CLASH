@@ -357,7 +357,7 @@
         var name = $('#filename').val();
         var contents = JSON.stringify(json);
         console.log(contents);
-        $.get('api/addFile?filename='+name+'&contents='+contents,function(data){
+        $.post('api/addFile',{filename: name,contents:contents},function(data){
             console.log(data);
         })
     });
