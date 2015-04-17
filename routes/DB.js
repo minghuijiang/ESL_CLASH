@@ -157,6 +157,7 @@ exports.addFile = function(req,res){
                 FILENAME : input.filename,
                 JSON   : input.contents
             };
+            console.log(data);
 
             connection.query("INSERT INTO FILE set ? ",data, function(err, rows){
                 if (err){

@@ -47,7 +47,7 @@
             <button id="addEx">add</button>
             <span style="float:right">
 
-            <input type="text" id="fileName" placeholder="File Name" size="16" />
+            <input type="text" id="filename" placeholder="File Name" size="16" />
                 <button id="saveFile" >Save</button>
 
                 </span>
@@ -355,10 +355,12 @@
 
     $('#saveFile').on('click',function(){
         var name = $('#filename').val();
-        $.get('api/addFile?filename='+name+'&contents='+json,function(data){
+        var contents = JSON.stringify(json);
+        console.log(contents);
+        $.get('api/addFile?filename='+name+'&contents='+contents,function(data){
             console.log(data);
         })
-    }
+    });
 
     bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
         return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
