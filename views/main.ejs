@@ -161,7 +161,7 @@
                         <div class="center">
                             <br /><br /><br /><br />
                             <button id="reloadClass">Reload Class</button> <br /><br /><br />
-                            <input type="button" class="submit" value="Delete Class"/>
+                            <button id="submitDeleteClass">Delete Class</button>
                         </div>
                     </div>
 
@@ -368,7 +368,7 @@
     });
 
     bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
-        return obj.CRN+'-'obj.CLASSNAME;
+        return obj.CRN+'-'+obj.CLASSNAME;
     })
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
@@ -389,6 +389,11 @@
         else
             return split[0]+'&username='+split[1].split(')')[0];
     },onError);
+
+    $('#submitDeleteClass').on('click',function(ev){
+        var selectedItem = $("#rightClass option:selected").val();
+        console.log(selectedItem);
+    });
 
     addException('#addEx',function(data){
         console.log(data);
