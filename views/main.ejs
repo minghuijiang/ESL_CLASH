@@ -367,7 +367,9 @@
         return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
     });
 
-//    bindLoad('reloadClass','leftClass')
+    bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
+        return obj.CRN+'-'obj.CLASSNAME;
+    })
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
             return obj.FILENAME+'('+obj.USERNAME+')';

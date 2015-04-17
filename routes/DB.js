@@ -767,6 +767,64 @@ exports.listUser = function(req,res){
     }
 };
 
+
+
+//-- list student
+exports.listStudent = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+
+            connection.query("SELECT USERNAME FROM USER JOIN " +
+                            "（SELECT STUDENT FROM STUDENT WHERE CRN = ?) AS B " +
+                                "ON(USER.USERID= B.STUDENT)" ,input.crn, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
+
+            });
+
+        });
+    }
+};
+
+
+//-- list class that belong to instructor USERID
+exports.listClass = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+        return ;
+    }else{
+        req.getConnection(function (err, connection) {
+            var instructor = req.user.USERID;
+            if(req.user.USERTYPE==0){
+                if(input.instructor){
+                    instructor= input.instructor;
+                }
+            }
+            connection.query("SELECT * FROM CLASS WHERE INSTRUCTOR = ?" ,instructor, function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    result.data=rows;
+                }
+                res.send(result);
+
+            });
+
+        });
+    }
+};
+
 //-- login ----student   	-- getListFile   done
 //-- getReport    done
 //

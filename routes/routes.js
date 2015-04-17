@@ -57,6 +57,7 @@ module.exports = function(app, passport) {
     app.get('/api/addUser',DB.addUser);
     app.get('/api/delUser',DB.delUser);
     app.post('/api/addFile',DB.addFile);
+
     app.get('/api/delFile',DB.delFile);
     app.get('/api/addException',DB.addException);
     app.get('/api/delException',DB.delException);
@@ -69,6 +70,8 @@ module.exports = function(app, passport) {
     app.get('/api/getRecord',DB.getRecord);
     app.get('/api/getFiles',DB.getFiles);
     app.get('/api/listUser',DB.listUser);
+    app.get('/api/listClass',DB.listClass);
+    app.get('/api/listStudent',DB.listStudent);
     app.post('/',function(req,res){
         console.log(req);
        res.send('Post success');
