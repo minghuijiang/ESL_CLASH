@@ -482,8 +482,8 @@ exports.addStudent = function(req,res){
                 if(err3){
                     result.error= err3;
                     res.send(result);
-                }else if(row3.length!=1) {
-                    if(row3.length==0)
+                }else if(rows3.length!=1) {
+                    if(rows3.length==0)
                         result.error = "No User found for :"+input.student;
                     else
                         result.error ="Multiple User found for :"+input.student+". Ask Admin for more detail.";
@@ -491,7 +491,7 @@ exports.addStudent = function(req,res){
                 }else {
                         var data={
                             CRN:input.crn,
-                            STUDENT:row3[0].USERID  // this is username, not userid,
+                            STUDENT:rows3[0].USERID  // this is username, not userid,
                         };
                         if(req.user.USERTYPE==0){   //admin
                             connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
@@ -499,6 +499,7 @@ exports.addStudent = function(req,res){
                                     result.error=err;
                                 }else{
                                     rows.USERID = data.STUDENT;
+                                    rows.USERNAME = input.student;
                                     result.data=rows;
                                 }
                                 res.send(result);
@@ -521,6 +522,7 @@ exports.addStudent = function(req,res){
                                             result.error=err2;
                                         }else{
                                             row2.USERID = data.STUDENT;
+                                            row2.USERNAME = input.student;
                                             result.data=rows2;
                                         }
                                         res.send(result);
@@ -575,7 +577,7 @@ exports.delStudent = function(req,res){
              */
             //        admin can remove student from anyone's class.
             if(req.user.USERTYPE==0){   //admin
-                connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input,student], function(err, rows){
+                connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input.student], function(err, rows){
                     if (err){
                         result.error=err;
                     }else{

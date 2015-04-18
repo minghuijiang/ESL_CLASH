@@ -435,8 +435,11 @@
                     onError(data);
                 else{
                     var option = document.createElement('option');
-                    option.text =students[i];
-                    select.append(option);
+                    console.log(data);
+                    var result = data.data;
+                    option.text =result.USERNAME;
+                    addToUser(result.USERNAME,result.USERID);
+                    $('#leftStudent').append(option);
                 }
             });
     });
@@ -462,7 +465,9 @@
     },onError);
     bindDel('submitDeleteStudent','rightStudent','api/delStudent?student=',function(item){
         var studentid = user[item.innerHTML];
-        var crn  = $('#leftClass')
+        var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+        console.log('delete student '+studentid+' from '+ crn);
+        return studentid+'&crn='+crn;
     },onError);
 
     $('#submitDeleteClass').on('click',function(ev){
