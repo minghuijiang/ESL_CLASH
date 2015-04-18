@@ -776,10 +776,11 @@ exports.listStudent = function(req,res){
     }else{
         req.getConnection(function (err, connection) {
             //TODO  limit instructor privilege
-            connection.query("SELECT USERNAME FROM USER JOIN " +
+            connection.query("SELECT USERNAME,USERID FROM USER JOIN " +
                             "（SELECT STUDENT FROM STUDENT WHERE CRN = ?) AS B " +
                                 "ON(USER.USERID= B.STUDENT)" ,input.crn, function(err, rows){
                 if (err){
+                    console.log(err);
                     result.error=err;
                 }else{
                     result.data=rows;
@@ -787,6 +788,7 @@ exports.listStudent = function(req,res){
                 res.send(result);
 
             });
+            console.log(connection);
 
         });
     }
