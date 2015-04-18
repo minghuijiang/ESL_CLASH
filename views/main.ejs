@@ -401,8 +401,22 @@
     bindLoad('reloadClass2','leftClass2','api/listClass?',function(obj){
         return obj.CRN+'-'+obj.CLASSNAME;
     });
-    $('#leftClass2').on(change,function(ev){
-        console.log(ev);
+    $('#leftClass2').on('change',function(ev){
+        var crn =ev.currentTarget[0].innerHTML.split('-')[0];
+        $.get('api/listStudent?crn='+crn,function(data){
+            var select= $('#leftStudent');
+            console.log(data);
+            if(data.error){
+                showError(data.error);
+            }else{
+                select.text('');
+                for(var i=0;i<data.data.length;i++){
+                    var option = document.createElement('option');
+                    option.text =data.data[i].USERNAME;
+                    select.append(option);
+                }
+            }
+        });
     });
 
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){

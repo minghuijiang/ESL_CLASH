@@ -18,11 +18,11 @@ function bindLoad(button, panel, url,callback){
     $('#'+button).on('click',function(){
         $.get(url,function(data){
             var select= $('#'+panel);
-            select.text('');
             console.log(data);
             if(data.error){
                 showError(data.error);
             }else{
+                select.text('');
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
                     option.text =callback(data.data[i]);
