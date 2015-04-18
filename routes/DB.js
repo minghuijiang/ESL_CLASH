@@ -476,42 +476,67 @@ exports.addStudent = function(req,res){
              );
              */
             //        admin can add student to anyone's class.
-            var data={
-                CRN:input.crn,
-                STUDENT:input.student
-            };
-            if(req.user.USERTYPE==0){   //admin
-                connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
-                    if (err){
-                        result.error=err;
-                    }else{
-                        result.data=rows;
-                    }
+
+            // grep userid first.
+            connection.query("SELECT USERNAME,USERID FROM USER WHERE USERNAME = ?", input.student, function(err3,rows3){
+                if(err3){
+                    result.error= err3;
                     res.send(result);
+                }else if(row3.length!=1) {
+                    if(row3.length==0)
+                        result.error = "No User found for :"+input.student;
+                    else
+                        result.error ="Multiple User found for :"+input.student+". Ask Admin for more detail.";
+                    res.send(result);
+                }else {
+                        var data={
+                            CRN:input.crn,
+                            STUDENT:row3[0].USERID  // this is username, not userid,
+                        };
+                        if(req.user.USERTYPE==0){   //admin
+                            connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
+                                if (err){
+                                    result.error=err;
+                                }else{
+                                    rows.USERID = data.STUDENT;
+                                    result.data=rows;
+                                }
+                                res.send(result);
 
-                });
-            }else{ // instructor]
-                connection.query("SELECT * FROM CLASS WHERE CRN = ?",input.crn,function(err,rows){
-                    if(err){
-                        result.error= err;
-                        res.send(result);
-                    }else if(rows[1].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
-                        connection.query("INSERT INTO STUDENT set ? ",data, function(err, rows){
-                            if (err){
-                                result.error=err;
-                            }else{
-                                result.data=rows;
-                            }
-                            res.send(result);
-                        });
-                    }else{
-                        result.error="Instructor can only add student to own class.";
-                        res.send(result);
+                            });
+                        }else{ // instructor]
+                            connection.query("SELECT * FROM CLASS WHERE CRN = ?",input.crn,function(err,rows){
+                                if(err){
+                                    result.error= err;
+                                    res.send(result);
+                                }else if(rows.length!=1) {
+                                    if(rows.length==0)
+                                        result.error = "No class found for :"+input.crn;
+                                    else
+                                        result.error ="Multiple class found for :"+input.crn+". Ask Admin for more detail.";
+                                    res.send(result);
+                                }else if(rows[0].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
+                                    connection.query("INSERT INTO STUDENT set ? ",data, function(err2, rows2){
+                                        if (err2){
+                                            result.error=err2;
+                                        }else{
+                                            row2.USERID = data.STUDENT;
+                                            result.data=rows2;
+                                        }
+                                        res.send(result);
+                                    });
+                                }else{
+                                    result.error="Instructor can only add student to his/her class.";
+                                    res.send(result);
+                                }
+
+                            });
+
+                        }
                     }
 
-                });
+            })
 
-            }
 
 
         });

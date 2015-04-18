@@ -425,6 +425,22 @@
         });
     });
 
+    $('#addStudentToClass').on('click',function(ev){
+        var raw = $('#studentField').val();
+        var students =raw.split(',');
+        var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+        for(var i=0;i<students.length;i++)
+            $.get('api/addStudent?student='+students[i]+'&crn='+crn,function(data){
+                if(data.error)
+                    onError(data);
+                else{
+                    var option = document.createElement('option');
+                    option.text =students[i];
+                    select.append(option);
+                }
+            });
+    });
+
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
             return obj.FILENAME+'('+obj.USERNAME+')';
