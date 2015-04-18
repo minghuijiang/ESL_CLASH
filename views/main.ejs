@@ -405,7 +405,7 @@
         return obj.CRN+'-'+obj.CLASSNAME;
     });
     $('#leftClass2').on('change',function(ev){
-        var crn =ev.currentTarget[0].innerHTML.split('-')[0];
+        var crn =ev.currentTarget.selectedOptions[0].innerHTML.split('-')[0];
         $.get('api/listStudent?crn='+crn,function(data){
             var select= $('#leftStudent');
             var right = $('#rightStudent');
