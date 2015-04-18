@@ -117,7 +117,7 @@
             <hr />
             <br />
             <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".doc,.docx" /><br /><br />
+                <input type="file" name="file" accept=".doc,.docx,.txt" /><br /><br />
                 <input type="submit" />
             </form>
         </div>
@@ -189,7 +189,9 @@
                                 <option>Student 1</option>
                                 <option>Student 2</option>
                                 <option>Student 3</option>
-                            </select>
+                            </select><br /><br />
+                            <input type="text" id="studentField" placeholder="student1,student2,student3"/><br /><br />
+                            <button id="addStudentToClass">Add Student</button>
                         </div>
                         <div class="center">  <br /><br /><br /><br />
                             <input type="button" id="studentRightButton" value="&gt;&gt;"/><br /> <br />
@@ -201,11 +203,10 @@
                             </select>
                         </div>
                         <div class="center">
-                            <br /><br /><br />
-                            <button id="reloadClass2">Reload Class</button> <br /><br /><br />
+                            <br /><br /><br /><br />
+                            <button id="reloadClass2">Reload Class</button> <br /><br /><br /><br />
                             <button id="submitDeleteStudent">Remove Student</button><br /><br />
-                            <input type="text" id="studentField" /><br /><br />
-                            <button id="addStudentToClass">Add Student</button>
+
                         </div>
                     </div>
 
@@ -407,11 +408,13 @@
         var crn =ev.currentTarget[0].innerHTML.split('-')[0];
         $.get('api/listStudent?crn='+crn,function(data){
             var select= $('#leftStudent');
+            var right = $('#rightStudent');
             console.log(data);
             if(data.error){
                 showError(data.error);
             }else{
                 select.text('');
+                right.text('');
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
                     option.text =data.data[i].USERNAME;
@@ -441,7 +444,10 @@
         else
             return split[0]+'&username='+split[1].split(')')[0];
     },onError);
-    bindDel('submitDeleteStudent','rightStudent','api/delStudent?',removeParen,onError);
+    bindDel('submitDeleteStudent','rightStudent','api/delStudent?student=',function(item){
+        var studentid = user[item.innerHTML];
+        var crn  = $('#leftClass')
+    },onError);
 
     $('#submitDeleteClass').on('click',function(ev){
        var item =  $("#leftClass option:selected")[0];
