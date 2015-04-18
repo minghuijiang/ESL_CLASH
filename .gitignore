@@ -44,4 +44,5 @@ Temporary Items
 
 #docx files
 uploads/*
+node_modules/*
 
