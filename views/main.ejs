@@ -199,10 +199,10 @@
                             </select>
                         </div>
                         <div class="center">
-                            <br /><br /><br /><br />
+                            <br /><br /><br />
                             <button id="reloadClass2">Reload Class</button> <br /><br /><br />
-                            <button id="submitDeleteStudent">Remove Student</button><br /><br /><br />
-                            <input type="text" id="studentField" />
+                            <button id="submitDeleteStudent">Remove Student</button><br /><br />
+                            <input type="text" id="studentField" /><br /><br />
                             <button id="addStudentToClass">Add Student</button>
                         </div>
                     </div>
@@ -398,6 +398,13 @@
     bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
         return obj.CRN+'-'+obj.CLASSNAME;
     });
+    bindLoad('reloadClass2','leftClass2','api/listClass?',function(obj){
+        return obj.CRN+'-'+obj.CLASSNAME;
+    });
+    $('#leftClass2').on(change,function(ev){
+        console.log(ev);
+    });
+
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
             return obj.FILENAME+'('+obj.USERNAME+')';
