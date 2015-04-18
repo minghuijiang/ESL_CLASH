@@ -38,7 +38,9 @@
         <li><a href="#statistic-tab">Statistic</a></li>
         <li><a href="#upload-tab">Upload</a></li>
         <li><a href="#management-tab">Management</a></li>
+        <li class="last"><a href="/logout">Logout</a></li>
     </ul>
+
 
 
     <div id="read-tab" class="tab-content">
@@ -413,6 +415,7 @@
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
                     option.text =data.data[i].USERNAME;
+                    addToUser(data.data[i].USERNAME,data.data[i].USERID);
                     select.append(option);
                 }
             }
@@ -438,6 +441,7 @@
         else
             return split[0]+'&username='+split[1].split(')')[0];
     },onError);
+    bindDel('submitDeleteStudent','rightStudent','api/delStudent?',removeParen,onError);
 
     $('#submitDeleteClass').on('click',function(ev){
        var item =  $("#leftClass option:selected")[0];
@@ -461,6 +465,7 @@
 
     $(function() {
         $( "#main-tabs" ).tabs();
+        $("li.last a").unbind('click');
         $( "#manageTabs" ).tabs();
         $("button").button();
     });
