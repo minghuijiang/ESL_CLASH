@@ -45,7 +45,7 @@ exports.addUser = function(req,res){
     }
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
 
         req.getConnection(function (err, connection) {
@@ -140,7 +140,7 @@ exports.addFile = function(req,res){
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         /*
          CREATE TABLE FILE(
@@ -190,7 +190,7 @@ exports.delFile = function(req,res){
     }
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         /*
          CREATE TABLE FILE(
@@ -245,7 +245,7 @@ exports.addException = function(req,res){
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             /*
@@ -288,7 +288,7 @@ exports.delException = function(req,res){
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             /*
@@ -318,7 +318,7 @@ exports.updateException = function(req,res){
     }
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             var data = {
@@ -349,7 +349,7 @@ exports.printException = function(req,res){
 
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT",req.user.USERID, function(err, rows){
@@ -383,7 +383,7 @@ exports.addClass = function(req,res){
 
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             /*
@@ -414,27 +414,24 @@ exports.addClass = function(req,res){
 
 /**
  * del a class
- *      -instructor
- *          -crn
  *      -admin
  *          -crn
- *          -instructor
  * @param req
  * @param res
  */
 exports.delClass = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 1);
+    var result = checkPermission(req, 2);
     var instructor = req.user.USERID;
     if(req.user.USERTYPE==0&&input.instructor){
         instructor = input.instructor;
     }
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
-            connection.query("DELETE FROM CLASS WHERE CRN = ? AND INSTRUCTOR = ?",[input.crn,instructor], function(err, rows){
+            connection.query("DELETE FROM CLASS WHERE CRN = ? ",input.crn, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
@@ -464,7 +461,7 @@ exports.addStudent = function(req,res){
 
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             /*
@@ -537,7 +534,7 @@ exports.delStudent = function(req,res){
 
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             /*
@@ -608,7 +605,7 @@ exports.addRecord = function(req,res){
 
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         /*
          CREATE TABLE RECORD(
@@ -652,7 +649,7 @@ exports.getRecord = function(req,res){
     var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             connection.query("SELECT FROM RECORD WHERE USERID = ? ",req.user.USERID, function(err, rows){
@@ -674,7 +671,7 @@ exports.getFiles = function(req,res){
     var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         /*
          CREATE TABLE FILE(
@@ -745,7 +742,7 @@ exports.listUser = function(req,res){
     var result = checkPermission(req, 0);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
 
@@ -775,7 +772,7 @@ exports.listStudent = function(req,res){
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
 
@@ -802,7 +799,7 @@ exports.listClass = function(req,res){
     var result = checkPermission(req, 1);
     if(result.error){
         res.send(result);
-        return ;
+
     }else{
         req.getConnection(function (err, connection) {
             var instructor = req.user.USERID;

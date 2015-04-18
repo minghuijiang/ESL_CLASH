@@ -395,7 +395,7 @@
 
     bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
         return obj.CRN+'-'+obj.CLASSNAME;
-    })
+    });
     bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
         if(obj.USERNAME)
             return obj.FILENAME+'('+obj.USERNAME+')';
@@ -418,7 +418,16 @@
 
     $('#submitDeleteClass').on('click',function(ev){
        var item =  $("#leftClass option:selected")[0];
-        $.get('api/removeClass?')
+        $.get('api/removeClass?crn='+item.innerHTML.split('-')[0],function(data){
+            if(data.error){
+                if(data.error.code)
+                    showError(data.error.code);
+                else
+                    showError(data.error);
+            }else{
+                item.remove();
+            }
+        })
     });
 
     addException('#addEx',function(data){

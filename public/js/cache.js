@@ -15,7 +15,7 @@ var user = {
 
 };
 
-function addToClass(className,instructor, crn){
+function addToClass(obj){
     classes[instructor][className]=crn;
 }
 
