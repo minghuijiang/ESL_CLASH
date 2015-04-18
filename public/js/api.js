@@ -58,6 +58,7 @@ function deleteUser(username,callback){
     call('api/delUser?username='+username,callback);
 }
 
+
 function registerSubmit(form, url, callback,field){
     var obj = $(form);
     if(obj.is('form'))

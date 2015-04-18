@@ -18,6 +18,7 @@
     <script src="js/jquery.ui.position.js"></script>
     <script src="js/event.js"></script>
     <script src="js/api.js"></script>
+    <script src="js/cache.js"></script>
     <link rel="stylesheet" href="css/jquery.contextMenu.css">
     <script src="js/edit.js"></script>
 
@@ -113,8 +114,8 @@
             </div>
             <hr />
             <br />
-            <form action="/" method="post" enctype="multipart/form-data">
-                <input type="file" val="select a file" id="select" name="files" accept=".doc,.docx" /><br /><br />
+            <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept=".doc,.docx" /><br /><br />
                 <input type="submit" />
             </form>
         </div>
@@ -353,7 +354,32 @@
             showMessage('Class created!');
         }
     });
+    $('#uploadFile').on('submit',function(ev){
+        ev.preventDefault();
+        console.log('submit');
+        var formData = new FormData($('#uploadFile')[0]);
+//        console.log(data);
+//        $.post('/' ,data,function(data){
+//            console.log(data);
+//        });
+        $.ajax({
+            url: '/',  //Server script to process data
+            type: 'POST',
+            success: function(data){
+                console.log(data);
+            },
+            error: function(data){
+                console.log(data);
+            },
+            // Form data
+            data: formData,
+            //Options to tell jQuery not to process data or worry about content-type.
+            cache: false,
+            contentType: false,
+            processData: false
+        });
 
+    });
     $('#saveFile').on('click',function(){
         var name = $('#filename').val();
         var contents = JSON.stringify(json);
@@ -391,8 +417,8 @@
     },onError);
 
     $('#submitDeleteClass').on('click',function(ev){
-        var selectedItem = $("#rightClass option:selected").val();
-        console.log(selectedItem);
+       var item =  $("#leftClass option:selected")[0];
+        $.get('api/removeClass?')
     });
 
     addException('#addEx',function(data){

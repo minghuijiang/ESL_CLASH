@@ -72,7 +72,7 @@ module.exports = function(app, passport) {
     app.get('/api/listUser',DB.listUser);
     app.get('/api/listClass',DB.listClass);
     app.get('/api/listStudent',DB.listStudent);
-    app.post('/',function(req,res){
+    app.post('/',isLoggedIn,isInstructorOrAdmin,function(req,res){
         console.log(req);
        res.send('Post success');
     });
