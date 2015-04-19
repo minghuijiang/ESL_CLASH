@@ -16,7 +16,7 @@ body{
     position:fixed;
     overflow-y: auto;
     overflow-x: hidden;
-    width:175px;
+    width:250px;
 }
 
 #editBar {
@@ -46,7 +46,7 @@ html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px; overflow-y:
     /*float:left;*/
     padding:10px;
     /*position: absolute;*/
-    margin-left: 150px;
+    margin-left: 225px;
     overflow-y:auto;
     height:75%;
 }

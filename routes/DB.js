@@ -822,17 +822,32 @@ exports.getFiles = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==0){ // admin
-                connection.query('SELECT FILENAME ,FILE.USERID,USERNAME FROM FILE ' +
-                '                   JOIN USER ON(FILE.USERID = USER.USERID) ORDER BY USERNAME',function(err, rows){
-                    if (err){
-                        console.log(err);
-                        result.error=err;
-                    }else{
-                        result.data=rows;
-                    }
-                    res.send(result);
+                if(input.crn){ // file for single class.
+                    connection.query('SELECT FILENAME FROM FILE WHERE USERID IN ' +
+                                     '(SELECT INSTRUCTOR FROM CLASS WHERE CRN = ?)',input.crn,function(err, rows){
+                        if (err){
+                            console.log(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
 
-                });
+                    });
+                }else{ // all files
+                    connection.query('SELECT FILENAME ,FILE.USERID,USERNAME FROM FILE ' +
+                    '                   JOIN USER ON(FILE.USERID = USER.USERID) ORDER BY USERNAME',function(err, rows){
+                        if (err){
+                            console.log(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
+
+                    });
+                }
+
             }
         });
     }

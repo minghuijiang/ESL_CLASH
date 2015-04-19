@@ -61,15 +61,61 @@
         </div>
         <div id="nav-wrapper">
             <div id="nav">
-                <img src="images/logo.png" alt="CLASH" style="width:150px;height:113px">
+                <img src="images/logo.png" alt="CLASH" style="max-width: 200px">
                 <br />
-                <select id="classSelector">
-
-                </select><button style="background-image:url(images/refresh.png)"></button>
-                <br />
-                <select id="fileSelector">
-
+                <select id="classSelector"  style="width:200px">
+                    <option value="" disabled selected>Load your class</option>
                 </select>
+                <input type ="image" id="reloadReadClass" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
+                <br />
+                <select id="fileSelector" style="width:200px">
+                    <option value="" disabled selected>Select your Class</option>
+                </select>
+                <script>
+                    $('#reloadReadClass').on('click',function(){
+                        $.get('api/listClass?',function(data){
+                            var select= $('#classSelector');
+                            if(data.error){
+                                showError(data.error);
+                            }else{
+                                var o = document.createElement('option');
+                                o.text= 'Select a class';
+                                o.disabled = 'disabled';
+                                o.selected ='selected';
+                                select.text('');
+                                select.append(o);
+                                for(var i=0;i<data.data.length;i++){
+                                    var option = document.createElement('option');
+                                    option.text =data.data[i].CLASSNAME;
+                                    option.value=data.data[i].CRN;
+                                    select.append(option);
+                                }
+                            }
+                        })
+                    });
+                    $('#classSelector').change(function(ev){
+                        var crn = this.selectedOptions[0].value;
+                        $.get('api/listFiles?crn='+crn,function(data){
+                            var select= $('#fileSelector');
+                            if(data.error){
+                                showError(data.error);
+                            }else{
+                                var o = document.createElement('option');
+                                o.text= 'Select a File';
+                                o.disabled = 'disabled';
+                                o.selected ='selected';
+                                select.text('');
+                                select.append(o);
+                                for(var i=0;i<data.data.length;i++){
+                                    var option = document.createElement('option');
+                                    option.text =data.data[i].FILENAME;
+                                    option.value=data.data[i].INSTRUCTOR;
+                                    select.append(option);
+                                }
+                            }
+                        })
+                    })
+                </script>
                 <br />
                 <br />
 
