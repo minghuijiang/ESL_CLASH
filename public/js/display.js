@@ -9,6 +9,7 @@ var posMapper = {
     "Preposition":{    color:"rgb(115,55,155)",       classes:"TO,IN,Preposition"    },
     "Article":{         bc:"rgb(115,55,155)",          classes:"DT,Article"    }
 };
+
 function changeColor(checkbox){
     var data = posMapper[checkbox.id];
     var cl = "."+replaceAll(',',',.',data['classes']);
@@ -44,19 +45,11 @@ function replaceAll(find, replace, str) {
 }
 
 function hideSlash(isChecked){
-	if(isChecked){
-		$(".Slash").show();
-	}else{
-		$(".Slash").hide();
-	}
+    isChecked?$(".Slash").show():$(".Slash").hide();
 }
 
 function boldException(isChecked){
-	if(isChecked){
-		$(".Exception").css("font-weight","bold");
-	}else{
-		$(".Exception").css("font-weight","normal");
-	}
+	$(".Exception").css("font-weight",isChecked?"bold":"normal");
 }
 
 function showVocab(isChecked){
@@ -77,7 +70,6 @@ function getOpenTag(tag,clazz, id){
     }else{  // no class no id
         return "<"+tag+">";
     }
-
 }
 function getCloseTag(tag){
     return "</"+tag+">";

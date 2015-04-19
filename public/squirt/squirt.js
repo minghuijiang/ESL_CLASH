@@ -60,6 +60,7 @@ function e(t, n, r) {
                 parent[nextSibling ? 'insertBefore' : 'appendChild'](el, nextSibling);
             },
 
+
             compileHtml: function(html) {
                 var container = dom.makeEl('div', {
                     style: "visibility: hidden"
@@ -93,7 +94,6 @@ function e(t, n, r) {
                 function setupConstraints(el) {
                     var x = constraints.x = constraints.x || {};
                     var y = constraints.y = constraints.y || {};
-                    console.log('x '+x+'  y '+y);
                     if (constraints.disableX)
                         x.min = el.offsetLeft, x.max = el.offsetLeft;
 
@@ -270,11 +270,15 @@ function e(t, n, r) {
             },
 
             show: function(el) {
+                console.log('show ');
+                console.log(el);
                 el = dom._elFromElOrSelector(el);
                 el.style.display = 'block';
             },
 
             hide: function(el) {
+                console.log('hide ');
+                console.log(el);
                 el = dom._elFromElOrSelector(el);
                 el.style.display = 'none';
             },
@@ -457,7 +461,7 @@ function e(t, n, r) {
 
             // loading view
             loading.show();
-            sq.pageContent = jtf.grabArticleText();
+            //sq.pageContent = jtf.grabArticleText();
 
             dom.injectStylesheet('squirt/css/frame.outer.css');
 
@@ -1468,18 +1472,23 @@ function e(t, n, r) {
 
 
 					);
+
+                    console.log(new Error());
                     loading.wrapperEl = dom.compileHtml(loadingHtml);
+                    console.log(loading.wrapperEl);
 				//	;position: relative;top: 50%;transform: translateY(-50%)
                     document.body.appendChild(loading.wrapperEl);
                     dom.addClass(dom.qs('.sq-loading'), 'visible');
                 },
 
                 hide: function() {
-                    var el = dom.qs('.sq-loading');
-                    el.classList.remove('visible');
-                    evt.once(el, dom.transitionEndEvents, function() {
-                        loading.wrapperEl.remove();
-                    });
+                    //console.log('loading .hide');
+                    $('.sq-loading').hide();
+                    //var el = dom.qs('.sq-loading');
+                    //el.classList.remove('visible');
+                    //evt.once(el, dom.transitionEndEvents, function() {
+                    //    loading.wrapperEl.remove();
+                    //});
                 }
             };
 
