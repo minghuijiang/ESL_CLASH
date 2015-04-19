@@ -40,7 +40,7 @@ exports.addUser = function(req,res){
     var usertype = 2; // default account with student privilege.
     if(input.usertype)
         usertype=input.usertype;
-    if(input.usertype!=2&&req.user.USERTYPE==1){
+    if(usertype!=2&&req.user.USERTYPE==1){
         result.error="Instructor can only create student account";
     }
     if(result.error){
@@ -663,8 +663,8 @@ exports.delStudent = function(req,res){
                     if(err){
                         result.error= err;
                         res.send(result);
-                    }else if(rows[1].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
-                        connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input,student], function(err, rows){
+                    }else if(rows[0].INSTRUCTOR==req.user.USERID){ // request user own the CRN.
+                        connection.query("DELETE FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,input.student], function(err, rows){
                             if (err){
                                 result.error=err;
                             }else{
