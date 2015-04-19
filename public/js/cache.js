@@ -20,6 +20,8 @@ function addToClass(obj){
 }
 
 function addTofile(filename,instructor,json){
+    if(!file[instructor])
+        file[instructor]={};
     file[instructor][filename]=json;
 }
 

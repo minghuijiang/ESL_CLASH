@@ -75,6 +75,7 @@
                     $('#reloadReadClass').on('click',function(){
                         $.get('api/listClass?',function(data){
                             var select= $('#classSelector');
+                            console.log(data);
                             if(data.error){
                                 showError(data.error);
                             }else{
@@ -97,6 +98,7 @@
                         var crn = this.selectedOptions[0].value;
                         $.get('api/getFiles?crn='+crn,function(data){
                             var select= $('#fileSelector');
+                            console.log(data);
                             if(data.error){
                                 showError(data.error);
                             }else{
@@ -109,7 +111,8 @@
                                 for(var i=0;i<data.data.length;i++){
                                     var option = document.createElement('option');
                                     option.text =data.data[i].FILENAME;
-                                    option.value=data.data[i].INSTRUCTOR;
+                                    option.value=data.data[i].USERID;
+                                    console.log(option.text+'  '+option.value);
                                     select.append(option);
                                 }
                             }
@@ -119,8 +122,8 @@
                         var crn = $('#classSelector')[0].selectedOptions[0].value;
                         var instructor = this.selectedOptions[0].value;
                         var filename = this.selectedOptions[0].innerHTML;
-                        if(file[instructor][filename]){  // if cache exist
-                            document.getElementById("content").innerHTML = str;
+                        if(file[instructor]&&file[instructor][filename]){  // if cache exist
+                            document.getElementById("content").innerHTML = file[instructor][filename];
                         }else {
                             $.get('api/getFile?crn=' + crn + '&filename=' + filename, function (data) {
                                 console.log(data);
@@ -133,6 +136,9 @@
                                         addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
 
                                         document.getElementById("content").innerHTML = str;
+                                    }catch(e){
+                                        console.log(e);
+                                        document.getElementById("content").innerHTML ='Error parsing the document: '+filename;
                                     }
                                 }
                             });

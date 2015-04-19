@@ -233,7 +233,7 @@ exports.delFile = function(req,res){
 
 exports.getFile = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 0);
+    var result = checkPermission(req, 2);
 
     if(result.error){
         res.send(result);
@@ -275,9 +275,10 @@ exports.getFile = function(req,res){
                             result.error ="Row size > 1, call Admin for more detail.";
                         res.send(result);
                     }else { // this student have class with this instructor.
-                        connection.query("SELECT * FROM FILE WHERE FILENAME = ? AND INSTRUCTOR IN " +
-                        "(SELECT INSTRUCTOR IN CLASS WHERE CRN = ?)",[input.filename,input.crn],function(err2, rows2){
+                        connection.query("SELECT * FROM FILE WHERE FILENAME = ? AND USERID IN " +
+                        "(SELECT INSTRUCTOR FROM CLASS WHERE CRN = ?)",[input.filename,input.crn],function(err2, rows2){
                             if (err2){
+                                console.log(err2);
                                 result.error=err2;
                             }else if(rows2.length!=1) {
                                 if(rows2.length==0)
@@ -794,9 +795,9 @@ exports.getFiles = function(req,res){
             if(req.user.USERTYPE==2){// STUDENT  get file for particular class.
                 //TODO not sure if nested query work, if not, split to three queries.
                 connection.query(
-                    "SELECT FILENAME, USERID FROM FILE WHERE INSTRUCTOR IN (" +
+                    "SELECT FILENAME, USERID FROM FILE WHERE USERID IN (" +
                             "SELECT INSTRUCTOR FROM (" +
-                                "SELECT CRN FROM STUDENT WHERE STUDENT = ? AND A.CRN = ? AS A " +
+                                "(SELECT CRN FROM STUDENT WHERE STUDENT = ? AND CRN = ?) AS A " +
                                 "JOIN CLASS ON (A.CRN = CLASS.CRN)" +
                             ")" +
                     ")"
@@ -923,6 +924,7 @@ exports.listClass = function(req,res){
     }else{
         req.getConnection(function (err, connection) {
             if(req.user.USERTYPE==2){// student
+                console.log('student: '+req.user.USERID);
                 connection.query("SELECT * FROM CLASS WHERE CRN IN " +
                 "(SELECT CRN FROM STUDENT WHERE STUDENT = ?)",req.user.USERID, function (err, rows) {
                     if(err)
