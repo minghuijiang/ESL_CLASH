@@ -346,7 +346,7 @@
     <% } %>
 </div>
 <script>
-
+    <% if (user.USERTYPE <= 1) { %>
     //delete script
     registerDel('leftUser','userLeftButton','rightUser','userRightButton');
     registerDel('leftException','exceptionLeftButton','rightException','exceptionRightButton');
@@ -368,7 +368,6 @@
             showMessage('Class created!');
         }
     });
-
 
     $('#uploadFile').on('submit',function(ev){
         ev.preventDefault();
@@ -512,6 +511,7 @@
         $( "#manageTabs" ).tabs();
         $("button").button();
     });
+
     var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
         console.log('trying to emit...');
@@ -532,6 +532,7 @@
 
 
     });
+<% } %>
 
     $('#reloadReadClass').on('click',function(){
         $.get('api/listClass?',function(data){
