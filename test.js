@@ -34,12 +34,16 @@ var express = require('express'),
     },'request')); //TODO  use pool?
 
     app.use(multer({
-  	dest: './uploads/',
-  	rename: function (fieldname, filename) {
-  		console.log("====================multer filename:"+filename);
-        console.log("====================multer fieldname:"+fieldname);
-    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
-  		}
+      	dest: './uploads/',
+      	rename: function (fieldname, filename) {
+      		console.log("====================multer filename:"+filename);
+            console.log("====================multer fieldname:"+fieldname);
+        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+      		},
+            onFileUploadComplete: function (file, req, res) {
+            console.log(file.name + ' uploading has ended ...');
+            console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path)
+        }
 	}));
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
