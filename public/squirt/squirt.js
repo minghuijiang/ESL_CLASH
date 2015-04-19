@@ -93,7 +93,7 @@ function e(t, n, r) {
                 function setupConstraints(el) {
                     var x = constraints.x = constraints.x || {};
                     var y = constraints.y = constraints.y || {};
-
+                    console.log('x '+x+'  y '+y);
                     if (constraints.disableX)
                         x.min = el.offsetLeft, x.max = el.offsetLeft;
 
@@ -510,7 +510,7 @@ function e(t, n, r) {
         function createIframe(src, onLoad) {
             var frame = dom.makeEl('iframe', {
                 src: src,
-				style: "height:100%",
+				//style: "height:100%",
                 class: 'sq-frame'
             }, document.body);
             frame.style.border = 0;

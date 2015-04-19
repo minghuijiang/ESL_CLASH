@@ -229,7 +229,7 @@ function removeCallBack(key, options){
     var id  = currentTarget.id;
     var idList = id.split('_');
     if(json){
-        var result = confirm('Are you sure to delete "'+$("#"+id).text()+'"? This action cannot be undone.')
+        var result = confirm('Are you sure to delete "'+$("#"+id).text()+'"? This action cannot be undone.');
         if(result==true) {
             var token = json.contents[idList[0]][idList[1]].tokens[idList[2]];
             if(token.tagged=='Exception'){

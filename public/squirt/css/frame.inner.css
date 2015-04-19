@@ -54,7 +54,7 @@ margin: 2em;
 }
 
 .drawer {
-    box-shadow: 0 0px 6px rgba(0,0,0,.3);
+    box-shadow: 0 0 6px rgba(0,0,0,.3);
     padding: 3em;
     font-weight: bold;
 }
@@ -246,9 +246,8 @@ padding-top: .23em;
 }
 
 .reader {
-    box-shadow: 0 0px 6px rgba(0,0,0,.3);
-    min-height: 100%;
-    max-height:2000px;
+    box-shadow: 0 0 6px rgba(0,0,0,.3);
+    height: 580px;
     position: relative;
 }
 

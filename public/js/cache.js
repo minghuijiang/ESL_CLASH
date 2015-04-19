@@ -16,9 +16,9 @@ var user = {
 };
 
 function addToClass(obj){
-    if(!classes[instructor])
-        classes[instructor]={};
-    classes[instructor][className]=crn;
+    //if(!classes[instructor])
+    //    classes[instructor]={};
+    //classes[instructor][className]=crn;
 }
 
 function addTofile(filename,instructor,json){
