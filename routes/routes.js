@@ -69,6 +69,7 @@ module.exports = function(app, passport) {
     app.get('/api/addRecord',DB.addRecord);
     app.get('/api/getRecord',DB.getRecord);
     app.get('/api/getFiles',DB.getFiles);
+    app.get('/api/getFile',DB.getFile);
     app.get('/api/listUser',DB.listUser);
     app.get('/api/listClass',DB.listClass);
     app.get('/api/listStudent',DB.listStudent);
