@@ -36,11 +36,11 @@ var express = require('express'),
     app.use(multer({
   	dest: './uploads/',
   	rename: function (fieldname, filename) {
-  		console.log("====================multer filename:"+filename)
-        console.log("====================multer fieldname:"+fieldname)
+  		console.log("====================multer filename:"+filename);
+        console.log("====================multer fieldname:"+fieldname);
     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
   		}
-	}))
+	}));
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
 
@@ -84,7 +84,7 @@ io.on('connection', function(socket) {
     socket.on('file',function(msg){
         console.log('new file');
         console.log(msg);
-    })
+    });
     socket.on('text', function(msg) {
         var options = {
             args: [msg]

@@ -125,7 +125,7 @@
                         if(file[instructor]&&file[instructor][filename]){  // if cache exist
                             document.getElementById("content").innerHTML = file[instructor][filename];
                         }else {
-                            $.get('api/getFile?crn=' + crn + '&filename=' + filename, function (data) {
+                            $.get('api/getFile?crn=' + crn + '&filename=' + filename+'&userid='+instructor, function (data) {
                                 console.log(data);
                                 if (data.error)
                                     showError(data.error);

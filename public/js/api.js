@@ -67,7 +67,6 @@ function registerSubmit(form, url, callback,field){
             $.get(url + obj.serialize(),callback);
         });
     else if(obj.is('button')){
-        console.log('is button')
         obj.on('click',function(ev){
             ev.preventDefault();
             if(field){

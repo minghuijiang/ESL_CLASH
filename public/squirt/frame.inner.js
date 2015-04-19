@@ -1,4 +1,27 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){
+    function s(o,u){
+        if(!n[o]){
+            if(!t[o]){
+                var a=typeof require=="function"&&require;
+                if(!u&&a)
+                    return a(o,!0);
+                if(i)return i(o,!0);
+                throw new Error("Cannot find module '"+o+"'")
+            }
+            var f=n[o]={exports:{}};
+            t[o][0].call(
+                f.exports,function(e){
+                    var n=t[o][1][e];
+                    return s(n?n:e)
+                },f,f.exports,e,t,n,r)
+        }
+        return n[o].exports
+    }
+    var i=typeof require=="function"&&require;
+    for(var o=0;o<r.length;o++)
+        s(r[o]);
+    return s
+})({1:[function(require,module,exports){
 // This file is a conceptual mess. Apologies to my future self and others.
 
 var _ = require('underscore'),
@@ -10,6 +33,7 @@ var _ = require('underscore'),
 
 sq.playing = true;
 sq.rewinding = false;
+
 
 // TODO reduce the amount of global state in this file,
 // use a more functional approach
@@ -33,7 +57,7 @@ var intervalMs,
 
 var anims = {
   showContext: {
-    ms: 150,
+    ms: 150
   },
   hideContext: {
     extraSlowFactor: 2.8,
@@ -50,9 +74,8 @@ var updateAndDispatchProgress = _.throttle(function(){
 var getNextNodeIdx = incrementNodeIdx;
 function decrementNodeIdx(){
   if(nodeIdx > 0) return nodeIdx--;
-};
-
-function incrementNodeIdx(){
+}
+    function incrementNodeIdx(){
   if(nodeIdx < c.nodes.length - 1) return ++nodeIdx;
 }
 
@@ -89,9 +112,8 @@ function advanceNode(){
   updateAndDispatchProgress();
   focusOnNodeAtIdx(nodeIdx);
   waitOnNode(c.nodes[nodeIdx]).then(advanceNode);
-};
-
-function focusOnNodeAtIdx(idx) {
+}
+    function focusOnNodeAtIdx(idx) {
   // the focusNodePrev business avoids animating
   // the focusNode from opacity 1 to 0, which is otherwise
   // incurred by the opacity transition applied to .word
@@ -108,14 +130,12 @@ function focusOnNodeAtIdx(idx) {
 
   // used to control landing page demo WPM
   focusNode.instructions && js.invoke(focusNode.instructions);
-};
-
-function centerOnFocus(){
+}
+    function centerOnFocus(){
   var orpNode = focusNode.querySelector('.orp');
   nodesContainer.style.left = "-" + (orpNode.offsetLeftCached + orpNode.offsetWidthCached / 2) + "px";
-};
-
-function contextNodes(ctxNodeRange){
+}
+    function contextNodes(ctxNodeRange){
   var nodes = [];
   var idx = Math.max(0, nodeIdx); // hack -- nodeIdx is -1 on start
   return c.nodes
@@ -123,15 +143,13 @@ function contextNodes(ctxNodeRange){
          .concat(
            c.nodes.slice(idx,
              Math.min(idx + ctxNodeRange, c.nodes.length)));
-};
-
-function slowStartFactor(){
+}
+    function slowStartFactor(){
   if(wordsSincePlay > 24) return 0;
   var wordsSincePlay = nodeIdx - slowStartIdx;
   return 2.2 * (1 / wordsSincePlay) - .1;
-};
-
-function hideContextNodes(extraSlow){
+}
+    function hideContextNodes(extraSlow){
   var def = q.defer();
   var animationLength = anims.hideContext.ms;
   animationLength *= extraSlow ? anims.hideContext.extraSlowFactor : 1;
@@ -147,9 +165,8 @@ function hideContextNodes(extraSlow){
     .then(function(){ node.classList.remove('serial-fade')});
   });
   return q.delay(animationLength);
-};
-
-var linearLeft = {target: 'left', type: 'linear'};
+}
+    var linearLeft = {target: 'left', type: 'linear'};
 function constantPPSTransition(directionIdx){
   var distance = Math.abs(focusNode.orp.offsetLeftCached - c.nodes[nodeIdx + directionIdx].orp.offsetLeftCached);
   var ms =  distance * 1000 / seekPPS.current;
@@ -166,9 +183,8 @@ function setupSeekTransition(){
     seekPPS.current = Math.min(seekPPS.max, seekPPS.current + seekPPS.accel);
     clearSeekTransition = constantPPSTransition(directionIdx);
   });
-};
-
-function setSeekState(state){
+}
+    function setSeekState(state){
   if(state === sq.seeking) return;
 
   getNextNodeIdx = state == 'backward' ? decrementNodeIdx : incrementNodeIdx;
@@ -184,9 +200,8 @@ function setSeekState(state){
 
   setupSeekTransition();
   advanceNode();
-};
-
-function clearSeek(){
+}
+    function clearSeek(){
   sq.seeking = false;
   carousel.classList.remove('seeking');
 }
@@ -307,7 +322,7 @@ var dom = {
     }
 
     function x(val){
-      el.style.left = constrain(val, constraints.x) + 'px'
+      el.style.left = constrain(val, constraints.x) + 'px';
       var diff = constraints.x.max - constraints.x.min;
       return diff > 0 ? el.offsetLeft / diff : 0;
     }
@@ -335,9 +350,8 @@ var dom = {
       y.min = y.min === undefined ? -Infinity : y.min;
       y.max = y.max === undefined ? Infinity : y.max;
       y.range = y.max - y.min;
-    };
-
-    var dragHandler = function(e){
+    }
+      var dragHandler = function(e){
       var loc = {};
       loc.x = x(elStartCoord.x + (e.clientX - mouseStartCoord.x));
       loc.y = y(elStartCoord.y + (e.clientY - mouseStartCoord.y));
@@ -467,8 +481,8 @@ var dom = {
     function loadHandler(){
       onLoad();
       el.removeEventListener('load', loadHandler)
-    };
-    onLoad && evt.on(el, 'load', loadHandler);
+    }
+      onLoad && evt.on(el, 'load', loadHandler);
   },
 
   _elFromElOrSelector: function(elOrSelector){
@@ -528,8 +542,8 @@ var dom = {
       object[key] = val;
     });
     return object;
-  },
-}
+  }
+};
 
 module.exports = dom;
 },{"./evt":4,"./js":7,"underscore":21}],4:[function(require,module,exports){
@@ -568,7 +582,7 @@ var evt = {
     if(!processedArgs) return evt.on.apply(null, evt._onArgs.apply(null, arguments));
     js.map2d(buses, evts, function(bus, evt){
         bus.addEventListener(evt, cb);
-    })
+    });
     return function(){
       js.map2d(buses, evts, function(bus, evt){
         bus.removeEventListener(evt, cb);
@@ -578,7 +592,7 @@ var evt = {
 
   once: function(bus, evts, cb, processedArgs){
     if(!processedArgs) return evt.once.apply(null, evt._onArgs.apply(null, arguments));
-    var remover, newCallback = function(e){ remover(); return cb(e); }
+    var remover, newCallback = function(e){ remover(); return cb(e); };
     remover = evt.on.call(null, bus, evts, newCallback, true);
   },
 
@@ -586,7 +600,7 @@ var evt = {
     var e = new Event(evtStr);
 
     for(var k in attrs){
-      if(!attrs.hasOwnProperty(k)) continue
+      if(!attrs.hasOwnProperty(k)) continue;
       e[k] = attrs[k];
     }
 
@@ -619,7 +633,7 @@ var evt = {
     attrs && _.extend(msg, attrs);
     targetFrame.postMessage(msg, "*");
   }
-}
+};
 
 module.exports = evt;
 },{"./js":7,"underscore":21}],5:[function(require,module,exports){
@@ -683,7 +697,7 @@ var events = {
   },
 
   'squirt.setText': function(e){
-    reader.setText(e.text)
+    reader.setText(e.text);
     evt.dispatch('squirt.wpm', {value: userSettings.get('wpm', 320), notForKeen: true});
   },
 
@@ -786,8 +800,8 @@ var js = {
       break;
       case "undefined":
       objsAreFuncs = true;
-    };
-    return objs.map(function(o){
+    }
+      return objs.map(function(o){
       return objsAreFuncs ? o.apply(null, args) : o[funcName].apply(o, args);
     });
   },
@@ -813,14 +827,14 @@ var js = {
   getter: function(key){
     var givesTo = [];
     var getter = function(obj){
-      var v = obj[key]
+      var v = obj[key];
       givesTo.map(function(f){ f(v); });
       return v;
-    }
+    };
     getter.giveTo = function(f){
       givesTo.push(f);
       return getter;
-    }
+    };
     return getter;
   },
 
@@ -829,7 +843,7 @@ var js = {
     return function(){
       js.invoke(args);
     }
-  },
+  }
 };
 
 module.exports = js;
@@ -845,10 +859,10 @@ var keys = {
     projectId: "531aa8c136bf5a0f8e000003",
     writeKey: "a863509cd0ba1c7039d54e977520462be277d525f29e98798ae4742b963b22ede0234c467494a263bd6d6b064413c29cd984e90e6e6a4468d36fed1b04bcfce6f19f50853e37b45cb283b4d0dfc4c6e7a9a23148b1696d7ea2624f1c907abfac23a67bbbead623522552de3fedced628"
   }
-}
+};
 
 var ref = document.referrer;
-var refHost = ref && document.referrer.match(/(?:\/\/)[^/:]+/)[0].substr(2)
+var refHost = ref && document.referrer.match(/(?:\/\/)[^/:]+/)[0].substr(2);
 
 
 function addon(name, input, output){
@@ -860,12 +874,8 @@ function guid(){
     var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
     return v.toString(16);
   });
-};
-
-
-
-
-module.exports = {
+}
+    module.exports = {
   //always: _.partial(_.extend, globalEventProperties),
  // globalProps: globalEventProperties
 };
@@ -973,9 +983,8 @@ evt.handle({
 
 function readabilityFail(){
   dom.qs('.error').innerHTML = 'Oops! This page is too hard for Squirt to read. We\'ve been notified, and will do our best to resolve the issue shortly.';
-};
-
-var tokenDelimiter = 'ˇ';
+}
+    var tokenDelimiter = 'ˇ';
 function textToNodes(text) {
   text = text.trim('\n').replace(/\s+\n/g,'\n');
   var array = text.replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ").split(tokenDelimiter);
@@ -996,9 +1005,8 @@ function textToNodes(text) {
 		 });
 	avgDelayPerWord = totalDelay / length;
   return nodes;
-};
-
-function changeFont(e){
+}
+    function changeFont(e){
   var reader = dom.qs('.reader');
   reader.classList.remove('sans');
   if(e.sans) reader.classList.add('sans');
@@ -1012,7 +1020,7 @@ module.exports = {
   setText: function(text){
     rebuildNodes = function(preserveIdx){
       carousel.setNodes(textToNodes(text), preserveIdx);
-    }
+    };
     rebuildNodes();
   },
 
@@ -1116,7 +1124,7 @@ require('./play');
 require('./settings');
 },{"./play":10,"./scrubber":12,"./settings":13,"./wpm-selector":18}],16:[function(require,module,exports){
 
-var localStorageKey = 'userSettings'
+var localStorageKey = 'userSettings';
 var settings = load();
 
 function save(){
@@ -1132,8 +1140,8 @@ var m = {
     if(settings[k] === undefined){
       m.set(k, defVal);
       return defVal;
-    };
-    return settings[k];
+    }
+      return settings[k];
   },
   set: function(k,v){
     settings[k] = v;
@@ -1161,11 +1169,11 @@ var w = {
   getTokenDelay: function(word){
     var lastChar = word[word.length - 1];
     if(lastChar.match('”|"')) lastChar = word[word.length - 2];
-    if(lastChar == '\n') return delays.paragraph
+    if(lastChar == '\n') return delays.paragraph;
     if('.!?'.indexOf(lastChar) != -1) return delays.period;
     if(',;:–'.indexOf(lastChar) != -1) return delays.comma;
     if(word.length < 4) return delays.shortWord;
-    if(word.length > 11) return delays.longWord
+    if(word.length > 11) return delays.longWord;
     return 1;
   },
   
@@ -1214,7 +1222,7 @@ var w = {
     return node;
   }
 
-}
+};
 
 module.exports = w;
 },{"./dom":3,"./evt":4}],18:[function(require,module,exports){
@@ -1292,7 +1300,7 @@ process.emit = noop;
 
 process.binding = function (name) {
     throw new Error('process.binding is not supported');
-}
+};
 
 // TODO(shtylman)
 process.cwd = function () { return '/' };
@@ -1354,7 +1362,7 @@ process.chdir = function (dir) {
     // SES (Secure EcmaScript)
     } else if (typeof ses !== "undefined") {
         if (!ses.ok()) {
-            return;
+
         } else {
             ses.makeQ = definition;
         }
@@ -4553,4 +4561,4 @@ return Q;
   }
 }).call(this);
 
-},{}]},{},[5])
+},{}]},{},[5]);
