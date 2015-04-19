@@ -348,165 +348,164 @@
 </div>
 <script>
     <% if (user.USERTYPE <= 1) { %>
-    //delete script
-    registerDel('leftUser','userLeftButton','rightUser','userRightButton');
-    registerDel('leftException','exceptionLeftButton','rightException','exceptionRightButton');
-    registerDel('leftFile','fileLeftButton','rightFile','fileRightButton');
-    registerDel('leftStudent','studentLeftButton','rightStudent','studentRightButton');
 
-    addUser("#addUser",function(data){
-        if(data.error)
-           showError('Error: '+data.error.code);
-        else{
-           showMessage('Account created!');
-        }
-        console.log(data);
-    });
-    addClass("#addClass",function(data){
-        if(data.error)
-            showError('Error: '+data.error.code);
-        else{
-            showMessage('Class created!');
-        }
-    });
+    function instructorBinding(){
+        //delete script
+        registerDel('leftException','exceptionLeftButton','rightException','exceptionRightButton');
+        registerDel('leftFile','fileLeftButton','rightFile','fileRightButton');
+        registerDel('leftStudent','studentLeftButton','rightStudent','studentRightButton');
 
-    $('#uploadFile').on('submit',function(ev){
-        ev.preventDefault();
-        console.log('submit');
-        var formData = new FormData($('#uploadFile')[0]);
-        //var file = ;
-        //    formData.append("file", file);
-        //    formData.append("fileName",file.fileName);
-            
-        console.log(formData.fileName);
-//        $.post('/' ,data,function(data){
-//            console.log(data);
-//        });
-
-        $.ajax({
-            url: '/',  //Server script to process data
-            type: 'POST',
-            success: function(data){
-                console.log(data);
-            },
-            error: function(data){
-                console.log(data);
-            },
-            // Form data
-            data: formData,
-            //Options to tell jQuery not to process data or worry about content-type.
-            cache: false,
-            contentType: false,
-            processData: false
-        });
-
-    });
-    $('#saveFile').on('click',function(){
-        var name = $('#filename').val();
-        var contents = JSON.stringify(json);
-        console.log(contents);
-        $.post('api/addFile',{filename: name,contents:contents},function(data){
-            onError(data);
-        })
-    });
-
-    bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
-        return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
-    });
-
-    bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
-        return obj.CRN+'-'+obj.CLASSNAME;
-    });
-    bindLoad('reloadClass2','leftClass2','api/listClass?',function(obj){
-        return obj.CRN+'-'+obj.CLASSNAME;
-    });
-    $('#leftClass2').on('change',function(ev){
-        var crn =ev.currentTarget.selectedOptions[0].innerHTML.split('-')[0];
-        $.get('api/listStudent?crn='+crn,function(data){
-            var select= $('#leftStudent');
-            var right = $('#rightStudent');
+        addUser("#addUser",function(data){
+            if(data.error)
+                showError('Error: '+data.error.code);
+            else{
+                showMessage('Account created!');
+            }
             console.log(data);
-            if(data.error){
-                showError(data.error);
-            }else{
-                select.text('');
-                right.text('');
-                for(var i=0;i<data.data.length;i++){
-                    var option = document.createElement('option');
-                    option.text =data.data[i].USERNAME;
-                    addToUser(data.data[i].USERNAME,data.data[i].USERID);
-                    select.append(option);
-                }
+        });
+        addClass("#addClass",function(data){
+            if(data.error)
+                showError('Error: '+data.error.code);
+            else{
+                showMessage('Class created!');
             }
         });
-    });
 
-    $('#addStudentToClass').on('click',function(ev){
-        var raw = $('#studentField').val();
-        var students =raw.split(',');
-        var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
-        for(var i=0;i<students.length;i++)
-            $.get('api/addStudent?student='+students[i]+'&crn='+crn,function(data){
-                if(data.error)
-                    onError(data);
-                else{
-                    var option = document.createElement('option');
+        $('#uploadFile').on('submit',function(ev){
+            ev.preventDefault();
+            var formData = new FormData($('#uploadFile')[0]);
+            console.log(formData.fileName);
+            $.ajax({
+                url: '/',  //Server script to process data
+                type: 'POST',
+                success: function(data){
                     console.log(data);
-                    var result = data.data;
-                    option.text =result.USERNAME;
-                    addToUser(result.USERNAME,result.USERID);
-                    $('#leftStudent').append(option);
+                },
+                error: function(data){
+                    console.log(data);
+                },
+                // Form data
+                data: formData,
+                //Options to tell jQuery not to process data or worry about content-type.
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+        });
+        $('#saveFile').on('click',function(){
+            var name = $('#filename').val();
+            var contents = JSON.stringify(json);
+            console.log(contents);
+            $.post('api/addFile',{filename: name,contents:contents},function(data){
+                onError(data);
+            })
+        });
+
+
+
+        bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
+            return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
+        });
+
+        bindLoad('reloadClass2','leftClass2','api/listClass?',function(obj){
+            return obj.CRN+'-'+obj.CLASSNAME;
+        });
+        $('#leftClass2').on('change',function(ev){
+            var crn =ev.currentTarget.selectedOptions[0].innerHTML.split('-')[0];
+            $.get('api/listStudent?crn='+crn,function(data){
+                var select= $('#leftStudent');
+                var right = $('#rightStudent');
+                console.log(data);
+                if(data.error){
+                    showError(data.error);
+                }else{
+                    select.text('');
+                    right.text('');
+                    for(var i=0;i<data.data.length;i++){
+                        var option = document.createElement('option');
+                        option.text =data.data[i].USERNAME;
+                        addToUser(data.data[i].USERNAME,data.data[i].USERID);
+                        select.append(option);
+                    }
                 }
             });
-    });
+        });
 
-    bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
-        if(obj.USERNAME)
-            return obj.FILENAME+'('+obj.USERNAME+')';
-        return obj.FILENAME;
-    });
+        $('#addStudentToClass').on('click',function(ev){
+            var raw = $('#studentField').val();
+            var students =raw.split(',');
+            var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+            for(var i=0;i<students.length;i++)
+                $.get('api/addStudent?student='+students[i]+'&crn='+crn,function(data){
+                    if(data.error)
+                        onError(data);
+                    else{
+                        var option = document.createElement('option');
+                        console.log(data);
+                        var result = data.data;
+                        option.text =result.USERNAME;
+                        addToUser(result.USERNAME,result.USERID);
+                        $('#leftStudent').append(option);
+                    }
+                });
+        });
 
-    bindLoad('reloadException','leftException','api/printException?',function(obj){
-        return obj.EX_STR+'('+obj.COUNT+')';
-    });
+        bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
+            if(obj.USERNAME)
+                return obj.FILENAME+'('+obj.USERNAME+')';
+            return obj.FILENAME;
+        });
 
-    bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);
-    bindDel('submitDeleteException','rightException','api/delException?exception=',removeParen,onError);
-    bindDel('submitDeleteFile','rightFile','api/delFile?filename=',function(item){
-        var split = item.innerHTML.split('(');
-        if(split.length==1)
-            return split[0];
-        else
-            return split[0]+'&username='+split[1].split(')')[0];
-    },onError);
-    bindDel('submitDeleteStudent','rightStudent','api/delStudent?student=',function(item){
-        var studentid = user[item.innerHTML];
-        var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
-        console.log('delete student '+studentid+' from '+ crn);
-        return studentid+'&crn='+crn;
-    },onError);
+        bindLoad('reloadException','leftException','api/printException?',function(obj){
+            return obj.EX_STR+'('+obj.COUNT+')';
+        });
 
-    $('#submitDeleteClass').on('click',function(ev){
-       var item =  $("#leftClass option:selected")[0];
-        $.get('api/delClass?crn='+item.innerHTML.split('-')[0],function(data){
-            if(data.error){
-                if(data.error.code)
-                    showError(data.error.code);
-                else
-                    showError(data.error);
-            }else{
-                item.remove();
-            }
-        })
-    });
-
-    addException('#addEx',function(data){
-        console.log(data);
-    },$('#newException'));
+        bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);
+        bindDel('submitDeleteException','rightException','api/delException?exception=',removeParen,onError);
+        bindDel('submitDeleteFile','rightFile','api/delFile?filename=',function(item){
+            var split = item.innerHTML.split('(');
+            if(split.length==1)
+                return split[0];
+            else
+                return split[0]+'&username='+split[1].split(')')[0];
+        },onError);
+        bindDel('submitDeleteStudent','rightStudent','api/delStudent?student=',function(item){
+            var studentid = user[item.innerHTML];
+            var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+            console.log('delete student '+studentid+' from '+ crn);
+            return studentid+'&crn='+crn;
+        },onError);
 
 
-
-
+        addException('#addEx',function(data){
+            console.log(data);
+        },$('#newException'));
+    }
+    instructorBinding();
+    <% if( user.USERTYPE==0 { %>
+    function adminOnlyBinding(){
+        registerDel('leftUser','userLeftButton','rightUser','userRightButton');
+        //delete class loading
+        bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
+            return obj.CRN+'-'+obj.CLASSNAME;
+        });
+        $('#submitDeleteClass').on('click',function(ev){
+            var item =  $("#leftClass option:selected")[0];
+            $.get('api/delClass?crn='+item.innerHTML.split('-')[0],function(data){
+                if(data.error){
+                    if(data.error.code)
+                        showError(data.error.code);
+                    else
+                        showError(data.error);
+                }else{
+                    item.remove();
+                }
+            })
+        });
+    }
+    adminOnlyBinding();
+    <% } %>
     var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
         console.log('trying to emit...');
