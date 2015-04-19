@@ -157,6 +157,7 @@
                         <input type="submit" value="Create Class" />
                     </form>
                 </div>
+                <% if(user.USERTYPE==0){%>
                 <div class="verticalLine">
                 </div>
                 <div class="right delete" style="width:60%">
@@ -178,6 +179,7 @@
                     </div>
 
                 </div>
+                <% } %>
             </div>
             <div id="student-tab" class="tab-content">
                 <div class="right delete" style="width:100%">
@@ -308,6 +310,7 @@
                         <input type="submit" value="Create Account">
                     </form>
                 </div>
+                <% if(user.USERTYPE==0){%>
                 <div class="verticalLine">
                 </div>
                 <div class="right delete" style="width:60%">
@@ -339,6 +342,7 @@
                     </div>
 
                 </div>
+                <% } %>
             </div>
         </div>
 
@@ -483,7 +487,7 @@
         },$('#newException'));
     }
     instructorBinding();
-    <% if( user.USERTYPE==0 { %>
+    <% if( user.USERTYPE==0) { %>
     function adminOnlyBinding(){
         registerDel('leftUser','userLeftButton','rightUser','userRightButton');
         //delete class loading
