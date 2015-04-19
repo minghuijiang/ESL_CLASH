@@ -98,7 +98,50 @@
     </div>
 
     <div id="statistic-tab" class="tab-content">
-        statistic information
+        <div id="statisticTabs" style="height:85%">
+			<ul id="nest-tabHeader">
+				<li><a href="instructor-tab">Instructor Report</a></li>
+				<li><a href="student-tab">Student Report</a></li>
+			</ul>
+			<div id="instructor-tab" class="tab-content">
+				<div class="left report" style="width:30%">
+					<h1>Instructor Report</h1>
+					</br>
+					<form id="instructorReport">
+						<input type="text" name="instructorid" value="" placeholder="Instructor's ID #">
+						<input type="submit" value="Make Report">
+					</form>
+				</div>
+				<div class="verticalLine">
+				</div>
+				<div class="right report" sytle="width:60%">
+					<h1>Bulk Instructor Report</h1>
+					</br>
+					<form id="bulkInstructorReport">
+						<input type="submit" value="Make Report">
+					</form>
+				</div>
+			</div>
+			<div id="student-tab">
+				<div class="left report" style="width:30%">
+					<h1>Student Report</h1>
+					</br>
+					<form id="studentReport">
+						<input type="text" name="studentid" value="" placeholder="Student's ID #">
+						<input type="submit" value="Make Report">
+					</form>
+				</div>
+				<div class="verticalLine">
+				</div>
+				<div class="right report" style="width:60%">
+					<h1>Bulk Student Report</h1>
+					</br>
+					<form id="bulkStudentReport">
+						<input type="submit" value="Make Report">
+					</form>
+				</div>
+			</div>
+		</div>				
     </div>
 
     <div id="upload-tab" class="tab-content">
