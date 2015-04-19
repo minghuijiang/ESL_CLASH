@@ -12,12 +12,13 @@
 
     <script src="js/display.js"></script>
     <script src="js/console.js"></script>
+    <script src="js/cache.js"></script>
+
     <% if (user.USERTYPE <= 1) { %>
         <script src="js/jquery.contextMenu.js"></script>
         <script src="js/jquery.ui.position.js"></script>
         <script src="js/event.js"></script>
         <script src="js/api.js"></script>
-        <script src="js/cache.js"></script>
         <link rel="stylesheet" href="css/jquery.contextMenu.css">
         <script src="js/edit.js"></script>
     <% } %>
@@ -49,7 +50,7 @@
             Please select <% if (user.USERTYPE <= 1) { %> or Slash <% } %>a document.
         </div>
         <% if (user.USERTYPE <= 1) { %>
-        <div id="editBar" style="display: none">;
+        <div id="editBar" style="">
             <input type="text" id="newException" name="exception" placeholder="Exception" size="8" />
             <button id="addEx">add</button>
             <span style="float:right">
@@ -505,12 +506,6 @@
 
 
 
-    $(function() {
-        $( "#main-tabs" ).tabs();
-        $("li.last a").unbind('click');
-        $( "#manageTabs" ).tabs();
-        $("button").button();
-    });
 
     var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
@@ -605,10 +600,16 @@
                 }
             });
         }
-    })
+    });
 
 
 
+    $(function() {
+        $( "#main-tabs" ).tabs();
+        $("li.last a").unbind('click');
+        $( "#manageTabs" ).tabs();
+        $("button").button();
+    });
 
 </script>
 
