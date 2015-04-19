@@ -9,10 +9,7 @@ var posMapper = {
     "Preposition":{    color:"rgb(115,55,155)",       classes:"TO,IN,Preposition"    },
     "Article":{         bc:"rgb(115,55,155)",          classes:"DT,Article"    }
 };
-<<<<<<< HEAD
-=======
 
->>>>>>> bd7a878f8549c66bb5f97158015dc410191f5faa
 function changeColor(checkbox){
     var data = posMapper[checkbox.id];
     var cl = "."+replaceAll(',',',.',data['classes']);
