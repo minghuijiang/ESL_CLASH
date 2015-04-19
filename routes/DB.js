@@ -593,8 +593,8 @@ exports.addStudent = function(req,res){
                                         if (err2){
                                             result.error=err2;
                                         }else{
-                                            row2.USERID = data.STUDENT;
-                                            row2.USERNAME = input.student;
+                                            rows2.USERID = data.STUDENT;
+                                            rows2.USERNAME = input.student;
                                             result.data=rows2;
                                         }
                                         res.send(result);
