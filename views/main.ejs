@@ -95,7 +95,7 @@
                     });
                     $('#classSelector').change(function(ev){
                         var crn = this.selectedOptions[0].value;
-                        $.get('api/listFiles?crn='+crn,function(data){
+                        $.get('api/getFiles?crn='+crn,function(data){
                             var select= $('#fileSelector');
                             if(data.error){
                                 showError(data.error);
@@ -114,6 +114,29 @@
                                 }
                             }
                         })
+                    });
+                    $('#fileSelector').change(function(ev){
+                        var crn = $('#classSelector')[0].selectedOptions[0].value;
+                        var instructor = this.selectedOptions[0].value;
+                        var filename = this.selectedOptions[0].innerHTML;
+                        if(file[instructor][filename]){  // if cache exist
+                            document.getElementById("content").innerHTML = str;
+                        }else {
+                            $.get('api/getFile?crn=' + crn + '&filename=' + filename, function (data) {
+                                console.log(data);
+                                if (data.error)
+                                    showError(data.error);
+                                else {
+                                    try {
+                                        json = JSON.parse(data.data[0].JSON);
+                                        var str = parseJSON(json);
+                                        addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
+
+                                        document.getElementById("content").innerHTML = str;
+                                    }
+                                }
+                            });
+                        }
                     })
                 </script>
                 <br />

@@ -242,7 +242,7 @@ exports.getFile = function(req,res){
 
         req.getConnection(function (err, connection) {
             if(req.user.USERTYPE==0){
-                connection.query("SELECT * FROM FILE WHERE FILENAME = ?",
+                connection.query("SELECT * FROM FILE WHERE FILENAME = ? AND USERID = ?",
                                 [input.filename, input.userid], function(err,rows){
                         if (err){
                             result.error=err;
@@ -811,7 +811,7 @@ exports.getFiles = function(req,res){
 
                     });
             }else if(req.user.USERTYPE==1){ // INSTRUCTOR
-                connection.query('SELECT FILENAME FROM FILE WHERE USERID = ?',req.user.USERID,function(err, rows){
+                connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID = ?',req.user.USERID,function(err, rows){
                     if (err){
                         console.log(err);
                         result.error=err;
@@ -823,7 +823,7 @@ exports.getFiles = function(req,res){
                 });
             }else if(req.user.USERTYPE==0){ // admin
                 if(input.crn){ // file for single class.
-                    connection.query('SELECT FILENAME FROM FILE WHERE USERID IN ' +
+                    connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID IN ' +
                                      '(SELECT INSTRUCTOR FROM CLASS WHERE CRN = ?)',input.crn,function(err, rows){
                         if (err){
                             console.log(err);
