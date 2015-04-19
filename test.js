@@ -36,7 +36,8 @@ var express = require('express'),
     app.use(multer({
   	dest: './uploads/',
   	rename: function (fieldname, filename) {
-  		console.log("multer filename:"+filename)
+  		console.log("====================multer filename:"+filename)
+        console.log("====================multer fieldname:"+fieldname)
     return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
   		}
 	}))
