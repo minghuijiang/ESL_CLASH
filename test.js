@@ -33,7 +33,14 @@ var express = require('express'),
         database:'CLASH'
     },'request')); //TODO  use pool?
 
-    app.use((multer({ dest: './uploads/'})));
+    app.use(multer({
+  	dest: './uploads/',
+  	rename: function (fieldname, filename) {
+  		console.log("====================multer filename:"+filename)
+        console.log("====================multer fieldname:"+fieldname)
+    return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+  		}
+	}))
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
 
