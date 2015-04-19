@@ -359,14 +359,21 @@
             showMessage('Class created!');
         }
     });
+
+
     $('#uploadFile').on('submit',function(ev){
         ev.preventDefault();
         console.log('submit');
         var formData = new FormData($('#uploadFile')[0]);
-//        console.log(data);
+        //var file = ;
+        //    formData.append("file", file);
+        //    formData.append("fileName",file.fileName);
+            
+        console.log(formData.fileName);
 //        $.post('/' ,data,function(data){
 //            console.log(data);
 //        });
+
         $.ajax({
             url: '/',  //Server script to process data
             type: 'POST',
