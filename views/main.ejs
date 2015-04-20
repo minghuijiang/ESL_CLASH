@@ -199,7 +199,7 @@
                             <select id="leftStudent" size="10" multiple>
                                 <option>Select a class</option>
                             </select><br /><br />
-                            <input type="text" id="studentField" placeholder="student1,student2,"/><br /><br />
+                            <input type="text" id="studentField" placeholder="student1,student2," /><br /><br />
                             <button id="addStudentToClass">Add Student</button>
                         </div>
                         <div class="center">  <br /><br /><br /><br />
@@ -446,7 +446,11 @@
         $('#addStudentToClass').on('click',function(ev){
             var raw = $('#studentField').val();
             var students =raw.split(',');
-            var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+            var selected  = $('#leftClass2 option:selected')[0];
+            if(!selected){
+                alert('Please select a class before add student.');
+            }
+            var crn = selected.innerHTML.split("-")[0];
             for(var i=0;i<students.length;i++)
                 $.get('api/addStudent?student='+students[i]+'&crn='+crn,function(data){
                     if(data.error)

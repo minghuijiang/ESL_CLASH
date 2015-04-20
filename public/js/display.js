@@ -45,7 +45,7 @@ function revalidateAllCheckBox(){
     var objs  = $("input" );
     objs.each(function( index ) {
         if($(this)[0]['checked']==true)
-            $(this).trigger('click');
+            $(this).click().click();
     })
 }
 function replaceAll(find, replace, str) {
@@ -177,7 +177,7 @@ function parseSentence(sent, vid){
         }
 
         if(token['slashed']){
-            str+=' '+getOpenTag('span','Slash')+'/'+getCloseTag('span')+' ';
+            str+=' <span class="Slash" style="display: none">/</span> ';
         }
     }
     return str;
