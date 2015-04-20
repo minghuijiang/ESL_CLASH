@@ -135,8 +135,9 @@ io.on('connection', function(socket) {
     socket.on('file',function(msg){
         //console.log('new file');
         //console.log(msg);
-        console.log("in file socket on server and file_contents =" + file_contents);
-        msg = file_contents;
+        //console.log("in file socket on server and file_contents: " + file_contents);
+        msg = file_contents.trim();
+        console.log("file socket msg: " + msg);
 
         var options = {
             args: [msg]
@@ -220,7 +221,7 @@ io.on('connection', function(socket) {
                 socket.emit('response', err);
             } else {
                 // results is an array consisting of messages collected during execution
-                console.log("from python: "+results);
+                console.log("IN PLAIN TEXT: from python: "+results);
 				/**
 				 * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
 				 * 
