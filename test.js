@@ -127,21 +127,87 @@ io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
     console.log('connected to client -= =====================');
+
+        /*
+            FILE PROCESSING
+        */
+
     socket.on('file',function(msg){
         //console.log('new file');
-        console.log(msg);
-        
-        
+        //console.log(msg);
         console.log("in file socket on server and file_contents =" + file_contents);
-        
+        msg = file_contents;
 
+        var options = {
+            args: [msg]
+        };
 
-
-
-
-
-
+        PythonShell.run( 'parse_pos.py', options, function(err, results) {
+            if (err) {
+                console.log('IN FILE: error from python: ' + err.stack);
+                console.log(results);
+                socket.emit('IN FILE: response', err);
+            } else {
+                // results is an array consisting of messages collected during execution
+                console.log("IN FILE: from python: "+results);
+                /**
+                 * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
+                 * 
+                 * @param nltkInput
+                 *          input return from parse_pos.py, in formate
+                 *          [   
+                 *              [ //paragraph level
+                 *                  [ // sentence level
+                 *                      "word1","pos1",
+                 *                      "word2","pos2",
+                 *                      ...
+                 *                  ],
+                 *                  [// sentence 2
+                 *                      ...
+                 *                  ],
+                 *                      .....
+                 *              ],
+                 *              [ //paragraph 2
+                 *                  ...
+                 *              ],
+                 *              ....
+                 *          ]
+                 * @param exceptionList
+                 *          Exception List is a string with multiple token, separated by ';'
+                 *          i.e.:
+                 *              from day to day;from year to year;
+                 * @param minLength  [3, 10]
+                 *          minimum length of a token, 
+                 *          this is a suggestion value, 
+                 *          the algorithm do not guaranteed the length will always be large than minLength
+                 * @param maxLength , [7,12]
+                 *          maximum length of a token,   # currently has no effect.
+                 *          this is a suggestion value, 
+                 *          the algorithm do not guaranteed the length will always be less than maxLength
+                 * @return
+                 *          
+                 */
+                slash.parseSlash(results[0], 'from day to day;from year to year',2,7, function(error, data) {
+                    if (error) {
+                        console.log('IN FILE: err from java: ' + error);
+                        socket.emit('response', error);
+                    } else {
+                        socket.emit('response', data);
+                    }
+                });
+            }
+        });
     });
+
+
+
+
+
+        /*
+            PLAIN TEXT PROCESSING
+        */
+
+    
     socket.on('text', function(msg) {
         var options = {
             args: [msg]
@@ -204,6 +270,7 @@ io.on('connection', function(socket) {
         });
     });
 });
+
 
 
 http.listen(3000, function(){
