@@ -751,7 +751,32 @@ exports.getRecord = function(req,res){
 
     }else{
         req.getConnection(function (err, connection) {
-            connection.query("SELECT FROM RECORD WHERE USERID = ? ",req.user.USERID, function(err, rows){
+            //TODO limit instructor version by check if he/she own the class.
+            if(req.user.USERTYPE==2){
+                connection.query("SELECT * FROM RECORD WHERE USERID = ? ",[req.user.USERID], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        rows[0].USERNAME =req.user.USERNAME;
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+            }else if(req.user.USERTYPE==1 ){
+                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[input.crn], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+            }else if(req.user.USERTYPE==0){
+
+            }
+            connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[input.instructor], function(err, rows){
                 if (err){
                     result.error=err;
                 }else{

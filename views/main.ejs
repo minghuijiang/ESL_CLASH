@@ -109,21 +109,87 @@
 
     <div id="statistic-tab" class="tab-content">
         <div id="recordSelector">
-            <select id="classSelector2" class="classList">
-                <option value="" disabled selected>Select your class</option>
-            </select>
-            <input type ="image" id="reloadRecordClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
-            <select id="studentSelector">
-                <option value="" disabled selected>Select your student</option>
-            </select>
+            <!--<select id="classSelector2" class="classList">-->
+                <!--<option value="" disabled selected>Select your class</option>-->
+            <!--</select>-->
+            <!--<input type ="image" id="reloadRecordClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>-->
+            <!--<select id="studentSelector">-->
+                <!--<option value="" disabled selected>Select your student</option>-->
+            <!--</select>-->
+            <button id="reloadRecord">Reload Data</button>
         </div>
-        <button id="reloadRecord">Reload Data</button>
         <hr />
         <div id="recordDisplay">
 
         </div>
         <script>
+            $('#reloadRecord').on('click',function(ev){
+                $.get('api/getRecord',function(data){
+                    var select= $('#recordDisplay');
+                    console.log(data);
+                    if(data.error){
+                        showError(data.error);
+                    }else{
+                        select.text('');
 
+                        for(var i=0;i<data.data.length;i++){
+                            var option = document.createElement('p');
+                            option.innerHTML=data.data[i];
+                            select.append(option);
+                        }
+                    }
+                });
+            });
+//            $('#classSelector2').change(function(ev){
+//                var crn = this.selectedOptions[0].value;
+//                $.get('api/listStudent?crn='+crn,function(data){
+//                    var select= $('#studentSelector');
+//                    console.log(data);
+//                    if(data.error){
+//                        showError(data.error);
+//                    }else{
+//                        var o = document.createElement('option');
+//                        o.text= 'Select a File';
+//                        o.disabled = 'disabled';
+//                        o.selected ='selected';
+//                        select.text('');
+//                        select.append(o);
+//                        for(var i=0;i<data.data.length;i++){
+//                            var option = document.createElement('option');
+//                            option.text =data.data[i].FILENAME;
+//                            option.value=data.data[i].USERID;
+//                            console.log(option.text+'  '+option.value);
+//                            select.append(option);
+//                        }
+//                    }
+//                });
+//            });
+//            $('#fileSelector').change(function(ev){
+//                var crn = $('#classSelector')[0].selectedOptions[0].value;
+//                var instructor = this.selectedOptions[0].value;
+//                var filename = this.selectedOptions[0].innerHTML;
+//                if(file[instructor]&&file[instructor][filename]){  // if cache exist
+//                    changeContent(file[instructor][filename]);
+//                }else {
+//                    $.get('api/getFile?crn=' + crn + '&filename=' + filename+'&userid='+instructor, function (data) {
+//                        console.log(data);
+//                        if (data.error)
+//                            showError(data.error);
+//                        else {
+//                            try {
+//                                json = JSON.parse(data.data[0].JSON);
+//                                var str = parseJSON(json);
+//                                addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
+//                                changeContent(str);
+//
+//                            }catch(e){
+//                                console.log(e);
+//                                document.getElementById("content").innerHTML ='Error parsing the document: '+filename;
+//                            }
+//                        }
+//                    });
+//                }
+//            });
         </script>
     </div>
     <% if (user.USERTYPE <= 1) { %>
