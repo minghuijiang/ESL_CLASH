@@ -40,6 +40,14 @@ function toggleAllPOS(ischecked){
             $(this).trigger('click');
     })
 }
+
+function revalidateAllCheckBox(){
+    var objs  = $("input" );
+    objs.each(function( index ) {
+        if($(this)[0]['checked']==true)
+            $(this).trigger('click');
+    })
+}
 function replaceAll(find, replace, str) {
     return str.replace(new RegExp(find, 'g'), replace);
 }

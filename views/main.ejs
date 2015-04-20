@@ -299,7 +299,7 @@
                         <input type="checkbox" onchange="document.getElementById('addUserPassword').type =
                                 this.checked ? 'text' : 'password'"> Show password
                         <br />
-                        <select>
+                        <select name="usertype">
                             <% if(user.USERTYPE==0) {%>
                             <option value="0">Admin</option>
                             <option value="1">Instructor</option>
@@ -398,11 +398,20 @@
 
         });
         $('#saveFile').on('click',function(){
-            var name = $('#filename').val();
+            var name = $('#filename').val().trim();
+            if(name.length==0){
+                alert('Please enter a valid filename.');
+                return ;
+            }
             var contents = JSON.stringify(json);
             console.log(contents);
             $.post('api/addFile',{filename: name,contents:contents},function(data){
-                onError(data);
+                if(data.error)
+                    showError(data.error);
+                else{
+                    $('#filename').val('');
+                    showMessage('File Saved as "'+name+'"');
+                }
             })
         });
 
@@ -483,7 +492,12 @@
 
 
         addException('#addEx',function(data){
-            console.log(data);
+            if(data.error)
+                showError(data.error);
+            else{
+                showMessage('Exception Added.');
+                $('#newException').val('');
+            }
         },$('#newException'));
     }
     instructorBinding();
@@ -594,7 +608,7 @@
                         json = JSON.parse(data.data[0].JSON);
                         var str = parseJSON(json);
                         addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
-
+                        revalidateAllCheckBox();
                         document.getElementById("content").innerHTML = str;
                     }catch(e){
                         console.log(e);
