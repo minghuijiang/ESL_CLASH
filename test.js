@@ -278,7 +278,7 @@ io.on('connection', function(socket) {
 Used to simulate a signal that the value is updated.
 */
 
-function Wrapper(callback)) {
+function Wrapper(callback) {
     var value;
     this.set = function(v) {
         value = v;
