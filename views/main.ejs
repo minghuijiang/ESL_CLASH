@@ -394,6 +394,7 @@
         $('#uploadFile').on('submit',function(ev){
             ev.preventDefault();
             var formData = new FormData($('#uploadFile')[0]);
+            
             console.log(formData.fileName);
              //$('#uploadFile').val('');
             //formData.reset();
@@ -431,6 +432,10 @@
                 cache: false,
                 contentType: false,
                 processData: false
+            });
+
+            $('#uploadFile').each(function(){
+                this.reset();
             });
 
         });
