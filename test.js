@@ -67,9 +67,10 @@ var express = require('express'),
             }
             if (file_extension === 'txt'){
                 fs.readFile(file.path, function (err, txt_file_data) {
+                console.log("text file reciceived and it contains: " + txt_file_data);
                 
                 if (err) throw err;
-                  console.log("text file reciceived and it contains: " + txt_file_data);
+                  console.log("err on text data: " + txt_file_data);
                 });
 
             }
