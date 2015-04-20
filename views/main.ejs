@@ -388,7 +388,21 @@
                     console.log(data);
                     
                     socket.emit('file', 'do it!');
-                    console.log("socket reponse sent to kick off file processing")
+                    console.log("socket reponse sent to kick off file processing");
+
+                        socket.on('response', function(msg){
+                            console.log('response recieved ' + msg);
+                            json = JSON.parse(msg);
+                            var str =parseJSON(json);
+                            changeContent(str);
+                            hideSlash();
+                            if($('#edit')[0]['checked']!=true){
+                                $('#edit').trigger('click');
+                            }
+                            $( "#main-tabs" ).tabs( "option", "active", 0 );
+                    });
+
+
 
                 },
                 error: function(data){
