@@ -131,9 +131,9 @@ io.on('connection', function(socket) {
         //console.log('new file');
         console.log(msg);
         
-        if (msg === 'do it!'){
-            console.log("in file socket on server and file_contents =" + file_contents);
-        }
+        
+        console.log("in file socket on server and file_contents =" + file_contents);
+        
 
 
 
