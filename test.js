@@ -42,8 +42,9 @@ var express = require('express'),
       		},
             onFileUploadComplete: function (file, req, res) {
             console.log(file.name + ' uploading has ended ...');
-            console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path)
-        }
+            console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path);
+            
+}
 	}));
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
