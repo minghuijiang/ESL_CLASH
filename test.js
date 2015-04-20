@@ -18,7 +18,7 @@ var express = require('express'),
     passport = require('passport'),
     flash = require('connect-flash'),
     multer  = require('multer'),
-    spawn = require('child_process').spawn;
+    spawn = require('child_process').spawn,
     fs = require('fs');
 
 
