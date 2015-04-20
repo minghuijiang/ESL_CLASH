@@ -776,7 +776,7 @@ exports.getRecord = function(req,res){
             }else if(req.user.USERTYPE==0){
 
             }
-            connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[input.instructor], function(err, rows){
+            connection.query("SELECT * FROM RECORD", function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
