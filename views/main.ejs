@@ -112,11 +112,19 @@
             <select id="classSelector2" class="classList">
                 <option value="" disabled selected>Select your class</option>
             </select>
+            <input type ="image" id="reloadRecordClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
             <select id="studentSelector">
                 <option value="" disabled selected>Select your student</option>
             </select>
         </div>
-        <div class="verticalLine"></div>
+        <button id="reloadRecord">Reload Data</button>
+        <hr />
+        <div id="recordDisplay">
+
+        </div>
+        <script>
+
+        </script>
     </div>
     <% if (user.USERTYPE <= 1) { %>
     <div id="upload-tab" class="tab-content">
@@ -579,6 +587,7 @@
     $('#reloadReadClass').on('click',function(){
         $.get('api/listClass?',function(data){
             var select= $('#classSelector');
+            var select2= $('#classSelector2');
             console.log(data);
             if(data.error){
                 showError(data.error);
@@ -588,12 +597,15 @@
                 o.disabled = 'disabled';
                 o.selected ='selected';
                 select.text('');
+                select2.text('');
                 select.append(o);
+                select2.append(o);
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
                     option.text =data.data[i].CLASSNAME;
                     option.value=data.data[i].CRN;
                     select.append(option);
+                    select2.append(option);
                 }
             }
         })
