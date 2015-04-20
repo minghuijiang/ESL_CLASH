@@ -209,7 +209,7 @@
             <hr />
             <br />
             <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" accept=".docx,.txt" /><br /><br />
+                <input type="file" name="file" value="Select File to Upload.." accept=".docx,.txt" /><br /><br />
                 <input type="submit" />
             </form>
         </div>
@@ -460,6 +460,7 @@
         $('#uploadFile').on('submit',function(ev){
             ev.preventDefault();
             var formData = new FormData($('#uploadFile')[0]);
+            
             console.log(formData.fileName);
              //$('#uploadFile').val('');
             //formData.reset();
@@ -497,6 +498,10 @@
                 cache: false,
                 contentType: false,
                 processData: false
+            });
+
+            $('#uploadFile').each(function(){
+                this.reset();
             });
 
         });
