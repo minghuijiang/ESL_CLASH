@@ -21,7 +21,6 @@ var express = require('express'),
     spawn = require('child_process').spawn;
 
 
-var file_wrapper = new Wrapper(callback);
 
     // setup java slasher.
     java.classpath.push("java/slash.jar");
@@ -35,7 +34,7 @@ var file_wrapper = new Wrapper(callback);
         database:'CLASH'
     },'request')); //TODO  use pool?
 
-    
+
     app.use(multer({
       	dest: './uploads/',
       	rename: function (fieldname, filename) {
@@ -54,10 +53,6 @@ var file_wrapper = new Wrapper(callback);
                 var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
 
                 parse_msword.stdout.on('data', function (data) {    // register one or more handlers
-        
-                    file_wrapper = data;
-
-
                   console.log('stdout: ' + data);
                 });
 
@@ -72,7 +67,6 @@ var file_wrapper = new Wrapper(callback);
         }
             
 	}));
-
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
 
@@ -113,104 +107,10 @@ io.on('connection', function(socket) {
     sessionsConnections[socket.handshake.sessionID] = socket;
 
     console.log('connected to client -= =====================');
-    
-    /*
-    ==========================
-    File processing
-    ==========================
-    */
-
-
     socket.on('file',function(msg){
         console.log('new file');
         console.log(msg);
-
-            function callback(wrapper) {
-                //alert("Value is now: " + wrapper.get());
-                if (file_wrapper != ""){
-                    console.log("file_wrapper val:" + file_wrapper)
-
-                    PythonShell.run( 'parse_pos.py', options, function(err, results) {
-                        if (err) {
-                            console.log('error from python: ' + err.stack);
-                            console.log(results);
-                            socket.emit('response', err);
-                        } else {
-                            // results is an array consisting of messages collected during execution
-                            console.log("from python: "+results);
-                            /**
-                             * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
-                             * 
-                             * @param nltkInput
-                             *          input return from parse_pos.py, in formate
-                             *          [   
-                             *              [ //paragraph level
-                             *                  [ // sentence level
-                             *                      "word1","pos1",
-                             *                      "word2","pos2",
-                             *                      ...
-                             *                  ],
-                             *                  [// sentence 2
-                             *                      ...
-                             *                  ],
-                             *                      .....
-                             *              ],
-                             *              [ //paragraph 2
-                             *                  ...
-                             *              ],
-                             *              ....
-                             *          ]
-                             * @param exceptionList
-                             *          Exception List is a string with multiple token, separated by ';'
-                             *          i.e.:
-                             *              from day to day;from year to year;
-                             * @param minLength  [3, 10]
-                             *          minimum length of a token, 
-                             *          this is a suggestion value, 
-                             *          the algorithm do not guaranteed the length will always be large than minLength
-                             * @param maxLength , [7,12]
-                             *          maximum length of a token,   # currently has no effect.
-                             *          this is a suggestion value, 
-                             *          the algorithm do not guaranteed the length will always be less than maxLength
-                             * @return
-                             *          
-                             */
-                            slash.parseSlash(results[0], 'from day to day;from year to year',2,7, function(error, data) {
-                                if (error) {
-                                    console.log('err from java: ' + error);
-                                    socket.emit('file_response', error);
-                                } else {
-                                    socket.emit('file_response', data);
-                                }
-                            });
-                        }
-                    });
-
-
-                }
-            }
-
-
-
-
-        
-        
-            
     });
-
-
-    
-
-
-
-
-
-
-    /*
-    ==========================
-    Text processing
-    ==========================
-    */
     socket.on('text', function(msg) {
         var options = {
             args: [msg]
@@ -273,24 +173,6 @@ io.on('connection', function(socket) {
         });
     });
 });
-
-/*
-Used to simulate a signal that the value is updated.
-*/
-
-function Wrapper(callback) {
-    var value;
-    this.set = function(v) {
-        value = v;
-        callback(this);
-    }
-    this.get = function() {
-        return value;
-    }  
-}
-
-
-
 
 
 http.listen(3000, function(){
