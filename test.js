@@ -19,6 +19,7 @@ var express = require('express'),
     flash = require('connect-flash'),
     multer  = require('multer'),
     spawn = require('child_process').spawn;
+    fs = require('fs');
 
 
 
@@ -64,6 +65,15 @@ var express = require('express'),
                   console.log('parse_msword process exited with code ' + code);
                 });
             }
+            if (file_extension === 'txt'){
+                fs.readFile(file.path, function (err, txt_file_data) {
+                
+                if (err) throw err;
+                  console.log("text file reciceived and it contains: " + txt_file_data);
+                });
+
+            }
+
         }
             
 	}));
