@@ -17,7 +17,8 @@ var express = require('express'),
     session = require('express-session'),
     passport = require('passport'),
     flash = require('connect-flash'),
-    multer  = require('multer');
+    multer  = require('multer'),
+    spawn = require('child_process').spawn;
 
 
 
@@ -33,6 +34,7 @@ var express = require('express'),
         database:'CLASH'
     },'request')); //TODO  use pool?
 
+
     app.use(multer({
       	dest: './uploads/',
       	rename: function (fieldname, filename) {
@@ -41,11 +43,29 @@ var express = require('express'),
         return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
       		},
             onFileUploadComplete: function (file, req, res) {
+            
+            var file_extension = file.extension;    
             console.log(file.name + ' uploading has ended ...');
             console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path);
             console.log("file extension:" + file.extension)
             
-}
+            if (file_extension === 'docx'){
+                var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+
+                parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+                  console.log('stdout: ' + data);
+                });
+
+                parse_msword.stderr.on('data', function (data) {
+                  console.log('stderr: ' + data);
+                });
+
+                parse_msword.on('exit', function (code) {
+                  console.log('parse_msword process exited with code ' + code);
+                });
+            }
+        }
+            
 	}));
     // initialize passport
     require('./routes/passport')(passport); // pass passport for configuration
