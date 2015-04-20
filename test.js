@@ -58,7 +58,7 @@ var express = require('express'),
 
                 parse_msword.stdout.on('data', function (data) {    // register one or more handlers
                   console.log('stdout: ' + data);
-                  file_contents = data;
+                  file_contents = data.toString();
                   console.log("file_contents:" + file_contents);
                   res.end('{"success" : "Posted Successfully", "status" : 200}');
 
