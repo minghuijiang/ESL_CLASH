@@ -377,7 +377,8 @@
             ev.preventDefault();
             var formData = new FormData($('#uploadFile')[0]);
             console.log(formData.fileName);
-             $('#uploadFile').val('');
+             //$('#uploadFile').val('');
+            form.reset()
             $.ajax({
                 url: '/',  //Server script to process data
                 type: 'POST',
