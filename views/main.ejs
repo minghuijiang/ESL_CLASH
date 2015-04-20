@@ -349,6 +349,7 @@
     <% } %>
 </div>
 <script>
+    var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     <% if (user.USERTYPE <= 1) { %>
 
     function instructorBinding(){
@@ -385,10 +386,9 @@
                 success: function(data){
                     console.log("ajax success:" + data);
                     console.log(data);
-                    if(data.status == 200){
-                        console.log("200 recieved!");
-                    }
-
+                    
+                    socket.emit('file', 'do it!');
+                    console.log("socket reponse sent to kick off file processing")
 
                 },
                 error: function(data){
@@ -534,7 +534,7 @@
     }
     adminOnlyBinding();
     <% } %>
-    var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
+    //var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
         console.log('trying to emit...');
         socket.emit('text', $('#resizable').val());

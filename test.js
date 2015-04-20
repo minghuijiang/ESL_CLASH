@@ -35,7 +35,7 @@ var express = require('express'),
         database:'CLASH'
     },'request')); //TODO  use pool?
 
-
+    var file_contents = '';
     app.use(multer({
       	dest: './uploads/',
       	rename: function (fieldname, filename) {
@@ -49,7 +49,7 @@ var express = require('express'),
             console.log(file.name + ' uploading has ended ...');
             console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path);
             console.log("file extension:" + file.extension)
-            var file_contents = '';
+            
 
 
             if (file_extension === 'docx'){
@@ -128,8 +128,19 @@ io.on('connection', function(socket) {
 
     console.log('connected to client -= =====================');
     socket.on('file',function(msg){
-        console.log('new file');
+        //console.log('new file');
         console.log(msg);
+        
+        if (msg === 'do it!'){
+            console.log("in file socket on server and file_contents =" + file_contents);
+        }
+
+
+
+
+
+
+
     });
     socket.on('text', function(msg) {
         var options = {
