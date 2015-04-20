@@ -70,7 +70,7 @@
                 <select id="classSelector"  style="width:200px">
                     <option value="" disabled selected>Load your class</option>
                 </select>
-                <input type ="image" id="reloadReadClass" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
+                <input type ="image" id="reloadReadClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
                 <br />
                 <select id="fileSelector" style="width:200px">
                     <option value="" disabled selected>Select your Class</option>
@@ -137,7 +137,7 @@
 
         <div id="manageTabs" style="height:85%">
             <ul id="nest-tabHeader">
-                <li><a href="#class-tab">Class</a></li>
+                <li ><a href="#class-tab">Class</a></li>
                 <li><a href="#student-tab">Student</a></li>
                 <li><a href="#file-tab">File</a></li>
                 <li><a href="#exception-tab">Exception</a></li>
@@ -173,7 +173,7 @@
 
                         <div class="center">
                             <br /><br /><br /><br />
-                            <button id="reloadClass">Reload Class</button> <br /><br /><br />
+                            <button id="reloadClass" class="reload" >Reload Class</button> <br /><br /><br />
                             <button id="submitDeleteClass">Delete Class</button>
                         </div>
                     </div>
@@ -197,9 +197,7 @@
                         <div>
                             <h3>Student List</h3>
                             <select id="leftStudent" size="10" multiple>
-                                <option>Student 1</option>
-                                <option>Student 2</option>
-                                <option>Student 3</option>
+                                <option>Select a class</option>
                             </select><br /><br />
                             <input type="text" id="studentField" placeholder="student1,student2,"/><br /><br />
                             <button id="addStudentToClass">Add Student</button>
@@ -215,7 +213,7 @@
                         </div>
                         <div class="center">
                             <br /><br /><br /><br />
-                            <button id="reloadClass2">Reload Class</button> <br /><br /><br /><br />
+                            <button id="reloadClass2" class="reload">Reload Class</button> <br /><br /><br /><br />
                             <button id="submitDeleteStudent">Remove Student</button><br /><br />
 
                         </div>
@@ -246,7 +244,7 @@
                         </div>
                         <div class="center">
                             <br /><br /><br /><br />
-                            <button type="button" id="reloadFile">Reload Files</button> <br /><br /><br />
+                            <button type="button" id="reloadFile" class="reload">Reload Files</button> <br /><br /><br />
                             <button type="button" id="submitDeleteFile">Delete File</button>
                         </div>
 
@@ -278,7 +276,7 @@
                         </div>
                         <div class="center">
                             <br /><br /><br /><br />
-                            <button type="button" id="reloadException" >Reload Data</button> <br /><br /><br />
+                            <button type="button" id="reloadException" class="reload">Reload Data</button> <br /><br /><br />
                             <button type="button" id="submitDeleteException">Delete Exception</button><br /><br /><br />
                             <input type="button" class="print" value="Print" />
 
@@ -336,7 +334,7 @@
                         <div class="center">
                             <br /><br /><br /><br />
 
-                            <button type="button" id="reloadUser" >Reload Data</button> <br /><br /><br />
+                            <button type="button" id="reloadUser" class="reload">Reload Data</button> <br /><br /><br />
                             <button type="button" id="submitDeleteUser">Delete User</button>
                         </div>
                     </div>
@@ -626,6 +624,7 @@
         $("li.last a").unbind('click');
         $( "#manageTabs" ).tabs();
         $("button").button();
+        $(".reload").click();
     });
 
 </script>
