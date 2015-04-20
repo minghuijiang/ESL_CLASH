@@ -3,7 +3,7 @@
 filename="$1"
 extension=${filename##*.}
 
-if [ ${extension} = "doc" ] || [ ${extension} = "docx"]
+if [ ${extension} = "doc" ]
 then
 # Use cat doc for older document formats
 catdoc "$filename"
