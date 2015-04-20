@@ -72,7 +72,9 @@ var express = require('express'),
                 });
 
                 if (success){
+                    console.log("sending file contents to client");
                     response.end(file_contents, "utf-8"); 
+                    console.log("success in sending file contents to client");
                 }
             }
             if (file_extension === 'txt'){
