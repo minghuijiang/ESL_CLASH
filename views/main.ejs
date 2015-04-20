@@ -599,13 +599,20 @@
                 select.text('');
                 select2.text('');
                 select.append(o);
-                select2.append(o);
+                var o2 = document.createElement('option');
+                o2.text= 'Select a class';
+                o2.disabled = 'disabled';
+                o2.selected ='selected';
+                select2.append(o2);
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
                     option.text =data.data[i].CLASSNAME;
                     option.value=data.data[i].CRN;
+                    var option2 = document.createElement('option');
+                    option2.text =data.data[i].CLASSNAME;
+                    option2.value=data.data[i].CRN;
                     select.append(option);
-                    select2.append(option);
+                    select2.append(option2);
                 }
             }
         })
