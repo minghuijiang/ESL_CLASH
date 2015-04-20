@@ -383,7 +383,13 @@
                 url: '/',  //Server script to process data
                 type: 'POST',
                 success: function(data){
-                    console.log("success:" + data);
+                    console.log("ajax success:" + data);
+                    console.log(result);
+                    if(data.status == 200){
+                        console.log("200 recieved!");
+                    }
+
+
                 },
                 error: function(data){
                     console.log(data);

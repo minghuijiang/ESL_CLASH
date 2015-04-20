@@ -54,11 +54,13 @@ var express = require('express'),
 
             if (file_extension === 'docx'){
                 var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
-                var success = false;
+
 
                 parse_msword.stdout.on('data', function (data) {    // register one or more handlers
                   console.log('stdout: ' + data);
                   file_contents = data;
+                  console.log("file_contents:" + file_contents);
+                  res.end('{"success" : "Posted Successfully", "status" : 200}');
 
                 });
 
@@ -68,14 +70,9 @@ var express = require('express'),
 
                 parse_msword.on('exit', function (code) {
                   console.log('parse_msword process exited with code ' + code);
-                  success = true;
                 });
 
-                if (success){
-                    console.log("sending file contents to client");
-                    response.end(file_contents, "utf-8"); 
-                    console.log("success in sending file contents to client");
-                }
+
             }
             if (file_extension === 'txt'){
                 fs.readFile(file.path, function (err, txt_file_data) {
