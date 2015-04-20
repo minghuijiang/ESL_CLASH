@@ -43,10 +43,10 @@ function toggleAllPOS(ischecked){
 
 function changeContent(str){
     document.getElementById("content").innerHTML = str;
-    if($('#slash')[0]['checked']!=true){
-        $('#slash').trigger('click');
+    if($('#Slash')[0]['checked']!=true){
+        $('#Slash').trigger('click');
     }
-    if($('#edit')[0]['checked']!=true){
+    if($('#edit')[0]&&$('#edit')[0]['checked']!=true){
         $('#edit').trigger('click');
     }
     revalidateAllCheckBox();
