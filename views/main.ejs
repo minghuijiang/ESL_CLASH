@@ -536,7 +536,7 @@
             console.log('response recieved ' + msg);
             json = JSON.parse(msg);
             var str =parseJSON(json);
-            document.getElementById("content").innerHTML = str;
+            changeContent(str);
             hideSlash();
             if($('#edit')[0]['checked']!=true){
                 $('#edit').trigger('click');
@@ -599,7 +599,7 @@
         var instructor = this.selectedOptions[0].value;
         var filename = this.selectedOptions[0].innerHTML;
         if(file[instructor]&&file[instructor][filename]){  // if cache exist
-            document.getElementById("content").innerHTML = file[instructor][filename];
+            changeContent(file[instructor][filename]);
         }else {
             $.get('api/getFile?crn=' + crn + '&filename=' + filename+'&userid='+instructor, function (data) {
                 console.log(data);
@@ -610,8 +610,8 @@
                         json = JSON.parse(data.data[0].JSON);
                         var str = parseJSON(json);
                         addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
-                        revalidateAllCheckBox();
-                        document.getElementById("content").innerHTML = str;
+                        changeContent(str);
+
                     }catch(e){
                         console.log(e);
                         document.getElementById("content").innerHTML ='Error parsing the document: '+filename;

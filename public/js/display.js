@@ -41,11 +41,20 @@ function toggleAllPOS(ischecked){
     })
 }
 
+function changeContent(str){
+    document.getElementById("content").innerHTML = str;
+    revalidateAllCheckBox();
+}
+
 function revalidateAllCheckBox(){
-    var objs  = $("input" );
+    var objs  = $(":checkbox" );
     objs.each(function( index ) {
-        if($(this)[0]['checked']==true)
+        console.log($(this)[0]);
+        if($(this)[0]['checked']==true&&$(this)[0].id!='All'){
             $(this).click().click();
+            console.log($(this)[0].id+ 'clicked');
+        }
+
     })
 }
 function replaceAll(find, replace, str) {
