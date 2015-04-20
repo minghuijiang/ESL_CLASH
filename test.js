@@ -77,7 +77,7 @@ var express = require('express'),
             if (file_extension === 'txt'){
                 fs.readFile(file.path, function (err, txt_file_data) {
                     console.log("text file received and it contains: " + txt_file_data);
-                    file_contents = txt_file_data;
+                    file_contents = txt_file_data.toString();
                     console.log("TXT FILE: file_contents:" + file_contents);
                     res.end('{"success" : "Posted Successfully", "status" : 200}');
                     
