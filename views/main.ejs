@@ -67,12 +67,12 @@
             <div id="nav">
                 <img src="images/logo.png" alt="CLASH" style="max-width: 200px">
                 <br />
-                <select id="classSelector"  style="width:200px">
+                <select id="classSelector"  class="classList" style="width:200px">
                     <option value="" disabled selected>Load your class</option>
                 </select>
                 <input type ="image" id="reloadReadClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
                 <br />
-                <select id="fileSelector" style="width:200px">
+                <select id="fileSelector"  style="width:200px">
                     <option value="" disabled selected>Select your Class</option>
                 </select>
 
@@ -108,7 +108,15 @@
     </div>
 
     <div id="statistic-tab" class="tab-content">
-        statistic information
+        <div id="recordSelector">
+            <select id="classSelector2" class="classList">
+                <option value="" disabled selected>Select your class</option>
+            </select>
+            <select id="studentSelector">
+                <option value="" disabled selected>Select your student</option>
+            </select>
+        </div>
+        <div class="verticalLine"></div>
     </div>
     <% if (user.USERTYPE <= 1) { %>
     <div id="upload-tab" class="tab-content">
