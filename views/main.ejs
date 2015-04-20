@@ -349,6 +349,7 @@
     <% } %>
 </div>
 <script>
+    var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     <% if (user.USERTYPE <= 1) { %>
 
     function instructorBinding(){
@@ -377,6 +378,7 @@
             ev.preventDefault();
             var formData = new FormData($('#uploadFile')[0]);
             console.log(formData.fileName);
+            $('#uploadFile').val('');
             $.ajax({
                 url: '/',  //Server script to process data
                 type: 'POST',
@@ -393,6 +395,21 @@
                 contentType: false,
                 processData: false
             });
+
+       socket.emit("file", "fire file repsonse...")
+        console.log('socket listening for file response...');
+        socket.on('file_response', function(msg){
+            console.log('response recieved ' + msg);
+            json = JSON.parse(msg);
+            var str =parseJSON(json);
+            changeContent(str);
+            hideSlash();
+            if($('#edit')[0]['checked']!=true){
+                $('#edit').trigger('click');
+            }
+            $( "#main-tabs" ).tabs( "option", "active", 0 );
+        });
+
 
         });
         $('#saveFile').on('click',function(){
@@ -526,7 +543,7 @@
     }
     adminOnlyBinding();
     <% } %>
-    var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
+    //var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
         console.log('trying to emit...');
         socket.emit('text', $('#resizable').val());
@@ -546,6 +563,9 @@
 
 
     });
+
+
+
 <% } %>
 
     $('#reloadReadClass').on('click',function(){
