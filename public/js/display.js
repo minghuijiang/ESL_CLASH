@@ -43,6 +43,12 @@ function toggleAllPOS(ischecked){
 
 function changeContent(str){
     document.getElementById("content").innerHTML = str;
+    if($('#slash')[0]['checked']!=true){
+        $('#slash').trigger('click');
+    }
+    if($('#edit')[0]['checked']!=true){
+        $('#edit').trigger('click');
+    }
     revalidateAllCheckBox();
 }
 
@@ -186,7 +192,7 @@ function parseSentence(sent, vid){
         }
 
         if(token['slashed']){
-            str+=' <span class="Slash" style="display: none">/</span> ';
+            str+=' <span class="Slash">/</span> ';
         }
     }
     return str;

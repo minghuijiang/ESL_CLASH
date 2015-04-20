@@ -81,13 +81,7 @@
 
                 <button type="button" id="read" onclick="startReader()">Start Read</button> <br />
 
-                <% if (user.USERTYPE <= 1) { %>
-                <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span><br />
-                <% } %>
-                <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
-                <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Exception</span><br />
-                <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">           <span style="font-style:italic">Vocabulary</span><br />
-                <input type="checkbox" id="stress" onclick="showStress(this.checked)">           <span style="font-weight: bold">Stress</span><br />
+
                 <input type="checkbox" id="postrigger" onclick="enablePOS(this.checked);" /> <span>Parts-of-speech</span><br />
                 <div id="pos">
                     <input type="checkbox" id="All" onclick="toggleAllPOS(this.checked);" />  <span class='All'>All</span><br />
@@ -99,7 +93,14 @@
                     <input type="checkbox" id="Conjunction" onclick="changeColor(this)" />   <span class='Conjunction'>Conjunction</span><br />
                     <input type="checkbox" id="Preposition" onclick="changeColor(this)" />   <span class='Preposition'>Preposition</span><br />
                     <input type="checkbox" id="Article" onclick="changeColor(this)" />        <span class='Article'>Article</span><br />
-                </div>
+                </div><br />
+                <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">           <span style="font-style:italic">Vocabulary</span><br />
+                <input type="checkbox" id="stress" onclick="showStress(this.checked)">           <span style="font-weight: bold">Stress</span><br />
+                <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Exception</span><br />
+                <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
+                <% if (user.USERTYPE <= 1) { %>
+                <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span>
+                <% } %>
             </div>
         </div>
 
@@ -559,10 +560,7 @@
             json = JSON.parse(msg);
             var str =parseJSON(json);
             changeContent(str);
-            hideSlash();
-            if($('#edit')[0]['checked']!=true){
-                $('#edit').trigger('click');
-            }
+
             $( "#main-tabs" ).tabs( "option", "active", 0 );
         });
 
