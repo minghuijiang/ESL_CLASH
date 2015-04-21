@@ -3,6 +3,8 @@
  */
 
 var prefix = '';
+
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -28,23 +30,6 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }));
 
-    app.get('/add', isLoggedIn, isInstructorOrAdmin,function(req, res) {
-        res.render('AddClass.html');
-    });
-
-    //TODO
-    app.get('/delete', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
-
-    app.get('/record', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
-    });
-
     // =====================================
     // LOGOUT ==============================
     // =====================================
@@ -52,7 +37,6 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect(prefix+'/login');
     });
-
     var DB = require('./DB');
     app.get('/api/addUser',DB.addUser);
     app.get('/api/delUser',DB.delUser);
@@ -73,15 +57,13 @@ module.exports = function(app, passport) {
     app.get('/api/listUser',DB.listUser);
     app.get('/api/listClass',DB.listClass);
     app.get('/api/listStudent',DB.listStudent);
-    app.post('/',isLoggedIn,isInstructorOrAdmin,function(req,res){
-       res.send('Post success');
+    app.post('/uploads',isLoggedIn,isInstructorOrAdmin,function(req,res){
+       //res.send('Post success');
     });
 
-    app.get('/main',isLoggedIn,function(req,res){
-        res.render('main.ejs',{user:req.user});
-    })
 
 };
+
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {

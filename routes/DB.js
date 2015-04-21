@@ -757,7 +757,7 @@ exports.getRecord = function(req,res){
                     if (err){
                         result.error=err;
                     }else{
-                        rows[0].USERNAME =req.user.USERNAME;
+                        //rows[0][''] =req.user.USERNAME;
                         result.data=rows;
                     }
                     res.send(result);
@@ -774,17 +774,17 @@ exports.getRecord = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==0){
+                connection.query("SELECT * FROM RECORD", function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
 
+                });
             }
-            connection.query("SELECT * FROM RECORD", function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
 
-            });
 
         });
     }
@@ -837,7 +837,11 @@ exports.getFiles = function(req,res){
 
                     });
             }else if(req.user.USERTYPE==1){ // INSTRUCTOR
-                connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID = ?',req.user.USERID,function(err, rows){
+                connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID = ? ' +
+                    'OR USERID IN (' +
+                     "SELECT INSTRUCTOR FROM (" +
+                "(SELECT CRN FROM STUDENT WHERE STUDENT = ? AND CRN = ?) AS A " +
+                "JOIN CLASS ON (A.CRN = CLASS.CRN)))",[req.user.USERID,req.user.USERID,input.crn],function(err, rows){
                     if (err){
                         console.log(err);
                         result.error=err;
@@ -847,6 +851,7 @@ exports.getFiles = function(req,res){
                     res.send(result);
 
                 });
+
             }else if(req.user.USERTYPE==0){ // admin
                 if(input.crn){ // file for single class.
                     connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID IN ' +
@@ -960,7 +965,8 @@ exports.listClass = function(req,res){
                 });
 
             }else if (req.user.USERTYPE ==1){
-                connection.query("SELECT * FROM CLASS WHERE INSTRUCTOR = ?" ,req.user.USERID, function(err, rows){
+                connection.query("SELECT * FROM CLASS WHERE INSTRUCTOR = ? OR CRN IN " +
+                "(SELECT CRN FROM STUDENT WHERE STUDENT = ?)" ,[req.user.USERID,req.user.USERID], function(err, rows){
                     if (err){
                         result.error=err;
                     }else{

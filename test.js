@@ -39,54 +39,37 @@ var express = require('express'),
     app.use(multer({
       	dest: './uploads/',
       	rename: function (fieldname, filename) {
-      		console.log("====================multer filename:"+filename);
-            console.log("====================multer fieldname:"+fieldname);
-        return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
+                return filename.replace(/\W+/g, '-').toLowerCase() + Date.now()
       		},
             onFileUploadComplete: function (file, req, res) {
-            
-            var file_extension = file.extension;    
-            console.log(file.name + ' uploading has ended ...');
-            console.log("File name : "+ file.name +"\n"+ "FilePath: "+ file.path);
-            console.log("file extension:" + file.extension)
-            
-
-
-            if (file_extension === 'docx'){
-                var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
-
-
-                parse_msword.stdout.on('data', function (data) {    // register one or more handlers
-                  console.log('stdout: ' + data);
-                  file_contents = data.toString();
-                  console.log("file_contents:" + file_contents);
-                  res.end('{"success" : "Posted Successfully", "status" : 200}');
-
-                });
-
-                parse_msword.stderr.on('data', function (data) {
-                  console.log('stderr: ' + data);
-                });
-
-                parse_msword.on('exit', function (code) {
-                  console.log('parse_msword process exited with code ' + code);
-                });
-
-
-            }
-            if (file_extension === 'txt'){
-                fs.readFile(file.path, function (err, txt_file_data) {
-                    console.log("text file received and it contains: " + txt_file_data);
-                    file_contents = txt_file_data.toString();
-                    console.log("TXT FILE: file_contents:" + file_contents);
-                    res.end('{"success" : "Posted Successfully", "status" : 200}');
-                    
-                if (err) throw err;
-                  console.log("err on text data: " + txt_file_data);
-                });
-
-            }
-
+                var file_extension = file.extension;
+                var result = {};
+                if (file_extension === 'docx'||file_extension === 'doc'||file_extension === 'txt'){
+                    var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+                    parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+                        parseText(data,req,res,2,10,function(){
+                            fs.unlink(file.path,function(err){
+                                if(err)
+                                    console.log(err);
+                            });
+                        });
+                    });
+                    parse_msword.stderr.on('data', function (data) {
+                        console.log('stderr '+data);
+                        result.error='stderr: ' + data;
+                        res.send(result);
+                        fs.unlink(file.path,function(err){
+                            if(err)
+                                console.log(err);
+                        });
+                    });
+                }else{// this should not happen., always check extension on client side before upload.
+                    result.error='Unsupported file format';
+                    fs.unlink(file.path,function(err){
+                        if(err)
+                            console.log(err);
+                    });
+                }
         }
             
 	}));
@@ -282,6 +265,66 @@ http.listen(3000, function(){
 });
 
 
+function parseText(msg,req, res,min,max,callback){
+    var options = {
+        args: [msg]
+    };
+    var result ={};
+    PythonShell.run( 'parse_pos.py', options, function(err, results) {
+        console.log(err);
+        console.log(results);
+        if (err) {
+            console.log('IN FILE2: error from python: ' + err.stack);
+            result.error = err;
+            res.send(result);
+        } else {
+            // grep ExceptionList
+            req.getConnection(function (err, connection) {
+                connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT",req.user.USERID, function(err, rows){
+                    var exception ='';
+                    if (err){
+                    }else{
+                        for(var i=0;i<rows.length;i++){
+                            exception+=rows[i].EX_STR+';';
+                        }
+                    }
+                    console.log(exception);
+                    // results is an array consisting of messages collected during execution
+                    console.log("IN FILE: from python: "+results);
+                    /**
+                     * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
+                     *
+                     * @param nltkInput
+                     * @param exceptionList
+                     *          Exception List is a string with multiple token, separated by ';'
+                     *              from day to day;from year to year;
+                     * @param minLength  [3, 10]
+                     *          minimum length of a token,
+                     *          this is a suggestion value,
+                     *          the algorithm do not guaranteed the length will always be large than minLength
+                     * @param maxLength , [7,12]
+                     *          maximum length of a token,   # currently has no effect.
+                     *          this is a suggestion value,
+                     *          the algorithm do not guaranteed the length will always be less than maxLength
+                     * @return
+                     *
+                     */
+                    slash.parseSlash(results[0], exception ,min,max, function(error, data) {
+                        if (error) {
+                            result.error=error;
+                        } else {
+                            result.data=data;
+                        }
+                        res.send(result);
+                        callback();
+                    });
+                });
+
+            });
+
+        }
+    });
+}
 
 
 

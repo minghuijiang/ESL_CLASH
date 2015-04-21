@@ -2,8 +2,10 @@
 
 filename="$1"
 extension=${filename##*.}
-
-if [ ${extension} = "doc" ]
+if [ ${extension} = "doc" ];
+then
+cat "$filename"
+elif [ ${extension} = "doc" ]
 then
 # Use cat doc for older document formats
 catdoc "$filename"

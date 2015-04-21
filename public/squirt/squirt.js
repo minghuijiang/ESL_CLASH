@@ -504,7 +504,13 @@ function e(t, n, r) {
                 .map(function(node) {
                     node.classList.add('sq-trans');
                 });
-
+            startTime = new Date().getMilliseconds();
+            timeRead = 0;
+            lexicalRead= 0;
+            wordRead = 0;
+            regression=0;
+            fixation = 0;
+            sent=false;
         }(initialized = true);
 
         function upToDate() {
@@ -631,11 +637,37 @@ function e(t, n, r) {
                 text: text
             });
         }
+        function sendRecord(){
+            var selectedFile = $('#fileSelector')[0].selectedOptions[0];
+            var data = {
+                instructor: selectedFile.value,
+                filename: selectedFile.innerHTML,
+                timeSpend: new Date().getMilliseconds() -startTime +timeRead,
+                wordRead: wordRead,
+                lbRead: lexicalRead,
+                regression: regression,
+                fixation: fixation
+            };
+            $.get('api/addRecord?'+$.param(data),function(data){
+                if(data.error)
+                    onError(data);
+                else{
+                    console.log('sended data');
+                }
+            })
+        }
+        sendRecord();
 
-
-
+        var startTime,timeRead,lexicalRead,wordRead,regression,fixation,sent;
 
         sq.again = function(didWaitForBlur) {
+            startTime = new Date().getMilliseconds();
+            timeRead = 0;
+            lexicalRead= 0;
+            wordRead = 0;
+            regression=0;
+            fixation = 0;
+            sent = false;
             // handle the situation where the user clicks the bookmarklet immediately
             // after reinstalling
             if (!initialized) return initSquirt();

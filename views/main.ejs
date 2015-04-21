@@ -119,7 +119,7 @@
             <button id="reloadRecord">Reload Data</button>
         </div>
         <hr />
-        <div id="recordDisplay">
+        <div id="recordDisplay" style="font-size: 0.8em">
 
         </div>
         <script>
@@ -133,8 +133,9 @@
                         select.text('');
 
                         for(var i=0;i<data.data.length;i++){
-                            var option = document.createElement('p');
-                            option.innerHTML=data.data[i];
+                            var option = document.createElement('span');
+                            console.log(data.data[i]);
+                            option.innerHTML=JSON.stringify(data.data[i]);
                             select.append(option);
                         }
                     }
@@ -209,7 +210,7 @@
             <hr />
             <br />
             <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" value="Select File to Upload.." accept=".docx,.txt" /><br /><br />
+                <input type="file" name="file" value="Select File to Upload.." accept=".docx,.doc,.txt" /><br /><br />
                 <input type="submit" />
             </form>
         </div>
@@ -465,32 +466,20 @@
              //$('#uploadFile').val('');
             //formData.reset();
             $.ajax({
-                url: '/',  //Server script to process data
+                url: '/uploads',  //Server script to process data
                 type: 'POST',
                 success: function(data){
-                    console.log("ajax success:" + data);
-                    console.log(data);
-                    
-                    socket.emit('file', 'do it!');
-                    console.log("socket reponse sent to kick off file processing");
-
-                        socket.on('response', function(msg){
-                            console.log('response recieved ' + msg);
-                            json = JSON.parse(msg);
-                            var str =parseJSON(json);
-                            changeContent(str);
-                            hideSlash();
-                            if($('#edit')[0]['checked']!=true){
-                                $('#edit').trigger('click');
-                            }
-                            $( "#main-tabs" ).tabs( "option", "active", 0 );
-                    });
-
-
-
+                    if(data.error)
+                        onError(data);
+                    else{
+                        json = JSON.parse(data.data);
+                        var str =parseJSON(json);
+                        changeContent(str);
+                        $( "#main-tabs" ).tabs( "option", "active", 0 );
+                    }
                 },
                 error: function(data){
-                    console.log(data);
+                    onError(data);
                 },
                 // Form data
                 data: formData,
