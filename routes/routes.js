@@ -7,37 +7,28 @@ var prefix = '';
 
 module.exports = function(app, passport) {
 
-    // =====================================
     // HOME PAGE (with login links) ========
-    // =====================================
     app.get( '/',isLoggedIn, function ( request, response ) {
         response.render('main.ejs',{user:request.user});
     });
-
-    // =====================================
     // LOGIN ===============================
-    // =====================================
-    // show the login form
     app.get('/login', function(req, res) {
-        // render the page and pass in any flash data if it exists
         res.render('login.ejs', { message: req.flash('loginMessage') });
     });
-
     // process the login form
     app.get('/authentication', passport.authenticate('local-login', {
             successRedirect : prefix+'/', // redirect to the secure profile section
             failureRedirect : prefix+'/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
-
-    // =====================================
     // LOGOUT ==============================
-    // =====================================
     app.get('/logout', function(req, res) {
         req.logout();
         res.redirect(prefix+'/login');
     });
+
     var DB = require('./DB');
+
     app.get('/api/addUser',DB.addUser);
     app.get('/api/delUser',DB.delUser);
     app.post('/api/addFile',DB.addFile);
@@ -57,55 +48,18 @@ module.exports = function(app, passport) {
     app.get('/api/listUser',DB.listUser);
     app.get('/api/listClass',DB.listClass);
     app.get('/api/listStudent',DB.listStudent);
-    app.post('/uploads',isLoggedIn,isInstructorOrAdmin,function(req,res){
-        var file = req.files.file;
-        var file_extension = file.extension;
-        var result = {};
-
-        // check file size on client side.
-        if((file.extensions=='txt'&&file.size>1024*1024)||// txt limit to 1mb
-            ((file.extensions=='doc'||file.extensions=='docx'))&&file.size>5*1024*1024){//doc and docx limit to 5mb
-            result.error ="File too big, txt file max size = 1Mb, doc or docx file max siz = 5Mb.";
-            res.send(result);
-            return ;
-        }
-
-        if (file_extension === 'docx'||file_extension === 'doc'||file_extension === 'txt'){
-            var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
-            parse_msword.stdout.on('data', function (data) {    // register one or more handlers
-                parseText(data,req,res,1,10,function(){
-                    fs.unlink(file.path,function(err){
-                        if(err)
-                            console.log(err);
-                    });
-                });
-            });
-            parse_msword.stderr.on('data', function (data) {
-                console.log('stderr '+data);
-                result.error='stderr: ' + data;
-                res.send(result);
-                fs.unlink(file.path,function(err){
-                    if(err)
-                        console.log(err);
-                });
-            });
-        }else{// this should not happen., always check extension on client side before upload.
-            result.error='Unsupported file format';
-            fs.unlink(file.path,function(err){
-                if(err)
-                    console.log(err);
-            });
-        }
-    });
+    app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 
     app.post('/slash',isLoggedIn,isInstructorOrAdmin,function(req,res){
-
+        console.log(req);
     })
 
 
 };
 var java = require('java'),
-    PythonShell = require('python-shell');
+    PythonShell = require('python-shell'),
+    spawn = require('child_process').spawn,
+    fs = require('fs');
 
 java.classpath.push("java/slash.jar");
 var slash = java.newInstanceSync("main.Slash");
@@ -169,7 +123,46 @@ function parseText (msg,req, res,min,max,callback){
     });
 }
 
+function handleUploads(req,res){
+    var file = req.files.file;
+    var file_extension = file.extension;
+    var result = {};
 
+    // check file size on client side.
+    if((file.extensions=='txt'&&file.size>1024*1024)||// txt limit to 1mb
+        ((file.extensions=='doc'||file.extensions=='docx'))&&file.size>5*1024*1024){//doc and docx limit to 5mb
+        result.error ="File too big, txt file max size = 1Mb, doc or docx file max siz = 5Mb.";
+        res.send(result);
+        return ;
+    }
+
+    if (file_extension === 'docx'||file_extension === 'doc'||file_extension === 'txt'){
+        var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+        parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+            parseText(data,req,res,1,10,function(){
+                fs.unlink(file.path,function(err){
+                    if(err)
+                        console.log(err);
+                });
+            });
+        });
+        parse_msword.stderr.on('data', function (data) {
+            console.log('stderr '+data);
+            result.error='stderr: ' + data;
+            res.send(result);
+            fs.unlink(file.path,function(err){
+                if(err)
+                    console.log(err);
+            });
+        });
+    }else{// this should not happen., always check extension on client side before upload.
+        result.error='Unsupported file format';
+        fs.unlink(file.path,function(err){
+            if(err)
+                console.log(err);
+        });
+    }
+}
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {

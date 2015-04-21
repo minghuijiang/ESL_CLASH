@@ -476,6 +476,9 @@
                         var str =parseJSON(json);
                         changeContent(str);
                         $( "#main-tabs" ).tabs( "option", "active", 0 );
+                        $('#uploadFile').each(function(){
+                            this.reset();
+                        });
                     }
                 },
                 error: function(data){
@@ -487,10 +490,6 @@
                 cache: false,
                 contentType: false,
                 processData: false
-            });
-
-            $('#uploadFile').each(function(){
-                this.reset();
             });
 
         });
@@ -627,20 +626,17 @@
     <% } %>
     //var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
-        console.log('trying to emit...');
-        socket.emit('text', $('#resizable').val());
-        console.log($('#resizable').val());
-        //$('#resizable').val('');
-        socket.on('response', function(msg){
-            console.log('response recieved ' + msg);
-            json = JSON.parse(msg);
-            var str =parseJSON(json);
-            changeContent(str);
-
-            $( "#main-tabs" ).tabs( "option", "active", 0 );
+        $.ajax({
+            type: "POST",
+            url: "/slash",
+            data: 'text='+$('#resizable').val(),
+            success: function(data){
+                json = JSON.parse(msg);
+                var str =parseJSON(json);
+                changeContent(str);
+                $( "#main-tabs" ).tabs( "option", "active", 0 );
+            }
         });
-
-
     });
 <% } %>
 
