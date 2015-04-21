@@ -626,11 +626,13 @@
     <% } %>
     //var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
     $('#button').click(function(){
+        $('#button').prop('disabled',true);
         $.ajax({
             type: "POST",
             url: "/slash",
             data: 'text='+$('#resizable').val(),
             success: function(data){
+                $('#button').prop('disabled',false);
                 json = JSON.parse(msg);
                 var str =parseJSON(json);
                 changeContent(str);

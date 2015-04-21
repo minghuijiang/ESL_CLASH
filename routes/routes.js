@@ -51,7 +51,8 @@ module.exports = function(app, passport) {
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 
     app.post('/slash',isLoggedIn,isInstructorOrAdmin,function(req,res){
-        console.log(req);
+        var text=req.body.text;
+        parseText(text,req,res,1,10);
     })
 
 
@@ -113,7 +114,8 @@ function parseText (msg,req, res,min,max,callback){
                             result.data=data;
                         }
                         res.send(result);
-                        callback();
+                        if(callback)
+                            callback();
                     });
                 });
 
