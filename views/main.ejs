@@ -54,7 +54,29 @@
             <input type="text" id="newException" name="exception" placeholder="Exception" size="8" />
             <button id="addEx">add</button>
             <span style="float:right">
+            <button id="print">Print</button>
+                <script>
+                    $('#print').bind('click', function () {
+                        var printContents = $(".printable")[0];
+                        var myWindow = window.open("", "_newtab", "");
+                        var doc = myWindow.document;
+                        doc.open();
+                        doc.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+                        doc.write("<html>");
+                        doc.write("<head>");
+                        doc.write('<link rel="stylesheet" href="css/main-style.css">'); // your css file comes here.
+                        doc.write("</head>");
+                        doc.write("<body>");
+                        doc.write($(printContents).html());
+                        doc.write("</body>");
+                        doc.write("</html>");
+                        doc.document.close();
+                        doc.focus();
+                        doc.print();
+                        doc.close();
+                    });
 
+                </script>
             <input type="text" id="filename" placeholder="File Name" size="16" />
                 <button id="saveFile" >Save</button>
 
@@ -633,10 +655,16 @@
             data: 'text='+$('#resizable').val(),
             success: function(data){
                 $('#button').prop('disabled',false);
-                json = JSON.parse(msg);
-                var str =parseJSON(json);
-                changeContent(str);
-                $( "#main-tabs" ).tabs( "option", "active", 0 );
+                if(data.error){
+                    onError(data);
+                }else{
+                    $('#resizable').val('');
+                    json = JSON.parse(data.data);
+                    var str =parseJSON(json);
+                    changeContent(str);
+                    $( "#main-tabs" ).tabs( "option", "active", 0 );
+                }
+
             }
         });
     });
