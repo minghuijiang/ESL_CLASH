@@ -764,7 +764,7 @@ exports.getRecord = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==1 ){
-                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[input.crn], function(err, rows){
+                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[req.user.USERID], function(err, rows){
                     if (err){
                         result.error=err;
                     }else{

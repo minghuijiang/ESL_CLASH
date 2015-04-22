@@ -212,7 +212,7 @@
             <br />
             <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
                 <input type="file" name="file" value="Select File to Upload.." accept=".docx,.doc,.txt" /><br /><br />
-                <input type="submit" />
+                <input type="submit" id="fileSubmit" />
             </form>
         </div>
 
@@ -459,17 +459,42 @@
             }
         });
 
+        $('#button').click(function(){
+            console.log('clicked');
+            $(this).prop('disabled',true);
+            $("span", this).text("This should not take long. Please wait...");
+            $.ajax({
+                type: "POST",
+                url: "/slash",
+                data: 'text='+$('#resizable').val(),
+                success: function(data){
+                    $(this).prop('disabled',false);
+                    $("span", this).text("SLASH IT!");
+                    if(data.error){
+                        onError(data);
+                    }else{
+                        $('#resizable').val('');
+                        json = JSON.parse(data.data);
+                        var str =parseJSON(json);
+                        changeContent(str);
+                        $( "#main-tabs" ).tabs( "option", "active", 0 );
+                    }
+
+                }
+            });
+        });
+
         $('#uploadFile').on('submit',function(ev){
             ev.preventDefault();
             var formData = new FormData($('#uploadFile')[0]);
-            
-            console.log(formData.fileName);
-             //$('#uploadFile').val('');
-            //formData.reset();
+            $('#fileSubmit',this).prop('disabled',true);
+            $('#fileSubmit',this).val('Please wait...');
             $.ajax({
-                url: '/uploads',  //Server script to process data
+                url: '/uploads',
                 type: 'POST',
                 success: function(data){
+                    $('#fileSubmit').prop('disabled',false);
+                    $('#fileSubmit').val('Submit');
                     if(data.error)
                         onError(data);
                     else{
@@ -645,28 +670,6 @@
     }
     adminOnlyBinding();
     <% } %>
-    //var socket = io.connect('http://esl-clash.cs.odu.edu',{ path: '/socket.io' });
-    $('#button').click(function(){
-        $('#button').prop('disabled',true);
-        $.ajax({
-            type: "POST",
-            url: "/slash",
-            data: 'text='+$('#resizable').val(),
-            success: function(data){
-                $('#button').prop('disabled',false);
-                if(data.error){
-                    onError(data);
-                }else{
-                    $('#resizable').val('');
-                    json = JSON.parse(data.data);
-                    var str =parseJSON(json);
-                    changeContent(str);
-                    $( "#main-tabs" ).tabs( "option", "active", 0 );
-                }
-
-            }
-        });
-    });
 <% } %>
 
     $('#reloadReadClass').on('click',function(){
