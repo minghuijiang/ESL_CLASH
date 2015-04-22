@@ -151,7 +151,6 @@ function handleUploads(req,res){
         });
         parse_msword.stderr.on('data', function (data) {
             console.log('stderr '+data);
-            result.error='stderr: ' + data;
             res.send(result);
             fs.unlink(file.path,function(err){
                 if(err)
@@ -160,6 +159,7 @@ function handleUploads(req,res){
         });
     }else{// this should not happen., always check extension on client side before upload.
         result.error='Unsupported file format';
+        res.send(result);
         fs.unlink(file.path,function(err){
             if(err)
                 console.log(err);

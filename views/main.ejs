@@ -468,8 +468,8 @@
                 url: "/slash",
                 data: 'text='+$('#resizable').val(),
                 success: function(data){
-                    $(this).prop('disabled',false);
-                    $("span", this).text("SLASH IT!");
+                    $("#button").prop('disabled',false);
+                    $("#button span").text("SLASH IT!");
                     if(data.error){
                         onError(data);
                     }else{
