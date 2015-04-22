@@ -86,7 +86,9 @@ function parseText (msg,req, res,min,max,callback){
                             exception+=rows[i].EX_STR+';';
                         }
                     }
+                    console.log(exception);
                     // results is an array consisting of messages collected during execution
+                    console.log("IN FILE: from python: "+results);
                     /**
                      * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
                      *

@@ -8,6 +8,7 @@
 	<style>
 		body 		{ padding-top:80px; }
 	</style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
     <div class="container">
@@ -31,16 +32,26 @@
                     <label>Password</label>
                     <input type="password" class="form-control" name="password">
                 </div>
-                <div class="form-group">
-                    <label>Remember Me</label>
-                    <input type="checkbox" class="form-control" name="remember" value="yes">
-                </div>
+                <!--<div class="form-group">-->
+                    <!--<label>Remember Me</label>-->
+                    <!--<input type="checkbox" class="form-control" name="remember" value="yes">-->
+                <!--</div>-->
 
-                <button type="submit" class="btn btn-warning btn-lg">Login</button>
+                <button id='submit' type="submit" class="btn btn-warning btn-lg">Login</button>
+                <br />
             </form>
 
             <hr>
-            <p>Or go <a href="/">home</a>.</p>
+            <button id="demo" class="btn btn-warning btn-lg">Try CESR with a dummy class</button>
+            <script>
+                $('#demo').click(function(){
+                    var input =$('.form-control').val('instructor');
+//                    console.log(input);
+//                    console.log(input[0].val());
+//                    input[1].innerText='instructor';
+                    $('#submit').trigger('click');
+                })
+            </script>
         </div>
     </div>
 </body>
