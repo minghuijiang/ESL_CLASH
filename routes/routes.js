@@ -132,6 +132,7 @@ function parseText (msg,req, res,min,max,callback){
 }
 
 function handleUploads(req,res){
+    console.log('called handle uploads');
     var file = req.files.file;
     var file_extension = file.extension;
     var result = {};
@@ -146,9 +147,14 @@ function handleUploads(req,res){
 
     if (file_extension === 'docx'||file_extension === 'doc'||file_extension === 'txt'){
         var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+        var output="";
         parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+            output+=data
+
+        }).on('end',function(){
+
             console.log(req.user.USERNAME+' finished Spawn');
-            parseText(data,req,res,1,10,function(){
+            parseText(output,req,res,1,10,function(){
                 fs.unlink(file.path,function(err){
                     if(err)
                         console.log(err);
