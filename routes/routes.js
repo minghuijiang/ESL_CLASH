@@ -23,6 +23,7 @@ module.exports = function(app, passport) {
         }));
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
+        console.log(req.user.USERNAME+' logout');
         req.logout();
         res.redirect(prefix+'/login');
     });
@@ -51,6 +52,7 @@ module.exports = function(app, passport) {
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 
     app.post('/slash',isLoggedIn,isInstructorOrAdmin,function(req,res){
+        console.log(req.user.USERNAME+' request to slash text.');
         var text=req.body.text;
         parseText(text,req,res,1,10);
     })
@@ -72,7 +74,7 @@ function parseText (msg,req, res,min,max,callback){
     var result ={};
     PythonShell.run( 'parse_pos.py', options, function(err, results) {
         if (err) {
-            console.log('IN FILE2: error from python: ' + err.stack);
+            console.log(req.user.USERNAME+' Error from python script: '+err);
             result.error = err;
             res.send(result);
         } else {
@@ -86,9 +88,8 @@ function parseText (msg,req, res,min,max,callback){
                             exception+=rows[i].EX_STR+';';
                         }
                     }
-                    console.log(exception);
+                    console.log(req.user.USERNAME+' After get Exception: '+exception);
                     // results is an array consisting of messages collected during execution
-                    console.log("IN FILE: from python: "+results);
                     /**
                      * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
                      *
@@ -108,13 +109,17 @@ function parseText (msg,req, res,min,max,callback){
                      *
                      */
                     slash.parseSlash(results[0], exception ,min,max, function(error, data) {
+                        console.log(req.user.USERNAME+' finish slash.');
                         if (error) {
+                            console.log(req.user.USERNAME+' Error from slash.');
                             console.log(error);
                             result.error=error;
+                            res.send(result);
+
                         } else {
                             result.data=data;
+                            res.send(result);
                         }
-                        res.send(result);
                         if(callback)
                             callback();
                     });
@@ -130,7 +135,7 @@ function handleUploads(req,res){
     var file = req.files.file;
     var file_extension = file.extension;
     var result = {};
-
+    console.log(req.user.USERNAME+' request to slash upload document. file_extension: '+file_extension+' size: '+file.size);
     // check file size on client side.
     if((file.extensions=='txt'&&file.size>1024*1024)||// txt limit to 1mb
         ((file.extensions=='doc'||file.extensions=='docx'))&&file.size>5*1024*1024){//doc and docx limit to 5mb
@@ -142,6 +147,7 @@ function handleUploads(req,res){
     if (file_extension === 'docx'||file_extension === 'doc'||file_extension === 'txt'){
         var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
         parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+            console.log(req.user.USERNAME+' finished Spawn');
             parseText(data,req,res,1,10,function(){
                 fs.unlink(file.path,function(err){
                     if(err)
@@ -150,7 +156,7 @@ function handleUploads(req,res){
             });
         });
         parse_msword.stderr.on('data', function (data) {
-            console.log('stderr '+data);
+            console.log(req.user.USERNAME+' Standard Error from spawn: '+data);
             res.send(result);
             fs.unlink(file.path,function(err){
                 if(err)
@@ -158,6 +164,7 @@ function handleUploads(req,res){
             });
         });
     }else{// this should not happen., always check extension on client side before upload.
+        console.log(req.user.USERNAME+' unsupport file format : '+file.extension);
         result.error='Unsupported file format';
         res.send(result);
         fs.unlink(file.path,function(err){
@@ -171,7 +178,7 @@ function handleUploads(req,res){
 function isLoggedIn(req, res, next) {
 
     if (req.isAuthenticated()) {
-        console.log('after authenticated');
+        console.log(req.user.USERNAME+' Authenticated');
         return next();
     }
 
@@ -180,13 +187,13 @@ function isLoggedIn(req, res, next) {
 }
 
 function isInstructorOrAdmin(req,res,next){
+    console.log(req.user.USERNAME+' request Instructor action.');
     if(req.user.USERTYPE<=1)
         return next();
-    res.redirect('/');
 }
 
 function isAdmin(req,res,next){
+    console.log(req.user.USERNAME+' request Admin action.');
     if(req.user.USERTYPE==0)
         return next();
-    res.redirect('/');
 }
