@@ -162,6 +162,7 @@ exports.addFile = function(req,res){
                 if (err){
                     result.error=err;
                 }else{
+                    rows.USERID= req.user.USERID;
                     result.data=rows;
                 }
                 res.send(result);
@@ -737,7 +738,7 @@ exports.getRecord = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==1 ){
-                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[req.user.USERID], function(err, rows){
+                connection.query("SELECT * FROM RECORD WHERE INSTRUCTORID = ?",[req.user.USERID], function(err, rows){
                     if (err){
                         result.error=err;
                     }else{

@@ -49,6 +49,10 @@ module.exports = function(app, passport) {
     app.get('/api/listUser',isLoggedIn,DB.listUser);
     app.get('/api/listClass',isLoggedIn,DB.listClass);
     app.get('/api/listStudent',isLoggedIn,DB.listStudent);
+    //test version.
+    app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
+    app.get('/js/eventA.js',isLoggedIn,isAdmin);
+
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 
     app.post('/slash',isLoggedIn,isInstructorOrAdmin,function(req,res){
