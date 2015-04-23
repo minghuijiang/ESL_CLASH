@@ -2,6 +2,18 @@
  * Created by MingJiang on 4/16/2015.
  */
 
+function removeParen(item){
+    return item.innerHTML.split('(')[0];
+}
+
+function onError(data){
+    if(data.error)
+        if(data.error.code)
+            showError(data.error.code);
+        else
+            showError(data.error);
+
+}
 
 function createOption(text, val){
     var option = document.createElement('option');

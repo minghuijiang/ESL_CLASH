@@ -44,18 +44,6 @@ function bindDel(button,panel,url,processItem,callback){
     })
 }
 
-function removeParen(item){
-    return item.innerHTML.split('(')[0];
-}
-
-function onError(data){
-    if(data.error)
-        if(data.error.code)
-            showError(data.error.code);
-        else
-            showError(data.error);
-
-}
 
 function instructorBinding(){
     //delete script
