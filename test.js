@@ -66,12 +66,12 @@ var express = require('express'),
     app.use(flash()); // use connect-flash for flash messages stored in session
 
 
-// open public folder
-app.use(express.static(__dirname + '/public'));
 
 // routes ======================================================================
 require('./routes/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
+// open public folder
+app.use(express.static(__dirname + '/public'));
 //Socket.IO and python-shell
 
 var sessionsConnections = {};
