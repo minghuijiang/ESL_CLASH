@@ -55,7 +55,7 @@
         </div>
         <% if (user.USERTYPE <= 1) { %>
         <div id="editBar" style="">
-            <input type="text" id="newException" name="exception" placeholder="Exception" size="8" />
+            <input type="text" id="newException" name="exception" placeholder="Lexical Bundle" size="15" />
             <button id="addEx">add</button>
             <span style="float:right">
             <button id="print">Print</button>
@@ -101,7 +101,7 @@
                 </div>
                 <input type="checkbox" id="vocab" onclick="showVocab(this.checked)">           <span style="font-style:italic">Vocabulary</span><br />
                 <input type="checkbox" id="stress" onclick="showStress(this.checked)">           <span style="font-weight: bold">Stress</span><br />
-                <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Exception</span><br />
+                <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Lexical Bundles</span><br />
                 <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
                 <% if (user.USERTYPE <= 1) { %>
                 <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span>                <br />
@@ -232,7 +232,7 @@
                 <li ><a href="#class-tab">Class</a></li>
                 <li><a href="#student-tab">Student</a></li>
                 <li><a href="#file-tab">File</a></li>
-                <li><a href="#exception-tab">Exception</a></li>
+                <li><a href="#exception-tab">Lexical Bundles</a></li>
                 <li><a href="#user-tab">User</a></li>
             </ul>
             <div id="class-tab" class="tab-content">
@@ -347,10 +347,10 @@
             </div>
             <div id="exception-tab" class="tab-content">
                 <div class="right delete" style="width:100%">
-                    <h1>Delete Exception</h1>
+                    <h1>Delete Lexical Bundle</h1>
                     <div class="container">
                         <div>
-                            <h3>Exception List</h3>
+                            <h3>Lexical Bundle List</h3>
                             <select id="leftException" size="10" multiple>
                                 <option>Exception 1</option>
                                 <option>Exception 2</option>
@@ -369,7 +369,7 @@
                         <div class="center">
                             <br /><br /><br /><br />
                             <button type="button" id="reloadException" class="reload exc">Reload Data</button> <br /><br /><br />
-                            <button type="button" id="submitDeleteException">Delete Exception</button><br /><br /><br />
+                            <button type="button" id="submitDeleteException">Delete Lexical Bundle</button><br /><br /><br />
                             <input type="button" class="print" value="Print" />
 
                         </div>
