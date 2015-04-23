@@ -50,9 +50,11 @@ exports.addUser = function(req,res){
 
         req.getConnection(function (err, connection) {
             var data = {
-                USERNAME    : input.username,
-                PASSWORD : input.password,
-                USERTYPE   : usertype
+                USERNAME    :   input.username,
+                FNAME:          input.fname,
+                LNAME:          input.lname,
+                PASSWORD :      input.password,
+                USERTYPE   :    usertype
             };
 
             //TODO verify if username already exist before do a insert,
