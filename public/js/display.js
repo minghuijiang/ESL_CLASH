@@ -72,10 +72,8 @@ function changeSlash(checked){
 function revalidateAllCheckBox(){
     var objs  = $(":checkbox" );
     objs.each(function( index ) {
-        console.log($(this)[0]);
         if($(this)[0]['checked']==true&&$(this)[0].id!='All'){
             $(this).click().click();
-            console.log($(this)[0].id+ 'clicked');
         }
 
     })

@@ -30,25 +30,25 @@ module.exports = function(app, passport) {
 
     var DB = require('./DB');
 
-    app.get('/api/addUser',DB.addUser);
-    app.get('/api/delUser',DB.delUser);
-    app.post('/api/addFile',DB.addFile);
+    app.get('/api/addUser',isLoggedIn,DB.addUser);
+    app.get('/api/delUser',isLoggedIn,DB.delUser);
+    app.post('/api/addFile',isLoggedIn,DB.addFile);
 
-    app.get('/api/delFile',DB.delFile);
-    app.get('/api/addException',DB.addException);
-    app.get('/api/delException',DB.delException);
-    app.get('/api/printException',DB.printException);
-    app.get('/api/addClass',DB.addClass);
-    app.get('/api/delClass',DB.delClass);
-    app.get('/api/addStudent',DB.addStudent);
-    app.get('/api/delStudent',DB.delStudent);
-    app.get('/api/addRecord',DB.addRecord);
-    app.get('/api/getRecord',DB.getRecord);
-    app.get('/api/getFiles',DB.getFiles);
-    app.get('/api/getFile',DB.getFile);
-    app.get('/api/listUser',DB.listUser);
-    app.get('/api/listClass',DB.listClass);
-    app.get('/api/listStudent',DB.listStudent);
+    app.get('/api/delFile',isLoggedIn,DB.delFile);
+    app.get('/api/addException',isLoggedIn,DB.addException);
+    app.get('/api/delException',isLoggedIn,DB.delException);
+    app.get('/api/printException',isLoggedIn,DB.printException);
+    app.get('/api/addClass',isLoggedIn,DB.addClass);
+    app.get('/api/delClass',isLoggedIn,DB.delClass);
+    app.get('/api/addStudent',isLoggedIn,DB.addStudent);
+    app.get('/api/delStudent',isLoggedIn,DB.delStudent);
+    app.get('/api/addRecord',isLoggedIn,DB.addRecord);
+    app.get('/api/getRecord',isLoggedIn,DB.getRecord);
+    app.get('/api/getFiles',isLoggedIn,DB.getFiles);
+    app.get('/api/getFile',isLoggedIn,DB.getFile);
+    app.get('/api/listUser',isLoggedIn,DB.listUser);
+    app.get('/api/listClass',isLoggedIn,DB.listClass);
+    app.get('/api/listStudent',isLoggedIn,DB.listStudent);
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 
     app.post('/slash',isLoggedIn,isInstructorOrAdmin,function(req,res){
@@ -80,7 +80,7 @@ function parseText (msg,req, res,min,max,callback){
         } else {
             // grep ExceptionList
             req.getConnection(function (err, connection) {
-                connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT",req.user.USERID, function(err, rows){
+                connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
                     var exception ='';
                     if (err){
                     }else{
@@ -117,8 +117,21 @@ function parseText (msg,req, res,min,max,callback){
                             res.send(result);
 
                         } else {
-                            result.data=data;
+                            result.data=data[0];
                             res.send(result);
+                            var count = data[1].split(',');
+                            for(var i=0;i<rows.length;i++){
+                                var str = rows[i].EX_STR;
+                                var c = parseInt(count[i]);
+                                if(c>0)
+                                    connection.query('UPDATE EXCEPTION SET COUNT=COUNT+? WHERE EX_STR =? AND USERID=?',
+                                                    [c,str,rows[i].USERID],function(err2,rows2){
+                                            if(err2)
+                                                console.log(err2);
+                                        })
+
+
+                            }
                         }
                         if(callback)
                             callback();

@@ -555,7 +555,7 @@
             return obj.CRN+'-'+obj.CLASSNAME;
         });
         $('#leftClass2').on('change',function(ev){
-            var crn =ev.currentTarget.selectedOptions[0].innerHTML.split('-')[0];
+            var crn =ev.currentTarget.options[ev.currentTarget.selectedIndex].innerHTML.split('-')[0];
             $.get('api/listStudent?crn='+crn,function(data){
                 var select= $('#leftStudent');
                 var right = $('#rightStudent');
@@ -711,7 +711,7 @@
         })
     });
     $('#classSelector').change(function(ev){
-        var crn = this.selectedOptions[0].value;
+        var crn = this.options[this.selectedIndex].value;
         $.get('api/getFiles?crn='+crn,function(data){
             var select= $('#fileSelector');
             console.log(data);
@@ -728,16 +728,16 @@
                     var option = document.createElement('option');
                     option.text =data.data[i].FILENAME;
                     option.value=data.data[i].USERID;
-                    console.log(option.text+'  '+option.value);
                     select.append(option);
                 }
             }
         })
     });
     $('#fileSelector').change(function(ev){
-        var crn = $('#classSelector')[0].selectedOptions[0].value;
-        var instructor = this.selectedOptions[0].value;
-        var filename = this.selectedOptions[0].innerHTML;
+        var select = $('#classSelector')[0];
+        var crn = select.options[select.selectedIndex].value;
+        var instructor = this.options[this.selectedIndex].value;
+        var filename = this.options[this.selectedIndex].innerHTML;
         if(file[instructor]&&file[instructor][filename]){  // if cache exist
             changeContent(file[instructor][filename]);
         }else {

@@ -381,33 +381,6 @@ exports.delException = function(req,res){
         });
     }
 };
-//UPDATE_EXCEPTION    -- should be called from java program,  TODO
-exports.updateException = function(req,res){
-    var input = req.query;
-    var result = checkPermission(req, 1);
-    if(req.user.USERTYPE==1&&input.usertype!=2){
-        result.error="Instructor cannot create account other than student.";
-    }
-    if(result.error){
-        res.send(result);
-
-    }else{
-        req.getConnection(function (err, connection) {
-            var data = {
-            };
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
-
-            });
-
-        });
-    }
-};
 
 /**
  * return user's exception list order by count.
@@ -424,7 +397,7 @@ exports.printException = function(req,res){
 
     }else{
         req.getConnection(function (err, connection) {
-            connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT",req.user.USERID, function(err, rows){
+            connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
                 if (err){
                     result.error=err;
                 }else{
