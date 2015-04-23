@@ -237,3 +237,4 @@ function instructorBinding(){
 }
 
 instructorBinding();
+$( "#main-tabs" ).tabs( "option", "active", 2 );

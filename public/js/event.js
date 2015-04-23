@@ -116,3 +116,9 @@ $('#print').bind('click', function () {
     var printContents = $(".printable")[0].html();
     createPrint(printContents);
 });
+
+$( "#main-tabs" ).tabs();
+$("li.last a").unbind('click');
+$( "#manageTabs" ).tabs();
+$("button").button();
+$(".reload").click();

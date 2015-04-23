@@ -22,3 +22,4 @@ function adminOnlyBinding(){
     });
 }
 adminOnlyBinding();
+$( "#main-tabs" ).tabs( "option", "active", 3 );

@@ -449,22 +449,5 @@
         <script src="js/eventA.js"></script>
     <% } %>
 <% } %>
-<script>
-    $(function() {
-        $( "#main-tabs" ).tabs();
-        $("li.last a").unbind('click');
-        $( "#manageTabs" ).tabs();
-        $("button").button();
-        $(".reload").click();
-
-        <% if(user.USERTYPE==1){%>
-            $( "#main-tabs" ).tabs( "option", "active", 2 );
-        <%}%>
-        <% if(user.USERTYPE==0){%>
-        $( "#main-tabs" ).tabs( "option", "active", 3 );
-        <%}%>
-    });
-</script>
-
 </body>
 </html>
