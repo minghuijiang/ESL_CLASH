@@ -21,6 +21,9 @@ var express = require('express'),
     spawn = require('child_process').spawn,
     fs = require('fs');
 
+    process.on('uncaughtException', function (err) {
+        console.log(err.stack);
+    });
     // setup java slasher.
     java.classpath.push("java/slash.jar");
     var slash = java.newInstanceSync("main.Slash");

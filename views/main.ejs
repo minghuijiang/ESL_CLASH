@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.1/themes/redmond/jquery-ui.css">
@@ -23,10 +23,14 @@
         <script src="js/edit.js"></script>
     <% } %>
     <title>CLASH- <%= user.USERNAME %></title>
-
+    <style>
+        p {
+            text-indent: 50px;
+        }
+    </style>
 </head>
 
-<body>
+<body style="overflow-y:hidden;">
 <div id="main-tabs" style="height:95%">
     <div id="message" style ="text-align: center;">
 
@@ -47,6 +51,7 @@
     <div id="read-tab" class="tab-content">
 
         <div id ='content' class="printable" style ="font-size:30px">
+            <div id="wordBank" style="display: none"></div>
             Please select <% if (user.USERTYPE <= 1) { %> or Slash <% } %>a document.
         </div>
         <% if (user.USERTYPE <= 1) { %>
@@ -100,8 +105,11 @@
                 <input type="checkbox" id="Exception" onclick="boldException(this.checked)" />                              <span style="font-weight:bold">Exception</span><br />
                 <input type="checkbox" id="Slash" onclick="hideSlash(this.checked)" />                      <span>S/l/a/s/h</span><br />
                 <% if (user.USERTYPE <= 1) { %>
-                <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span>
+                <input type="checkbox" id="edit" onclick="addClick(this.checked)">           <span>Edit Mode</span>                <br />
+
                 <% } %>
+                <input type="checkbox" id="slToCr" onclick="changeSlash(this.checked)"/><span>Change Slash to CR</span>
+
             </div>
         </div>
 
@@ -630,20 +638,17 @@
             var printContents = $(".printable")[0];
             var myWindow = window.open("", "_newtab", "");
             var doc = myWindow.document;
-            doc.open();
             doc.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
-            doc.write("<html>");
-            doc.write("<head>");
-            doc.write('<link rel="stylesheet" href="css/main-style.css">'); // your css file comes here.
-            doc.write("</head>");
-            doc.write("<body>");
+            doc.write('<html><head><link rel="stylesheet" href="css/main-style.css"></head><body>');
+            doc.write('<div class="hide" style="margin-left: auto;margin-right: auto;width: 9em;">' +
+            '<input  type="button" value="print this page" style ="' +
+                'font-size:1.2em;font-family: sans-serif" onclick="window.print()" /></div>'
+
+
+            );
             doc.write($(printContents).html());
-            doc.write("</body>");
-            doc.write("</html>");
-            doc.document.close();
-            doc.focus();
-            doc.print();
-            doc.close();
+            doc.write("</body></html>");
+
         });
     }
     instructorBinding();

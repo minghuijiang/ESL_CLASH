@@ -1,4 +1,8 @@
-
+@media print{
+    .hide{
+        display: none;
+    }
+}
 body{
     height: 100%;
     width: auto;
@@ -35,11 +39,9 @@ span .word:hover {
     box-shadow: 5px 5px 3px 3px rgba(0, 0, 0, 0.3);
 }
 
-html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px; overflow-y:hidden;}
+html,body { height: 100%; margin: 0 0 0 0; padding: 5px 5px 5px 5px;}
 
-p {
-    text-indent: 50px;
-}
+
 
 #content {
     /*float:left;*/

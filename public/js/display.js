@@ -52,6 +52,23 @@ function changeContent(str){
     revalidateAllCheckBox();
 }
 
+function changeSlash(checked){
+    console.log('clicked: '+checked);
+    if(checked){
+        $('<br />').insertAfter($('.Slash'));
+    }else{
+        $('.Slash').each(function(){
+            var next =this.nextElementSibling;
+            console.log(next);
+            if($(next).is('br')){
+                next.remove();
+            }
+        });
+
+    }
+
+}
+
 function revalidateAllCheckBox(){
     var objs  = $(":checkbox" );
     objs.each(function( index ) {
