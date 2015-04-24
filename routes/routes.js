@@ -33,7 +33,7 @@ module.exports = function(app, passport) {
     app.get('/api/addUser',isLoggedIn,DB.addUser);
     app.get('/api/delUser',isLoggedIn,DB.delUser);
     app.post('/api/addFile',isLoggedIn,DB.addFile);
-
+    app.get('/api/checkFile',isLoggedIn,DB.checkFile);
     app.get('/api/delFile',isLoggedIn,DB.delFile);
     app.get('/api/addException',isLoggedIn,DB.addException);
     app.get('/api/delException',isLoggedIn,DB.delException);
@@ -93,6 +93,7 @@ function parseText (msg,req, res,min,max,callback){
                         }
                     }
                     console.log(req.user.USERNAME+' After get Exception: '+exception);
+                    console.log(req.user.USERNAME+' '+results);
                     // results is an array consisting of messages collected during execution
                     /**
                      * read nltkInput and perform slash based on the algorithm, exception, and minimal, maximum token length.
@@ -123,6 +124,7 @@ function parseText (msg,req, res,min,max,callback){
                         } else {
                             result.data=data[0];
                             res.send(result);
+                            console.log(req.user.USERNAME+' Exception result '+data[1]);
                             var count = data[1].split(',');
                             for(var i=0;i<rows.length;i++){
                                 var str = rows[i].EX_STR;

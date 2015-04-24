@@ -26,7 +26,6 @@ module.exports = function(passport) {
 
         req.getConnection(function(error,connection){
             connection.query("select * from USER where USERID = "+id,function(err,rows){
-                console.log(rows);
                 done(err, rows[0]);
             });
         });
@@ -46,7 +45,6 @@ module.exports = function(passport) {
         function(req, username, password, done) { // callback with email and password from our form
             req.getConnection(function(error, connection){
                 connection.query("SELECT * FROM `USER` WHERE `username` = '" + username + "'", function (err, rows) {
-                    console.log('login inside query ' + rows);
                     if (err)
                         return done(err);
                     if (!rows.length) {

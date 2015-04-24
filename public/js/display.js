@@ -56,6 +56,9 @@ function changeSlash(checked){
     console.log('clicked: '+checked);
     if(checked){
         $('<br />').insertAfter($('.Slash'));
+        if($('#Slash')[0]['checked']==true){
+            $('#Slash').trigger('click');
+        }
     }else{
         $('.Slash').each(function(){
             var next =this.nextElementSibling;

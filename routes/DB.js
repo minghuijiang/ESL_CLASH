@@ -175,6 +175,40 @@ exports.addFile = function(req,res){
     }
 };
 
+
+exports.checkFile = function(req,res){
+    var input = req.query;  // use body for post request.
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+    }else{
+        /*
+         CREATE TABLE FILE(
+         USERID INT(15) NOT NULL,
+         FILENAME VARCHAR(32) NOT NULL,
+         JSON TEXT NOT NULL,
+         FOREIGN KEY (USERID) REFERENCES USER(USERID),
+         PRIMARY KEY(USERID, FILENAME)
+         );
+         */
+        req.getConnection(function (err, connection) {
+            connection.query("SELECT FROM INTO FILE WHERE FILENAME = ? AND USERID = ? ",[input.filename,req.user.USERID], function(err, rows){
+                if (err){
+                    result.error=err;
+                }else{
+                    if(rows.length==0)
+                        result.data=true;
+                    else
+                        result.data=false;
+                }
+                res.send(result);
+
+            });
+
+        });
+    }
+};
+
 /**
  * del a file
  *      -instructor

@@ -133,11 +133,18 @@ function instructorBinding(){
             alert('Please enter a valid filename.');
             return ;
         }
+        $.get('api/checkFile?filename='+name,function(data){
+           console.log(data);
+        });
         var contents = JSON.stringify(json);
         console.log(contents);
         $.post('api/addFile',{filename: name,contents:contents},function(data){
-            if(data.error)
-                showError(data.error);
+            if(data.error){
+                if(data.error.code=='ER_DUP_ENTRY'){
+                    showError('File Exist');
+                    //var accept = confirm('Filename: '+name+' exist, do you want to overwrite the file?');
+                }
+            }
             else{
                 $('#filename').val('');
                 $('#fileSelector').append(createOption(name,data.data.USERID));

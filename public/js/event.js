@@ -113,7 +113,7 @@ $('#fileSelector').change(function(ev){
 
 //print button
 $('#print').bind('click', function () {
-    var printContents = $(".printable")[0].html();
+    var printContents = $(".printable").html();
     createPrint(printContents);
 });
 

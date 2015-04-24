@@ -333,7 +333,7 @@
             appendChildren: function(el, children) {
                 var parent = el.parentElement;
                 var nextSibling = el.nextSibling;
-                el.remove();
+                $(el).remove();
                 children.map(function(node) {
                     el.appendChild(node);
                 });
@@ -655,8 +655,14 @@
             },
 
             dispatch: function(evtStr, attrs, dispatcher) {
-                var e = new Event(evtStr);
-
+                var e;
+                try {
+                    e = new Event(evtStr);
+                }
+                catch (err) {
+                    e = document.createEvent('Event');
+                    e.initEvent(evtStr, true, true);
+                }
                 for (var k in attrs) {
                     if (!attrs.hasOwnProperty(k)) continue;
                     e[k] = attrs[k];
