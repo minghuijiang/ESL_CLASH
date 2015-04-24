@@ -41,7 +41,7 @@ function toggleAllPOS(ischecked){
     })
 }
 
-function changeContent(str){
+function changeContent(str,filename){
     document.getElementById("content").innerHTML = str;
     if($('#Slash')[0]['checked']!=true){
         $('#Slash').trigger('click');
@@ -50,6 +50,7 @@ function changeContent(str){
         $('#edit').trigger('click');
     }
     revalidateAllCheckBox();
+    $('#filename').val(filename);
 }
 
 function changeSlash(checked){

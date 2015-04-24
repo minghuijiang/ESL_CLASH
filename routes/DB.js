@@ -153,25 +153,49 @@ exports.addFile = function(req,res){
          PRIMARY KEY(USERID, FILENAME)
          );
          */
-        req.getConnection(function (err, connection) {
-            var data = {
-                USERID    : req.user.USERID,
-                FILENAME : input.filename,
-                JSON   : input.contents
-            };
+        if(input.overwrite){//overwrite
+            req.getConnection(function (err, connection) {
+                var data = {
+                    USERID    : req.user.USERID,
+                    FILENAME : input.filename,
+                    JSON   : input.contents
+                };
 
-            connection.query("INSERT INTO FILE set ? ",data, function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    rows.USERID= req.user.USERID;
-                    result.data=rows;
-                }
-                res.send(result);
+                connection.query("UPDATE FILE set JSON = ? WHERE USERID=? AND FILENAME = ? ",
+                                        [input.contents,req.user.USERID,input.filename], function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        rows.USERID= req.user.USERID;
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
 
             });
+        }else{
+            req.getConnection(function (err, connection) {
+                var data = {
+                    USERID    : req.user.USERID,
+                    FILENAME : input.filename,
+                    JSON   : input.contents
+                };
 
-        });
+                connection.query("INSERT INTO FILE set ? ",data, function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        rows.USERID= req.user.USERID;
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+
+            });
+        }
+
     }
 };
 
@@ -192,10 +216,12 @@ exports.checkFile = function(req,res){
          );
          */
         req.getConnection(function (err, connection) {
-            connection.query("SELECT FROM INTO FILE WHERE FILENAME = ? AND USERID = ? ",[input.filename,req.user.USERID], function(err, rows){
+            connection.query("SELECT * FROM FILE WHERE FILENAME = ? AND USERID = ? ",[input.filename,req.user.USERID], function(err, rows){
                 if (err){
+                    console.log(err);
                     result.error=err;
                 }else{
+                    console.log(rows);
                     if(rows.length==0)
                         result.data=true;
                     else

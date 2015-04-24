@@ -69,12 +69,17 @@ function instructorBinding(){
 
     $('#button').click(function(){
         console.log('clicked');
+        var txt= $('#resizable').val().trim();
+        if(txt.length==0){
+            showError('Please enter some text before Slash.');
+            return ;
+        }
         $(this).prop('disabled',true);
         $("span", this).text("This should not take long. Please wait...");
         $.ajax({
             type: "POST",
             url: "/slash",
-            data: 'text='+$('#resizable').val(),
+            data: 'text='+txt,
             success: function(data){
                 $("#button").prop('disabled',false);
                 $("#button span").text("SLASH IT!");
@@ -84,7 +89,7 @@ function instructorBinding(){
                     $('#resizable').val('');
                     json = JSON.parse(data.data);
                     var str =parseJSON(json);
-                    changeContent(str);
+                    changeContent(str,'');
                     $( "#main-tabs" ).tabs( "option", "active", 0 );
                 }
 
@@ -94,6 +99,7 @@ function instructorBinding(){
 
     $('#uploadFile').on('submit',function(ev){
         ev.preventDefault();
+        var filename = $('#fileInput')[0]['files'][0]['name'];
         var formData = new FormData($('#uploadFile')[0]);
         $('#fileSubmit',this).prop('disabled',true);
         $('#fileSubmit',this).val('Please wait...');
@@ -108,7 +114,7 @@ function instructorBinding(){
                 else{
                     json = JSON.parse(data.data);
                     var str =parseJSON(json);
-                    changeContent(str);
+                    changeContent(str,filename);
                     $( "#main-tabs" ).tabs( "option", "active", 0 );
                     $('#uploadFile').each(function(){
                         this.reset();
@@ -134,23 +140,42 @@ function instructorBinding(){
             return ;
         }
         $.get('api/checkFile?filename='+name,function(data){
-           console.log(data);
-        });
-        var contents = JSON.stringify(json);
-        console.log(contents);
-        $.post('api/addFile',{filename: name,contents:contents},function(data){
-            if(data.error){
-                if(data.error.code=='ER_DUP_ENTRY'){
-                    showError('File Exist');
-                    //var accept = confirm('Filename: '+name+' exist, do you want to overwrite the file?');
-                }
-            }
+            console.log(data.data);
+           if(data.error)
+                onError(data);
             else{
-                $('#filename').val('');
-                $('#fileSelector').append(createOption(name,data.data.USERID));
-                showMessage('File Saved as "'+name+'"');
-            }
-        })
+               var canSave = data.data;
+               var accept=false;
+               if(!canSave){
+                   accept = confirm('Filename: '+name+' exist, do you want to overwrite the file?');
+                   if(!accept)
+                        return;
+               }
+                   var contents = JSON.stringify(json);
+                   $.post('api/addFile',{filename: name,contents:contents,overwrite:accept},function(data){
+                       console.log(data);
+                       if(data.error){
+                           if(data.error.code=='ER_DUP_ENTRY'){
+                               showError('File Exist');
+                           }else{
+                               onError(data);
+                           }
+                       } else{
+                           console.log(parseJSON(json));
+                           addTofile(name,data.data.USERID,parseJSON(json));
+                           if(!accept){
+                               $('#filename').val('');
+                               $('#fileSelector').append(createOption(name,data.data.USERID));
+                               showMessage('File Saved as "'+name+'"');
+
+                           }else{
+                               showMessage('File overwritten as "'+name+'"');
+                           }
+                       }
+                   })
+           }
+        });
+
     });
 
 

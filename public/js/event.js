@@ -90,7 +90,7 @@ $('#fileSelector').change(function(ev){
     var instructor = this.options[this.selectedIndex].value;
     var filename = this.options[this.selectedIndex].innerHTML;
     if(file[instructor]&&file[instructor][filename]){  // if cache exist
-        changeContent(file[instructor][filename]);
+        changeContent(file[instructor][filename],filename);
     }else {
         $.get('api/getFile?crn=' + crn + '&filename=' + filename+'&userid='+instructor, function (data) {
             console.log(data);
@@ -101,7 +101,7 @@ $('#fileSelector').change(function(ev){
                     json = JSON.parse(data.data[0].JSON);
                     var str = parseJSON(json);
                     addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
-                    changeContent(str);
+                    changeContent(str,filename);
                 }catch(e){
                     console.log(e);
                     document.getElementById("content").innerHTML ='Error parsing the document: '+filename;
