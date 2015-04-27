@@ -52,6 +52,9 @@ module.exports = function(app, passport) {
     //test version.
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);
+    app.post('/api/download',function(req,res){
+        res.download('views/main.ejs');
+    });
 
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
 

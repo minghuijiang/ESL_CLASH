@@ -153,14 +153,16 @@ exports.addFile = function(req,res){
          PRIMARY KEY(USERID, FILENAME)
          );
          */
-        if(input.overwrite){//overwrite
+        console.log(input.overwrite);
+        var overwrite = input.overwrite;
+        if(overwrite=='true'){//overwrite
             req.getConnection(function (err, connection) {
                 var data = {
                     USERID    : req.user.USERID,
                     FILENAME : input.filename,
                     JSON   : input.contents
                 };
-
+                console.log('update file ');
                 connection.query("UPDATE FILE set JSON = ? WHERE USERID=? AND FILENAME = ? ",
                                         [input.contents,req.user.USERID,input.filename], function(err, rows){
                     if (err){
@@ -181,11 +183,12 @@ exports.addFile = function(req,res){
                     FILENAME : input.filename,
                     JSON   : input.contents
                 };
-
+                console.log('add new file');
                 connection.query("INSERT INTO FILE set ? ",data, function(err, rows){
                     if (err){
                         result.error=err;
                     }else{
+                        console.log(rows);
                         rows.USERID= req.user.USERID;
                         result.data=rows;
                     }

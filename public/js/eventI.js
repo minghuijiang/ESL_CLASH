@@ -164,7 +164,7 @@ function instructorBinding(){
                            console.log(parseJSON(json));
                            addTofile(name,data.data.USERID,parseJSON(json));
                            if(!accept){
-                               $('#filename').val('');
+                               //$('#filename').val('');
                                $('#fileSelector').append(createOption(name,data.data.USERID));
                                showMessage('File Saved as "'+name+'"');
 
