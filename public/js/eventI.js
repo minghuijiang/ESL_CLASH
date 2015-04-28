@@ -109,6 +109,7 @@ function instructorBinding(){
             success: function(data){
                 $('#fileSubmit').prop('disabled',false);
                 $('#fileSubmit').val('Submit');
+                console.log(data);
                 if(data.error)
                     onError(data);
                 else{

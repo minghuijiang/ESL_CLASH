@@ -237,7 +237,9 @@ function handleUploads(req,res){
             });
         });
         parse_msword.stderr.on('data', function (data) {
-            console.log(req.user.USERNAME+' Standard Error from spawn: '+data);
+            console.log(' Standard Error from spawn: ');
+            console.log(data);
+            result.error = data;
             res.send(result);
             fs.unlink(file.path,function(err){
                 if(err)

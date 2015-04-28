@@ -2,10 +2,7 @@
 
 filename="$1"
 extension=${filename##*.}
-if [ ${extension} = "cesr"];
-then
-cat "$filename"
-elif [ ${extension} = "txt" ];
+if [ ${extension} = "txt" ];
 then
 cat "$filename"
 elif [ ${extension} = "doc" ]

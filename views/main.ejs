@@ -65,6 +65,7 @@
                     $('#hiddenFile').trigger('click');
                 });
                 $('#hiddenFile').change(function(ev){
+                    console.log('changed');
                     if(this.disabled){
                         // do upload and re-download
                         return alert('File upload not supported!');
@@ -78,6 +79,7 @@
                             json = JSON.parse(text);
                             var str = parseJSON(json);
                             changeContent(str,F[0].name.split('.')[0]);
+                            $('#hiddenFile').val('');
                         };
                         reader.readAsText(F[0]);
 
