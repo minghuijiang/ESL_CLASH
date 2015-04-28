@@ -3,7 +3,7 @@
  */
 
 var prefix = '';
-
+var fs = require('fs');
 
 module.exports = function(app, passport) {
 
@@ -52,8 +52,61 @@ module.exports = function(app, passport) {
     //test version.
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);
-    app.post('/api/download',function(req,res){
-        res.download('views/main.ejs');
+
+    app.post('/api/open',isLoggedIn,function(req,res){
+        var file = req.files.file;
+        var file_extension = file.extension;
+        var result = {};
+        console.log(req.user.USERNAME+' request to slash upload document. file_extension: '+file_extension+' size: '+file.size);
+
+        if(file_extension!='cesr'){
+            result.error='Only .cesr file allowed';
+            res.send(result);
+            return ;
+        }
+
+        // check file size on client side.
+        if(file.size>1024*1024){// cesr limit to 1mb
+            result.error ="File too big, max size = 1Mb.";
+            res.send(result);
+            return ;
+        }
+        var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+        var output="";
+        parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+            output+=data
+
+        }).on('end',function(){
+            res.send(output);
+        });
+    });
+
+    app.post('/api/download',isLoggedIn,function(req,res){
+        var result = {};
+        var filename = 'tmp/'+req.user.USERID;
+        fs.writeFile(filename,req.body.contents,function(err){
+            if(err){
+                result.error = 'File IO failed. Contact Admin.';
+                logError(err);
+                res.send(result);
+            }else{
+                result.data= true;
+                setTimeout(function(){
+                    fs.unlink(filename,function(error){
+                        if(error){
+                            logError(error);
+                        }else{
+                            console.log('file deleted: '+filename);
+                        }
+                    })
+                },30000);  // delete the tmp file after 30 seconds
+                res.send(result);
+            }
+        });
+    });
+
+    app.get('/api/download',isLoggedIn,function(req,res){
+        res.download('tmp/'+req.user.USERID,req.query.filename+'.cesr');
     });
 
     app.post('/uploads',isLoggedIn,isInstructorOrAdmin,handleUploads);
@@ -224,4 +277,10 @@ function isAdmin(req,res,next){
     console.log(req.user.USERNAME+' request Admin action.');
     if(req.user.USERTYPE==0)
         return next();
+}
+
+function logError(error){
+    console.log(error);
+    if(error.stack)
+        console.log(error.stack);
 }

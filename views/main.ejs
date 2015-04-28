@@ -57,6 +57,55 @@
         <div id="editBar" style="">
             <input type="text" id="newException" name="exception" placeholder="Lexical Bundle" size="15" />
             <button id="addEx">add</button>
+            <button id="download">Download</button>
+            <button id="open">Open</button>
+            <input type="file" id="hiddenFile" style="display: none" accept=".cesr" />
+            <script>
+                $('#open').click(function(){
+                    $('#hiddenFile').trigger('click');
+                });
+                $('#hiddenFile').change(function(ev){
+                    if(this.disabled){
+                        // do upload and re-download
+                        return alert('File upload not supported!');
+
+                    }else{
+                        var F = this.files;
+                        console.log(F);
+                        var reader = new FileReader();
+                        reader.onload=function(e){
+                            var text = this.result;
+                            json = JSON.parse(text);
+                            var str = parseJSON(json);
+                            changeContent(str,F[0].name.split('.')[0]);
+                        };
+                        reader.readAsText(F[0]);
+
+                    }
+
+                });
+                $('#download').click(function(){
+                    if(!json){
+                        alert('Please select a file to download.');
+                        return ;
+                    }
+                    var name = $('#filename').val().trim();
+                    if(name.length==0){
+                        alert('Please enter a valid filename.');
+                        return ;
+                    }
+                    var contents = JSON.stringify(json);
+                    $.post('api/download',{contents:contents},function(data){
+                        console.log(data);
+                        if(data.error){
+                            onError(data);
+                        } else{
+                            window.open('api/download?filename='+name);
+
+                        }
+                    })
+                })
+            </script>
             <span style="float:right">
             <button id="print">Print</button>
 
