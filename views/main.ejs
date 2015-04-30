@@ -42,9 +42,61 @@
         <li><a href="#upload-tab">Upload</a></li>
         <li><a href="#management-tab">Management</a></li>
         <% } %>
+        <li><a href="#setting-tab">Setting</a></li>
         <li class="last" style="float:right"><a href="/logout">Logout</a></li>
     </ul>
+    <div id="setting-tab" class="tab-content">
+        <fieldset>
+            <legend>Change Name</legend>
+            <form id="changeName">
+                <input type="text" name="fname" placeholder="First Name" required /><br /><br />
+                <input type="text" name="lname" placeholder="Last Name" required /><br /><br />
+                <input type="submit" />
+            </form>
+        </fieldset>
+        <fieldset>
+            <legend>Change Password</legend>
+            <form id="changePassword">
+                <input type="password" name="oldPass" placeholder="Old Password" required /><br /><br />
+                <input type="password" name="password" placeholder="New Password" required /><br /><br />
+                <input type="password" name="pwd2" placeholder="Enter Again" required /><br /><br />
+                <input type="submit" />
+            </form>
+        </fieldset>
+        <script>
+            $('#changeName').on('submit',function(ev){
+                ev.preventDefault();
+                $.get('api/changeName?'+$('#changeName').serialize(),function(data){
+                    if(data.error)
+                        onError(data);
+                    else{
+                        $('#changeName')[0].reset();
+                        showMessage("Name Changed");
+                    }
+                })
+            });
+            $('#changePassword').on('submit',function(ev){
+                ev.preventDefault();
+                if($(this)[0][1].value!=$(this)[0][2].value){
+                    $(this)[0][1].value='';
+                    $(this)[0][2].value='';
+                    showError("These passwords don't match, try again.");
+                    return ;
+                }
+                var old=$(this)[0][0].value;
+                var newPass=$(this)[0][1].value;
 
+                $.get('api/changePassword?oldPass='+old+'&password='+newPass,function(data){
+                    if(data.error)
+                        onError(data);
+                    else{
+                        showMessage("Password Changed");
+                    }
+                    $('#changePassword')[0].reset();
+                })
+            });
+        </script>
+    </div>
 
 
     <div id="read-tab" class="tab-content">
@@ -429,7 +481,7 @@
                 </div>
             </div>
             <div id="user-tab" class="tab-content" style="overflow-y: scroll;height:80%;">
-                <div class="left add" style="width:25%">
+                <div class="left add" style="width:20%">
                     <h1>User Creation</h1>
                     <br />
                     <form id="addUser">
@@ -459,7 +511,7 @@
                 <% if(user.USERTYPE==0){%>
                 <div class="verticalLine">
                 </div>
-                <div class="right delete" style="width:60%">
+                <div class="right delete" style="width:70%">
                     <h1>Delete User</h1>
                     <div class="container">
                         <div>
