@@ -44,7 +44,6 @@ input {
     z-index: 99999999999999999999999;
     width: 100%;
     background-color: #FDFDFD;
-    top: 50%;
 }
 
 .modal .error {
@@ -60,7 +59,7 @@ margin: 2em;
 }
 
 .drawer-content {
-    width: 800px;
+    width: 100%;
     margin: 0 auto;
 }
 
@@ -137,7 +136,7 @@ margin: 2em;
 }
 
 .close {
-    position: absolute;
+    position: fixed;
     bottom: 1em;
     left: 1em;
     color: #000000;
@@ -247,7 +246,7 @@ padding-top: .23em;
 
 .reader {
     box-shadow: 0 0 6px rgba(0,0,0,.3);
-    height: 580px;
+    height:100%;
     position: relative;
 }
 

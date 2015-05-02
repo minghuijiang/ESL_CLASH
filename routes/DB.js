@@ -51,6 +51,9 @@ exports.changeName = function(req,res){
 exports.changePassword = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 2);
+    if(req.user.USERID==1000019){
+        result.error='This is a dummy account, Do not change password.';
+    }
     if(result.error){
         res.send(result);
     }else{

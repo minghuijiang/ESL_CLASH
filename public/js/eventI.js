@@ -123,6 +123,7 @@ function instructorBinding(){
                 }
             },
             error: function(data){
+                console.log(data);
                 onError(data);
             },
             // Form data

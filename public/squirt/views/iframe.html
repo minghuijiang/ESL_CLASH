@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html style="height:100%">
 <head>
 
-    <link rel='stylesheet' href='../fonts/ss-pika.css'>
-    <link rel='stylesheet' href='../css/frame.inner.css'>
+    <link rel='stylesheet' href='/css/ss-pika.css'>
+    <link rel='stylesheet' href='/css/frame.inner.css'>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>
@@ -23,7 +23,7 @@
 </head>
 <body style="height:100%">
 <div class="article-veil"></div>
-<div class="modal">
+<div class="modal" style="height:100%">
     <div class="drawer">
         <div class="drawer-content">
             <pre>Restart the reader after change font size</pre>
@@ -96,35 +96,45 @@
         </div>
         <div class="reader-content">
             <img class='share-logo' src='/images/logo.png' style="width:250px;height:188px" />
-            <h3 class='tweet-preview'>&ldquo;Render unto CESR the things that are CESR's&rdquo;
+            <h3 class='tweet-preview'>
             </h3>
         </div>
-        <div class='keyboard-shortcuts' style='position:absolute;bottom:0;left:0'>
+
+        <div class='keyboard-shortcuts' style='position:fixed;bottom:0px;right:10px'>
+            <ul>
+                <li>
               <span class='shortcut-function'>
                 <i class='ss-icon'>pause</i> &amp; <i class='ss-icon'>play</i>
               </span>
-            <span class='shortcut-key'>Spacebar</span>
-
+                    <span class='shortcut-key'>Spacebar</span>
+                </li>
+                <li>
               <span class='shortcut-function'>
                 <i class='ss-icon'>rewind</i>
                 WPM
                 <i class='ss-icon'>fastforward</i>
               </span>
-            <span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>
+                    <span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>
+                </li>
+                <li>
               <span class='shortcut-function'>
                 <i class='ss-icon'>rewind</i> &amp; <i class='ss-icon'>fastforward</i>
               </span>
-            <span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>
-
+                    <span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>
+                </li>
+                <li>
               <span class='shortcut-function'>
                 <i class='ss-icon'>close</i>
               </span>
-            <span class='shortcut-key'>Escape</span>
-
+                    <span class='shortcut-key'>Escape</span>
+                </li>
+                <li>
               <span class='shortcut-function'>
                 <i class='ss-icon'>settings</i>
               </span>
-            <span class='shortcut-key'>S</span>
+                    <span class='shortcut-key'>S</span>
+                </li>
+            </ul>
         </div>
 
 

@@ -289,19 +289,6 @@ var dom = {
         return (el.style.display = s.display == 'none' ? 'block' : 'none') == 'block';
     },
 
-    show: function(el) {
-        console.log('show ');
-        console.log(el);
-        el = dom._elFromElOrSelector(el);
-        el.style.display = 'block';
-    },
-
-    hide: function(el) {
-        console.log('hide ');
-        console.log(el);
-        el = dom._elFromElOrSelector(el);
-        el.style.display = 'none';
-    },
 
     getSelectedText: function() {
         var selection = window.getSelection();
@@ -419,8 +406,6 @@ var evt = {
 
     // cross-frame event dispbatch
     dispatchXF: function(e, attrs) {
-        console.log('dispatchXF');
-        console.log(window.sq.context);
         var targetFrame, targetOrigin;
         if (window.sq.context == 'inner') {
             targetFrame = window.parent;
@@ -445,16 +430,8 @@ var evt = {
 var initialized = false; // used in the re-install flow
 var sq = window.sq;
 sq.innerFrame = null;
-sq.pageScriptVersion = '0.3.0';
 
 ! function initSquirt() {
-
-    // loading view
-
-    dom.injectStylesheet('squirt/css/frame.outer.css');
-
-    // inject reader iframe
-
 
     var iframeSrc =
         'squirt/views/iframe.html';
@@ -576,9 +553,7 @@ sq.again = function(didWaitForBlur) {
     regression=0;
     fixation = 0;
     sent = false;
-    // handle the situation where the user clicks the bookmarklet immediately
-    // after reinstalling
-    if (!initialized) return initSquirt();
+
     sq.innerFrame.classList.remove('closed');
     setText();
     if (didWaitForBlur) return evt.dispatch('squirt.play', {

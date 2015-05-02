@@ -219,9 +219,10 @@ function parseSentence(sent, vid){
 
 function startReader(){
 	if(!json){
-		alert('Clash a text before reading');
+		alert('Please select  a text before reading');
 		return ;
 	}
+    console.log(window.sq);
   if(window.sq){
 	sq.again();
 	// window.sq.closed && window.document.dispatchEvent(new Event('squirt.again'));
