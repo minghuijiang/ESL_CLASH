@@ -50,7 +50,8 @@ function changeContent(str,filename){
         $('#edit').trigger('click');
     }
     revalidateAllCheckBox();
-    $('#filename').val(filename);
+    if(filename)
+        $('#filename').val(filename);
 }
 
 function changeSlash(checked){

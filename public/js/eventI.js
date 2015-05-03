@@ -260,15 +260,72 @@ function instructorBinding(){
 
     addException('#addEx',function(data){
         if(data.error)
-            showError(data.error);
+            onError(data);
         else{
             showMessage('Exception Added.');
             $('#newException').val('');
         }
     },$('#newException'));
 
+    $('#reparse').click(function(){
+        console.log('reparse');
+        if(!json){
+            return ;
+        }
+        var txt= JSON.stringify(json);
+
+        $(this).prop('disabled',true);
+        $("span", this).text("Please wait...");
+        $.ajax({
+            type: "POST",
+            url: "/api/reparse",
+            data: 'text='+txt,
+            success: function(data){
+                $("#reparse").prop('disabled',false);
+                $("#reparse span").text("Identify Lexical");
+                if(data.error){
+                    onError(data);
+                }else{
+                    try{
+                        json = JSON.parse(data.data);
+                    }catch(e){
+                        console.log(e)
+                    }
+                    var str =parseJSON(json);
+                    changeContent(str);
+                    $( "#main-tabs" ).tabs( "option", "active", 0 );
+                }
+
+            }
+        });
+    });
+
+    $('#download').click(function(){
+        if(!json){
+            alert('Please select a file to download.');
+            return ;
+        }
+        var name = $('#filename').val().trim();
+        if(name.length==0){
+            alert('Please enter a valid filename.');
+            return ;
+        }
+        var contents = JSON.stringify(json);
+        $.post('api/download',{contents:contents},function(data){
+            console.log(data);
+            if(data.error){
+                onError(data);
+            } else{
+                window.open('api/download?filename='+name);
+
+            }
+        })
+    })
 
 }
+
+
+
 
 instructorBinding();
 $( "#main-tabs" ).tabs( "option", "active", 2 );

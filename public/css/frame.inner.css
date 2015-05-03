@@ -1,3 +1,4 @@
+
 * {
     vertical-align: baseline;
     font-weight: inherit;
@@ -14,28 +15,6 @@ body {
     font-family: "Helvetia Neue", sans-serif;
     font-size: 19px;
     overflow: hidden;
-}
-
-h1, h2, h3, h4, h5, h6{
-    font-weight: bold;
-    margin: 1em 0;
-}
-
-input {
-    font-size: 1em;
-}
-
-.article-veil {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 9999999999999999999999;
-}
-
-.playing .article-veil {
-    background-color: rgba(209, 209, 209, 0.3);
 }
 
 .modal {

@@ -428,19 +428,17 @@ var evt = {
 
 
 var initialized = false; // used in the re-install flow
-var sq = window.sq;
 sq.innerFrame = null;
 
-! function initSquirt() {
+function initSquirt() {
 
-    var iframeSrc =
-        'squirt/views/iframe.html';
-
-    sq.innerFrame = createIframe(iframeSrc, setText);
+    sq.innerFrame = $('.sq-frame');
+    $(sq.innerFrame).hide();
 
     // events
     //cross frame
     evt.on(window, 'message', function(e) {
+        console.log('Event: '+ e.data.event);
         var data = e.data;
         var event = data.event;
         if (event === undefined) return;
@@ -450,16 +448,16 @@ sq.innerFrame = null;
     sq.context = 'outer';
     evt.on('squirt.play', blurPage);
     evt.on('squirt.pause', unblurPage);
-    evt.on('squirt.redirect', function(e) {
-        window.location.href = e.href;
-    });
+
     evt.on('squirt.close', function() {
-        sq.innerFrame.classList.add('closed');
-        sq.innerFrame.contentWindow.blur();
-        window.focus();
+        $(sq.innerFrame).hide();
+        //sq.innerFrame.classList.add('closed');
+        //sq.innerFrame.contentWindow.blur();
+        //window.focus();
         unblurPage()
     });
     evt.on('squirt.pageBodyOffsetTop', function(e) {
+        console.log('page body off set top');
         document.body.style.top = 0 + 'px';
         dom.transition(document.body, e.duration, {
             target: 'top'
@@ -541,7 +539,6 @@ function sendRecord(){
         }
     })
 }
-sendRecord();
 
 var startTime,timeRead,lexicalRead,wordRead,regression,fixation,sent;
 
@@ -553,8 +550,9 @@ sq.again = function(didWaitForBlur) {
     regression=0;
     fixation = 0;
     sent = false;
-
-    sq.innerFrame.classList.remove('closed');
+    console.log('again');
+    console.log(sq.innerFrame);
+    $(sq.innerFrame).show('slow');//.classList.remove('closed');
     setText();
     if (didWaitForBlur) return evt.dispatch('squirt.play', {
         extraSlowStart: true
@@ -563,7 +561,7 @@ sq.again = function(didWaitForBlur) {
     blurPage();
     setTimeout(function() {
         sq.again(true)
-    }, 250);
+    }, 550);
 };
 
 

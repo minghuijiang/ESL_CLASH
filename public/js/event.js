@@ -111,6 +111,33 @@ $('#fileSelector').change(function(ev){
     }
 });
 
+$('#open').click(function(){
+    $('#hiddenFile').trigger('click');
+});
+$('#hiddenFile').change(function(ev){
+    console.log('changed');
+    if(this.disabled){
+        // do upload and re-download
+        return alert('File upload not supported!');
+
+    }else{
+        var F = this.files;
+        console.log(F);
+        var reader = new FileReader();
+        reader.onload=function(e){
+            var text = this.result;
+            json = JSON.parse(text);
+            var str = parseJSON(json);
+            changeContent(str,F[0].name.split('.')[0]);
+            $('#hiddenFile').val('');
+        };
+        reader.readAsText(F[0]);
+
+    }
+
+});
+
+
 //print button
 $('#print').bind('click', function () {
     var printContents = $(".printable").html();

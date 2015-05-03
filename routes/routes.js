@@ -55,57 +55,9 @@ module.exports = function(app, passport) {
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);
 
-    app.post('/api/open',isLoggedIn,function(req,res){
-        var file = req.files.file;
-        var file_extension = file.extension;
-        var result = {};
-        console.log(req.user.USERNAME+' request to slash upload document. file_extension: '+file_extension+' size: '+file.size);
+    app.post('/api/open',isLoggedIn,openClientFile);
 
-        if(file_extension!='cesr'){
-            result.error='Only .cesr file allowed';
-            res.send(result);
-            return ;
-        }
-
-        // check file size on client side.
-        if(file.size>1024*1024){// cesr limit to 1mb
-            result.error ="File too big, max size = 1Mb.";
-            res.send(result);
-            return ;
-        }
-        var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
-        var output="";
-        parse_msword.stdout.on('data', function (data) {    // register one or more handlers
-            output+=data
-
-        }).on('end',function(){
-            res.send(output);
-        });
-    });
-
-    app.post('/api/download',isLoggedIn,function(req,res){
-        var result = {};
-        var filename = 'tmp/'+req.user.USERID;
-        fs.writeFile(filename,req.body.contents,function(err){
-            if(err){
-                result.error = 'File IO failed. Contact Admin.';
-                logError(err);
-                res.send(result);
-            }else{
-                result.data= true;
-                setTimeout(function(){
-                    fs.unlink(filename,function(error){
-                        if(error){
-                            logError(error);
-                        }else{
-                            console.log('file deleted: '+filename);
-                        }
-                    })
-                },30000);  // delete the tmp file after 30 seconds
-                res.send(result);
-            }
-        });
-    });
+    app.post('/api/download',isLoggedIn,createDownload);
 
     app.get('/api/download',isLoggedIn,function(req,res){
         res.download('tmp/'+req.user.USERID,req.query.filename+'.cesr');
@@ -117,6 +69,12 @@ module.exports = function(app, passport) {
         console.log(req.user.USERNAME+' request to slash text.');
         var text=req.body.text;
         parseText(text,req,res,1,10);
+    });
+
+    app.post('/api/reparse',isLoggedIn,isInstructorOrAdmin,function(req,res){
+        console.log(req.user.USERNAME+' request to reparse text.');
+        var text=req.body.text;
+        reParseLexical(text,req,res);
     })
 
 
@@ -128,6 +86,64 @@ var java = require('java'),
 
 java.classpath.push("java/slash.jar");
 var slash = java.newInstanceSync("main.Slash");
+
+function reParseLexical(msg,req,res,callback){
+    var result ={};
+    // grep ExceptionList
+    req.getConnection(function (err, connection) {
+        connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
+            var exception ='';
+            if (err){
+                logError(error);
+            }else{
+                for(var i=0;i<rows.length;i++){
+                    exception+=rows[i].EX_STR+';';
+                }
+            }
+            console.log(req.user.USERNAME+' After get Exception: '+exception);
+            // results is an array consisting of messages collected during execution
+            /**
+             * read jsonInput and reparse the document for new lexical bundles
+             *
+             * @param String jsonInput
+             * @param String exceptionList
+             *          Exception List is a string with multiple token, separated by ';'
+             *              from day to day;from year to year;
+             * @return
+             *
+             */
+            slash.parseException(msg, exception, function(error, data) {
+                console.log(req.user.USERNAME+' finish reparse.');
+                if (error) {
+                    console.log(req.user.USERNAME+' Error from reparse.');
+                    logError(error);
+                    result.error=error;
+                    res.send(result);
+
+                } else {
+                    result.data=data[0];
+                    res.send(result);
+                    console.log(req.user.USERNAME+' Exception result '+data[1]);
+                    var count = data[1].split(',');
+                    for(var i=0;i<rows.length;i++){
+                        var str = rows[i].EX_STR;
+                        var c = parseInt(count[i]);
+                        if(c>0)
+                            connection.query('UPDATE EXCEPTION SET COUNT=COUNT+? WHERE EX_STR =? AND USERID=?',
+                                [c,str,rows[i].USERID],function(err2,rows2){
+                                    if(err2)
+                                        console.log(err2);
+                                })
+
+                    }
+                }
+                if(callback)
+                    callback();
+            });
+        });
+
+    });
+}
 
 function parseText (msg,req, res,min,max,callback){
     var options = {
@@ -287,4 +303,58 @@ function logError(error){
     console.log(error);
     if(error.stack)
         console.log(error.stack);
+}
+
+
+//unnecessary if open file with HTML5.
+function openClientFile(req,res){
+    var file = req.files.file;
+    var file_extension = file.extension;
+    var result = {};
+    console.log(req.user.USERNAME+' request to slash upload document. file_extension: '+file_extension+' size: '+file.size);
+
+    if(file_extension!='cesr'){
+        result.error='Only .cesr file allowed';
+        res.send(result);
+        return ;
+    }
+
+    // check file size on client side.
+    if(file.size>1024*1024){// cesr limit to 1mb
+        result.error ="File too big, max size = 1Mb.";
+        res.send(result);
+        return ;
+    }
+    var parse_msword = spawn('sh', [ 'parse_msword.sh', file.path ]);
+    var output="";
+    parse_msword.stdout.on('data', function (data) {    // register one or more handlers
+        output+=data
+
+    }).on('end',function(){
+        res.send(output);
+    });
+}
+
+function createDownload(req,res){
+    var result = {};
+    var filename = 'tmp/'+req.user.USERID;
+    fs.writeFile(filename,req.body.contents,function(err){
+        if(err){
+            result.error = 'File IO failed. Contact Admin.';
+            logError(err);
+            res.send(result);
+        }else{
+            result.data= true;
+            setTimeout(function(){
+                fs.unlink(filename,function(error){
+                    if(error){
+                        logError(error);
+                    }else{
+                        console.log('file deleted: '+filename);
+                    }
+                })
+            },30000);  // delete the tmp file after 30 seconds
+            res.send(result);
+        }
+    });
 }

@@ -649,6 +649,7 @@ function slowStartFactor() {
 }
 
 function hideContextNodes(extraSlow, callback) { // initial reader, show fade of word.
+    console.log('hide context nodes');
     var animationLength = anims.hideContext.ms;
     animationLength *= extraSlow ? anims.hideContext.extraSlowFactor : 1;
     var wordsAnimationLength = animationLength * .7;
@@ -1125,14 +1126,17 @@ var events = {
     },
 
     'squirt.play': function(e) {
+        console.log('frame inner play');
+        console.log(e);
         if (e.frameOfOrigin) {
             slideModalTo('settingsClosed', true);
         } else {
-            dom.show('.carousel');
-            dom.hide('.reader-content');
-            reader.play(e.extraSlowStart);
-            document.body.classList.add('playing');
+
         }
+        dom.show('.carousel');
+        dom.hide('.reader-content');
+        reader.play(e.extraSlowStart);
+        document.body.classList.add('playing');
     },
 
     'squirt.close': function() {

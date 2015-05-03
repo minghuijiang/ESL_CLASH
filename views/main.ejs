@@ -9,14 +9,17 @@
     <script src="//cdn.socket.io/socket.io-1.2.0.js"></script>
 
     <link rel="stylesheet" href="css/main-style.css">
-    <link rel="stylesheet" href="css/main-style.css">
+    <!--<script src="/squirt/frame.inner.js"></script>-->
+
+
 
     <script>
-        var json;
+        var json;var sq={};
     </script>
     <script src="js/display.js"></script>
     <script src="js/console.js"></script>
     <script src="js/cache.js"></script>
+    <script src="/squirt/squirt.js"></script>
 
     <% if (user.USERTYPE <= 1) { %>
         <script src="js/jquery.contextMenu.js"></script>
@@ -113,57 +116,8 @@
         <div id="editBar" style="">
             <input type="text" id="newException" name="exception" placeholder="Lexical Bundle" size="15" />
             <button id="addEx">add</button>
+            <button id="reparse">Identify Lexical</button>
             <button id="download">Download</button>
-            <button id="open">Open</button>
-            <input type="file" id="hiddenFile" style="display: none" accept=".cesr" />
-            <script>
-                $('#open').click(function(){
-                    $('#hiddenFile').trigger('click');
-                });
-                $('#hiddenFile').change(function(ev){
-                    console.log('changed');
-                    if(this.disabled){
-                        // do upload and re-download
-                        return alert('File upload not supported!');
-
-                    }else{
-                        var F = this.files;
-                        console.log(F);
-                        var reader = new FileReader();
-                        reader.onload=function(e){
-                            var text = this.result;
-                            json = JSON.parse(text);
-                            var str = parseJSON(json);
-                            changeContent(str,F[0].name.split('.')[0]);
-                            $('#hiddenFile').val('');
-                        };
-                        reader.readAsText(F[0]);
-
-                    }
-
-                });
-                $('#download').click(function(){
-                    if(!json){
-                        alert('Please select a file to download.');
-                        return ;
-                    }
-                    var name = $('#filename').val().trim();
-                    if(name.length==0){
-                        alert('Please enter a valid filename.');
-                        return ;
-                    }
-                    var contents = JSON.stringify(json);
-                    $.post('api/download',{contents:contents},function(data){
-                        console.log(data);
-                        if(data.error){
-                            onError(data);
-                        } else{
-                            window.open('api/download?filename='+name);
-
-                        }
-                    })
-                })
-            </script>
             <span style="float:right">
             <button id="print">Print</button>
 
@@ -215,6 +169,8 @@
 
                 <% } %>
                 <input type="checkbox" id="slToCr" onclick="changeSlash(this.checked)"/><span>Change Slash to CR</span>
+                <button id="open">Open Local CESR</button>
+                <input type="file" id="hiddenFile" style="display: none" accept=".cesr" />
 
             </div>
         </div>
@@ -552,127 +508,9 @@
 
     <% } %>
 </div>
+<iframe src="squirt/views/iframe.html" class="sq-frame sq-trans" style="border: 0px; display: block;">
 
-<!--<div id="reader">-->
-    <!--<div class="modal" style="height:100%">-->
-        <!--<div class="drawer">-->
-            <!--<div class="drawer-content">-->
-                <!--<pre>Restart the reader after change font size</pre>-->
-                <!--<ul class='font-selector'>-->
-                    <!--<li class='font-option small'><span style='font-size:1em' onclick="dec();">Smaller</span></li>-->
-                    <!--<li class='font-option medium'><span style='font-size:2em' onclick="inc();">Larger</span></li>-->
-                <!--</ul>-->
-                <!--<ul class='keyboard-shortcuts'>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>pause</i> &amp; <i class='ss-icon'>play</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>Spacebar</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>rewind</i>-->
-                <!--WPM-->
-                <!--<i class='ss-icon'>fastforward</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>rewind</i> &amp; <i class='ss-icon'>fastforward</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>close</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>Escape</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>settings</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>S</span>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<div class="toolbar">-->
-            <!--<ul class="menu segment">-->
-                <!--<li><i class="toolbar-settings btn ss-icon">settings</i></li>-->
-            <!--</ul>-->
-            <!--<div class="playback segment">-->
-                <!--<i class="btn pause ss-icon">pause</i>-->
-                <!--<div class="scrubber no-select">-->
-                    <!--<span class="scrubber-bar scrubber-bar-left"></span>-->
-                    <!--<span class="scrubber-bar scrubber-bar-right"></span>-->
-                    <!--<i class="ss-icon scrubber-knob btn no-select">record</i>-->
-                <!--</div>-->
-                <!--<div class="time-to-read"></div>-->
-            <!--</div>-->
-            <!--<div class="wpm segment">-->
-                <!--<i class="ss-icon wpm-down btn">directleft</i>-->
-                <!--<div class="wpm-count no-select">&lt; {{ wpm }}</div>-->
-                <!--<i class="ss-icon wpm-up btn">directright</i>-->
-            <!--</div>-->
-
-        <!--</div>-->
-        <!--<div class="reader">-->
-
-            <!--<i class='close ss-icon'>close</i>-->
-            <!--<div class="carousel">-->
-                <!--<div class="focus-indicator-gap">&nbsp;</div>-->
-                <!--<ul class="nodes"></ul>-->
-            <!--</div>-->
-            <!--<div class="reader-content">-->
-                <!--<img class='share-logo' src='/images/logo.png' style="width:250px;height:188px" />-->
-                <!--<h3 class='tweet-preview'>-->
-                <!--</h3>-->
-            <!--</div>-->
-
-            <!--<div class='keyboard-shortcuts' style='position:fixed;bottom:0px;right:10px'>-->
-                <!--<ul>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>pause</i> &amp; <i class='ss-icon'>play</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>Spacebar</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>rewind</i>-->
-                <!--WPM-->
-                <!--<i class='ss-icon'>fastforward</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'><i class='ss-icon'>up</i><i class='ss-icon'>down</i></span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>rewind</i> &amp; <i class='ss-icon'>fastforward</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'><i class='ss-icon'>left</i><i class='ss-icon'>right</i></span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>close</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>Escape</span>-->
-                    <!--</li>-->
-                    <!--<li>-->
-              <!--<span class='shortcut-function'>-->
-                <!--<i class='ss-icon'>settings</i>-->
-              <!--</span>-->
-                        <!--<span class='shortcut-key'>S</span>-->
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</div>-->
-
-
-        <!--</div>-->
-    <!--</div>-->
-    <!--<script src="../frame.inner.js"></script>-->
-<!--</div>-->
+</iframe>
 
 <script src="js/event.js"></script>
 <% if (user.USERTYPE <= 1) { %>
@@ -684,6 +522,7 @@
 <% } %>
 <script>
     $(".reload").click();
+    initSquirt();
 </script>
 
 
