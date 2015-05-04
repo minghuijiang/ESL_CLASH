@@ -25,11 +25,6 @@ body {
     background-color: #FDFDFD;
 }
 
-.modal .error {
-    display: none
-margin: 2em;
-    font-size: .8em;
-}
 
 .drawer {
     box-shadow: 0 0 6px rgba(0,0,0,.3);

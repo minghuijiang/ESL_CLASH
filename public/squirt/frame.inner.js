@@ -874,9 +874,13 @@ var avgDelayPerWord = null;
 
 var tokenDelimiter = 'ˇ';
 
-function textToNodes(text) {
+function textToNodes(text,wbw) {
     text = text.trim('\n').replace(/\s+\n/g, '\n');
-    var array = text.replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ").split(tokenDelimiter);
+    var array;
+    if(wbw){
+        text=text.replace(/\s/g, tokenDelimiter);
+    }
+    array= text.replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ").split(tokenDelimiter);
 
     var totalDelay = 0;
     var length = 0;
@@ -900,15 +904,22 @@ function textToNodes(text) {
     return nodes;
 }
 
-function changeFont(e) {
-    var reader = dom.qs('.reader');
-    reader.classList.remove('sans');
-    if (e.sans) reader.classList.add('sans');
+var size=userSettings.get('fontSize',2);
+$(".carousel").css('font-size',size+'em');
+function changeFont(s) {
+    size+=s;
+    userSettings.set('fontSize',size);
+    $(".carousel").css('font-size',size+'em');
     rebuildNodes(true);
 }
 
-var rebuildNodes = function() {};
+function changeNode(wbw){
+    c.setNodes(textToNodes(currentText,wbw));
+}
 
+var rebuildNodes = function(preserveIdx) {
+    c.setNodes(textToNodes(currentText), preserveIdx);
+};
 // TODO the location of these event handlers is inconsistent.
 // some are here, some are in the main.iframe module. sort it out.
 evt.handle({
@@ -1057,11 +1068,12 @@ evt.on(dom.qs('.wpm-down'), 'click', function() {
 });
 
 wpm.render();
-
+var currentText;
 // reader
 var reader= {
 
     setText: function(text) {
+        currentText=text;
         rebuildNodes = function(preserveIdx) {
             c.setNodes(textToNodes(text), preserveIdx);
         };
@@ -1084,11 +1096,11 @@ var reader= {
 };
 
 // gui
-evt.on(dom.qs('.article-veil'),
-    'click',
-    function(){
-        evt.dispatch('squirt.pause', null, null);
-    });
+//evt.on(dom.qs('.article-veil'),
+//    'click',
+//    function(){
+//        evt.dispatch('squirt.pause', null, null);
+//    });
 
 evt.on(dom.qs('.close'),
     'click',
@@ -1128,11 +1140,8 @@ var events = {
     'squirt.play': function(e) {
         console.log('frame inner play');
         console.log(e);
-        if (e.frameOfOrigin) {
-            slideModalTo('settingsClosed', true);
-        } else {
+        slideModalTo('settingsClosed', true);
 
-        }
         dom.show('.carousel');
         dom.hide('.reader-content');
         reader.play(e.extraSlowStart);
@@ -1180,10 +1189,6 @@ var events = {
     'squirt.closeSettings': function() {
         evt.dispatch('squirt.play');
         slideModalTo('settingsClosed');
-    },
-
-    'squirt.changeFont': function(e) {
-        userSettings.set('sansFont', e.sans);
     },
 
     // ideally, we're not listening to the carousel directly

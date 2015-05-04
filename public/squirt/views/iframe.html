@@ -1,35 +1,27 @@
 <!DOCTYPE html>
-<html style="height:100%">
+<html class="html" style="height:100%">
 <head>
 
     <link rel='stylesheet' href='/css/ss-pika.css'>
     <link rel='stylesheet' href='/css/frame.inner.css'>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script>
-        var size = 2;
-        function changeFont(){
-            $(".carousel").css('font-size',size+'em');
-        }
-        function inc(){
-            size+=0.2;
-            changeFont();
-        }
-        function dec(){
-            size-=0.2;
-            changeFont();
-        }
-    </script>
+
 </head>
-<body style="height:100%">
+<body class="body" style="height:100%">
 <div class="article-veil"></div>
 <div class="modal" style="height:100%">
     <div class="drawer">
         <div class="drawer-content">
-            <pre>Restart the reader after change font size</pre>
+            <input type="checkbox" id="wbw" value="Word by Word" />
+            <script>
+                $("#wbw").change(function(){
+                    changeNode(this.checked);
+                })
+            </script>
             <ul class='font-selector'>
-                <li class='font-option small'><span style='font-size:1em' onclick="dec();">Smaller</span></li>
-                <li class='font-option medium'><span style='font-size:2em' onclick="inc();">Larger</span></li>
+                <li class='font-option small'><span style='font-size:1em' onclick="changeFont(-0.2);">Smaller</span></li>
+                <li class='font-option medium'><span style='font-size:2em' onclick="changeFont(0.2);">Larger</span></li>
             </ul>
             <ul class='keyboard-shortcuts'>
                 <li>
