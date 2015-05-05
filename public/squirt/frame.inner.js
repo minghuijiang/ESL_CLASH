@@ -485,7 +485,6 @@ var evt = {
 
 
 var sq = window.sq = window.sq || {};
-var tracking = window.parent.sq.tracking;
 sq.context = 'inner';
 extend(sq, dom.fromQueryString());
 
@@ -519,7 +518,8 @@ var userSettings = {
         save();
     }
 };
-window.parent.sq.userSettings = userSettings;
+window.parent.sq.tracking['userSettings'] = userSettings;
+var tracking = window.parent.sq.tracking;
 
 
 sq.playing = true;
@@ -699,7 +699,7 @@ function setupSeekTransition() {
 
 function setSeekState(state) {
     if (state === sq.seeking) return;
-    tracking.timeRead += new Date().getMilliseconds()-tracking.startTime;
+    tracking.timeRead += new Date().getTime()-tracking.startTime;
 
     getNextNodeIdx = state == 'backward' ? decrementNodeIdx : incrementNodeIdx;
 
@@ -729,7 +729,7 @@ var c = {
 
     pause: function() {
         tracking.fixation++;
-        var current = new Date().getMilliseconds();
+        var current = new Date().getTime();
         tracking.timeRead+=(current -tracking.startTime);
 
         if (!sq.playing) return;
@@ -738,7 +738,7 @@ var c = {
     },
 
     play: function(extraSlowStart) {
-        tracking.startTime=new Date().getMilliseconds();
+        tracking.startTime=new Date().getTime();
         clearSeek();
         sq.playing = true;
         getNextNodeIdx = incrementNodeIdx;
@@ -772,7 +772,7 @@ var c = {
     },
 
     stopSeeking: function() {
-        tracking.startTime=new Date().getMilliseconds();
+        tracking.startTime=new Date().getTime();
         sq.seeking = false;
         clearSeekTransitionUpdater();
         evt.once(nodesContainer, dom.transitionEndEvents, clearSeekTransition);
@@ -1083,6 +1083,15 @@ var currentText;
 var reader= {
 
     setText: function(text) {
+        console.log(tracking);
+        tracking.reset(tracking);
+        var id = setInterval(function(){
+            if(tracking.isReading){
+                tracking.send(tracking);
+            }else{
+                clearInterval(id);
+            }
+        },20000);
         currentText=text;
         rebuildNodes = function(preserveIdx) {
             c.setNodes(textToNodes(text), preserveIdx);
@@ -1157,7 +1166,7 @@ var events = {
     },
 
     'squirt.close': function() {
-        tracking.send();
+        tracking.send(tracking);
         tracking.isReading=false;
         sq.closed = true;
         reader.stop();
@@ -1180,7 +1189,7 @@ var events = {
     },
 
     'squirt.setText': function(e) {
-        tracking.send();
+        tracking.send(tracking);
         reader.setText(e.text);
         evt.dispatch('squirt.wpm', {
             value: userSettings.get('wpm', 320),
@@ -1208,7 +1217,7 @@ var events = {
         //dom.show('.reader-content');
         evt.dispatch('squirt.pause');
         tracking.isReading=false;
-        tracking.reset();
+        tracking.send(tracking);
     }
 
 };

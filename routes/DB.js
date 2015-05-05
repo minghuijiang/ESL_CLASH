@@ -855,8 +855,9 @@ exports.addRecord = function(req,res){
                 SSPEED:input.startWpm,
                 ESPEED:input.endWpm
             };
-            connection.query("INSERT INTO RECORD set ? ON DUPLICATE KEY SET ?",[data,data2], function(err, rows){
+            connection.query("INSERT INTO RECORD set ? ON DUPLICATE KEY UPDATE ?",[data,data2], function(err, rows){
                 if (err){
+                    logError(err);
                     result.error=err;
                 }else{
                     result.data=rows;

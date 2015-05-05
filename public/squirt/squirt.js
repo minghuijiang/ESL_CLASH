@@ -493,7 +493,7 @@ function unblurPage() {
 
 
 function setText() {
-    reset();
+    //reset();
     var text = getTextFromJson();//sq.demoText || dom.getSelectedText() || sq.pageContent;
 
     evt.dispatch('squirt.setText', {
@@ -518,40 +518,45 @@ window.sq.tracking={
     isReading:false
 };
 
-function reset(){
-    if(!window.sq.sent)
+function reset(obj){
+    if(!obj.sent)
         sendRecord();
-    window.sq.startTime = new Date().getMilliseconds();
-    window.sq.endTime = 0;
-    window.sq.swpm=window.sq.userSettings.get('wpm');
-    window.sq.ewpm = 0;
-    window.sq.timeRead = 0;
-    window.sq.lexicalRead= 0;
-    window.sq.wordRead = 0;
-    window.sq.regression=0;
-    window.sq.fixation = 0;
-    window.sq.sent = true;
-    window.sq.isReading=true;
+    obj.st = new Date().getTime();
+    console.log(obj.st);
+    obj.startTime=new Date().getTime();
+    obj.endTime = 0;
+    obj.swpm=obj.userSettings.get('wpm');
+    obj.ewpm = 0;
+    obj.timeRead = 0;
+    obj.lexicalRead= 0;
+    obj.wordRead = 0;
+    obj.regression=0;
+    obj.fixation = 0;
+    obj.sent = true;
+    obj.isReading=true;
 }
 
 
-function sendRecord(){
-    window.sq.endTime = new Date().getMilliseconds();
-    window.sq.ewpm = window.sq.userSettings.get('wpm');
+function sendRecord( obj ){
+    if(obj.sent) return ;
+    console.log('send record~~~~~~~~~~~~~');
+    console.trace();
+    obj.endTime = new Date().getTime();
+    obj.ewpm = obj.userSettings.get('wpm');
     var select =$('#fileSelector')[0];
     var selectedFile =select.options[select.selectedIndex];
     var data = {
         instructor: selectedFile.value,
         filename: selectedFile.innerHTML,
-        startTime: window.sq.st,
-        endTime: window.sq.endTime,
-        startWpm:window.sq.swpm,
-        endWpm:window.sq.ewpm,
-        timeSpend: window.sq.endTime  - window.sq.startTime + window.sq.timeRead,
-        wordRead: window.sq.wordRead,
-        lbRead: window.sq.lexicalRead,
-        regression: window.sq.regression,
-        fixation: window.sq.fixation
+        startTime: obj.st,
+        endTime: obj.endTime,
+        startWpm:obj.swpm,
+        endWpm:obj.ewpm,
+        timeSpend: obj.endTime  - obj.startTime + obj.timeRead,
+        wordRead: obj.wordRead,
+        lbRead: obj.lexicalRead,
+        regression: obj.regression,
+        fixation: obj.fixation
     };
     $.get('api/addRecord?'+$.param(data),function(data){
         if(data.error)
@@ -570,13 +575,7 @@ sq.again = function(didWaitForBlur) {
     });
 
     blurPage();
-    var id = setInterval(function(){
-        if(window.sq.isReading){
-            sendRecord();
-        }else{
-            clearInterval(id);
-        }
-    },20000);
+
 };
 
 
