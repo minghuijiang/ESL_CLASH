@@ -472,29 +472,9 @@ function initSquirt() {
         .map(function(node) {
             node.classList.add('sq-trans');
         });
-    startTime = new Date().getMilliseconds();
-    timeRead = 0;
-    lexicalRead= 0;
-    wordRead = 0;
-    regression=0;
-    fixation = 0;
-    sent=false;
+
 }(initialized = true);
 
-function createIframe(src, onLoad) {
-    var frame = dom.makeEl('iframe', {
-        src: src,
-        //style: "height:100%",
-        class: 'sq-frame'
-    }, document.body);
-    frame.style.border = 0;
-    frame.addEventListener('load', function() {
-        onLoad && onLoad();
-        frame.focus();
-        dom.transition(document.body)
-    });
-    return frame;
-}
 
 function blurPage() {
     js.array(document.body.children)
@@ -513,23 +493,65 @@ function unblurPage() {
 
 
 function setText() {
+    reset();
     var text = getTextFromJson();//sq.demoText || dom.getSelectedText() || sq.pageContent;
 
     evt.dispatch('squirt.setText', {
         text: text
     });
 }
+
+window.sq.tracking={
+    st:0,
+    startTime:0,
+    endTime:0,
+    swpm:0,
+    ewpm:0,
+    timeRead:0,
+    lexicalRead:0,
+    wordRead:0,
+    regression:0,
+    fixation:0,
+    sent:true,
+    reset:reset,
+    send:sendRecord,
+    isReading:false
+};
+
+function reset(){
+    if(!window.sq.sent)
+        sendRecord();
+    window.sq.startTime = new Date().getMilliseconds();
+    window.sq.endTime = 0;
+    window.sq.swpm=window.sq.userSettings.get('wpm');
+    window.sq.ewpm = 0;
+    window.sq.timeRead = 0;
+    window.sq.lexicalRead= 0;
+    window.sq.wordRead = 0;
+    window.sq.regression=0;
+    window.sq.fixation = 0;
+    window.sq.sent = true;
+    window.sq.isReading=true;
+}
+
+
 function sendRecord(){
+    window.sq.endTime = new Date().getMilliseconds();
+    window.sq.ewpm = window.sq.userSettings.get('wpm');
     var select =$('#fileSelector')[0];
     var selectedFile =select.options[select.selectedIndex];
     var data = {
         instructor: selectedFile.value,
         filename: selectedFile.innerHTML,
-        timeSpend: new Date().getMilliseconds() -startTime +timeRead,
-        wordRead: wordRead,
-        lbRead: lexicalRead,
-        regression: regression,
-        fixation: fixation
+        startTime: window.sq.st,
+        endTime: window.sq.endTime,
+        startWpm:window.sq.swpm,
+        endWpm:window.sq.ewpm,
+        timeSpend: window.sq.endTime  - window.sq.startTime + window.sq.timeRead,
+        wordRead: window.sq.wordRead,
+        lbRead: window.sq.lexicalRead,
+        regression: window.sq.regression,
+        fixation: window.sq.fixation
     };
     $.get('api/addRecord?'+$.param(data),function(data){
         if(data.error)
@@ -540,28 +562,21 @@ function sendRecord(){
     })
 }
 
-var startTime,timeRead,lexicalRead,wordRead,regression,fixation,sent;
-
 sq.again = function(didWaitForBlur) {
-    startTime = new Date().getMilliseconds();
-    timeRead = 0;
-    lexicalRead= 0;
-    wordRead = 0;
-    regression=0;
-    fixation = 0;
-    sent = false;
-    console.log('again');
-    console.log(sq.innerFrame);
     $(sq.innerFrame).show('slow');//.classList.remove('closed');
     setText();
-    if (didWaitForBlur) return evt.dispatch('squirt.play', {
+    evt.dispatch('squirt.play', {
         extraSlowStart: true
     });
 
     blurPage();
-    setTimeout(function() {
-        sq.again(true)
-    }, 550);
+    var id = setInterval(function(){
+        if(window.sq.isReading){
+            sendRecord();
+        }else{
+            clearInterval(id);
+        }
+    },20000);
 };
 
 

@@ -812,16 +812,23 @@ exports.addRecord = function(req,res){
 
     }else{
         /*
-         CREATE TABLE RECORD(
-             USERID INT(15) NOT NULL,
-             INSTRUCTORID INT(15) NOT NULL,
-             FILENAME VARCHAR(32) NOT NULL,
-             TIME_SPENT_SEC INTEGER NOT NULL,
-             WORD_READ INT NOT NULL,
-             LB_READ INT NOT NULL,
-             REGRESSION INT NOT NULL,
-             FIXATION INT NOT NULL
-         );
+         CREATE TABLE `RECORD` (
+         `USERID` int(15) NOT NULL,
+         `INSTRUCTORID` int(15) NOT NULL,
+         `FILENAME` varchar(32) NOT NULL,
+         `TIME_SPENT_SEC` int(11) NOT NULL,
+         `WORD_READ` int(11) NOT NULL,
+         `LB_READ` int(11) NOT NULL,
+         `REGRESSION` int(11) NOT NULL,
+         `FIXATION` int(11) NOT NULL,
+         `STARTTIME` int(16) DEFAULT NULL,
+         `ENDTIME` int(16) DEFAULT NULL,
+         `SSPEED` int(4) DEFAULT NULL,
+         `ESPEED` int(4) DEFAULT NULL,
+         PRIMARY KEY (`USERID`,`INSTRUCTORID`,`FILENAME`),
+         KEY `INSTRUCTORID` (`INSTRUCTORID`,`FILENAME`),
+         CONSTRAINT `RECORD_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `USER` (`USERID`) ON DELETE CASCADE
+         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
          */
         req.getConnection(function (err, connection) {
             var data = {
@@ -832,9 +839,23 @@ exports.addRecord = function(req,res){
                 WORD_READ: input.wordRead,
                 LB_READ: input.lbRead,
                 REGRESSION: input.regression,
-                FIXATION: input.fixation
+                FIXATION: input.fixation,
+                STARTTIME:input.startTime,
+                ENDTIME:input.endTime,
+                SSPEED:input.startWpm,
+                ESPEED:input.endWpm
             };
-            connection.query("INSERT INTO RECORD set ? ",data, function(err, rows){
+            var data2 ={
+                TIME_SPENT_SEC: input.timeSpend,
+                WORD_READ: input.wordRead,
+                LB_READ: input.lbRead,
+                REGRESSION: input.regression,
+                FIXATION: input.fixation,
+                ENDTIME:input.endTime,
+                SSPEED:input.startWpm,
+                ESPEED:input.endWpm
+            };
+            connection.query("INSERT INTO RECORD set ? ON DUPLICATE KEY SET ?",[data,data2], function(err, rows){
                 if (err){
                     result.error=err;
                 }else{

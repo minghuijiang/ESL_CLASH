@@ -108,7 +108,6 @@ var js = {
         }
     }
 };
-
 var dom = {
 
     // Efficiently append a large number of children to el
@@ -486,6 +485,7 @@ var evt = {
 
 
 var sq = window.sq = window.sq || {};
+var tracking = window.parent.sq.tracking;
 sq.context = 'inner';
 extend(sq, dom.fromQueryString());
 
@@ -519,6 +519,7 @@ var userSettings = {
         save();
     }
 };
+window.parent.sq.userSettings = userSettings;
 
 
 sq.playing = true;
@@ -581,7 +582,6 @@ function waitOnNode(node,callback) {
     if(lock)
         return;
     lock = true;
-    console.log('wait on node. '+seekingFFOrRewind());
     // if we'r ff/rewinding, advance as soon as the current transition ends
     if (seekingFFOrRewind()) {
         evt.once(nodesContainer, dom.transitionEndEvents,function(){lock = false;callback();});
@@ -604,6 +604,8 @@ function noMoreNodes() {
 }
 
 function advanceNode() {
+    tracking.lexicalRead++;
+    tracking.wordRead+= c.nodes[nodeIdx].word.trim().split(/[\s]+/g).length;
     updateAndDispatchProgress();
     if (!getNextNodeIdx()) return noMoreNodes();
     focusOnNodeAtIdx(nodeIdx);
@@ -697,6 +699,7 @@ function setupSeekTransition() {
 
 function setSeekState(state) {
     if (state === sq.seeking) return;
+    tracking.timeRead += new Date().getMilliseconds()-tracking.startTime;
 
     getNextNodeIdx = state == 'backward' ? decrementNodeIdx : incrementNodeIdx;
 
@@ -725,12 +728,17 @@ var c = {
     nodes: null,
 
     pause: function() {
+        tracking.fixation++;
+        var current = new Date().getMilliseconds();
+        tracking.timeRead+=(current -tracking.startTime);
+
         if (!sq.playing) return;
         sq.playing = false;
         carousel.classList.remove('playing');
     },
 
     play: function(extraSlowStart) {
+        tracking.startTime=new Date().getMilliseconds();
         clearSeek();
         sq.playing = true;
         getNextNodeIdx = incrementNodeIdx;
@@ -759,10 +767,12 @@ var c = {
     },
 
     seekBackward: function() {
+        tracking.regression++;
         setSeekState('backward');
     },
 
     stopSeeking: function() {
+        tracking.startTime=new Date().getMilliseconds();
         sq.seeking = false;
         clearSeekTransitionUpdater();
         evt.once(nodesContainer, dom.transitionEndEvents, clearSeekTransition);
@@ -1138,8 +1148,6 @@ var events = {
     },
 
     'squirt.play': function(e) {
-        console.log('frame inner play');
-        console.log(e);
         slideModalTo('settingsClosed', true);
 
         dom.show('.carousel');
@@ -1149,6 +1157,8 @@ var events = {
     },
 
     'squirt.close': function() {
+        tracking.send();
+        tracking.isReading=false;
         sq.closed = true;
         reader.stop();
         slideModalTo('hidden');
@@ -1170,6 +1180,7 @@ var events = {
     },
 
     'squirt.setText': function(e) {
+        tracking.send();
         reader.setText(e.text);
         evt.dispatch('squirt.wpm', {
             value: userSettings.get('wpm', 320),
@@ -1194,8 +1205,10 @@ var events = {
     // ideally, we're not listening to the carousel directly
     'squirt.carousel.end': function(e) {
         dom.hide('.carousel');
-        dom.show('.reader-content');
+        //dom.show('.reader-content');
         evt.dispatch('squirt.pause');
+        tracking.isReading=false;
+        tracking.reset();
     }
 
 };
