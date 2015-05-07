@@ -589,6 +589,9 @@ function waitOnNode(node,callback) {
         // otherwise, we're playing, so resolve the promise after displaying the node
     } else {
         setTimeout(function() {
+
+                tracking.lexicalRead++;
+                tracking.wordRead+= node.word.trim().split(/[\s]+/g).length;
                 lock = false;
                 if (!sq.playing&& !seekingFFOrRewind()) return; // paused or ff/rewinding
                 callback();
@@ -604,8 +607,6 @@ function noMoreNodes() {
 }
 
 function advanceNode() {
-    tracking.lexicalRead++;
-    tracking.wordRead+= c.nodes[nodeIdx].word.trim().split(/[\s]+/g).length;
     updateAndDispatchProgress();
     if (!getNextNodeIdx()) return noMoreNodes();
     focusOnNodeAtIdx(nodeIdx);
@@ -699,7 +700,10 @@ function setupSeekTransition() {
 
 function setSeekState(state) {
     if (state === sq.seeking) return;
-    tracking.timeRead += new Date().getTime()-tracking.startTime;
+    if(tracking.startTime!=0){
+        tracking.timeRead += new Date().getTime()-tracking.startTime;
+        tracking.startTime=0;
+    }
 
     getNextNodeIdx = state == 'backward' ? decrementNodeIdx : incrementNodeIdx;
 
@@ -728,9 +732,13 @@ var c = {
     nodes: null,
 
     pause: function() {
-        tracking.fixation++;
-        var current = new Date().getTime();
-        tracking.timeRead+=(current -tracking.startTime);
+        if(tracking.startTime!=0){
+            tracking.fixation++;
+            var current = new Date().getTime();
+            tracking.timeRead+=(current -tracking.startTime);
+            tracking.startTime=0;
+        }
+
 
         if (!sq.playing) return;
         sq.playing = false;
@@ -772,7 +780,6 @@ var c = {
     },
 
     stopSeeking: function() {
-        tracking.startTime=new Date().getTime();
         sq.seeking = false;
         clearSeekTransitionUpdater();
         evt.once(nodesContainer, dom.transitionEndEvents, clearSeekTransition);

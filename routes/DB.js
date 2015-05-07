@@ -812,41 +812,41 @@ exports.addRecord = function(req,res){
 
     }else{
         /*
-         CREATE TABLE `RECORD` (
-         `USERID` int(15) NOT NULL,
-         `INSTRUCTORID` int(15) NOT NULL,
-         `FILENAME` varchar(32) NOT NULL,
-         `TIME_SPENT_SEC` int(11) NOT NULL,
-         `WORD_READ` int(11) NOT NULL,
-         `LB_READ` int(11) NOT NULL,
-         `REGRESSION` int(11) NOT NULL,
-         `FIXATION` int(11) NOT NULL,
-         `STARTTIME` int(16) DEFAULT NULL,
-         `ENDTIME` int(16) DEFAULT NULL,
-         `SSPEED` int(4) DEFAULT NULL,
-         `ESPEED` int(4) DEFAULT NULL,
-         PRIMARY KEY (`USERID`,`INSTRUCTORID`,`FILENAME`),
-         KEY `INSTRUCTORID` (`INSTRUCTORID`,`FILENAME`),
-         CONSTRAINT `RECORD_ibfk_1` FOREIGN KEY (`USERID`) REFERENCES `USER` (`USERID`) ON DELETE CASCADE
-         ) ENGINE=InnoDB DEFAULT CHARSET=latin1 |
+         CREATE TABLE RECORD(
+             USERID INT(15) NOT NULL,
+             INSTRUCTOR INT(15) NOT NULL,
+             CRN VARCHAR(32) NOT NULL,
+             FILENAME VARCHAR(32) NOT NULL,
+             STARTTIME BIGINT(20) NOT NULL,
+             ENDTIME BIGINT(20) NOT NULL,
+             SSPEED INT(4) NOT NULL,
+             ESPEED INT(4) NOT NULL,
+             TIME_SPENT INT(10) NOT NULL,
+             WORD_READ INT(6) NOT NULL,
+             LB_READ INT(6) NOT NULL,
+             REGRESSION INT(4) NOT NULL,
+             FIXATION INT(4) NOT NULL,
+             PRIMARY KEY (USERID, CRN, FILENAME,STARTTIME)
+         );
          */
         req.getConnection(function (err, connection) {
             var data = {
                 USERID: req.user.USERID,
-                INSTRUCTORID: input.instructor,
+                INSTRUCTOR: input.instructor,
+                CRN: input.crn,
                 FILENAME: input.filename,
-                TIME_SPENT_SEC: input.timeSpend,
-                WORD_READ: input.wordRead,
-                LB_READ: input.lbRead,
-                REGRESSION: input.regression,
-                FIXATION: input.fixation,
                 STARTTIME:input.startTime,
                 ENDTIME:input.endTime,
                 SSPEED:input.startWpm,
-                ESPEED:input.endWpm
+                ESPEED:input.endWpm,
+                TIME_SPENT: input.timeSpend,
+                WORD_READ: input.wordRead,
+                LB_READ: input.lbRead,
+                REGRESSION: input.regression,
+                FIXATION: input.fixation
             };
             var data2 ={
-                TIME_SPENT_SEC: input.timeSpend,
+                TIME_SPENT: input.timeSpend,
                 WORD_READ: input.wordRead,
                 LB_READ: input.lbRead,
                 REGRESSION: input.regression,
@@ -891,7 +891,7 @@ exports.getRecord = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==1 ){
-                connection.query("SELECT * FROM RECORD WHERE INSTRUCTORID = ?",[req.user.USERID], function(err, rows){
+                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[req.user.USERID], function(err, rows){
                     if (err){
                         result.error=err;
                     }else{
@@ -1022,23 +1022,47 @@ exports.listUser = function(req,res){
         req.getConnection(function (err, connection) {
 
             connection.query("SELECT USERNAME,USERTYPE FROM USER ",
-            //"WHERE USERID IN "+
-            //	"(SELECT STUDENT FROM STUDENT WHERE CRN IN " +
-            //	"(SELECT CRN FROM CLASS WHERE INSTRUCTOR = ? ))" ,INSTRUCTOR,
-            function(err, rows){
-                if (err){
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
+                //"WHERE USERID IN "+
+                //	"(SELECT STUDENT FROM STUDENT WHERE CRN IN " +
+                //	"(SELECT CRN FROM CLASS WHERE INSTRUCTOR = ? ))" ,INSTRUCTOR,
+                function(err, rows){
+                    if (err){
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
 
-            });
+                });
 
         });
     }
 };
 
+exports.listInstructor = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 0);
+    if(result.error){
+        res.send(result);
+
+    }else{
+        req.getConnection(function (err, connection) {
+
+            connection.query("SELECT * FROM USER WHERE USERTYPE < 2", //instructor or admin
+                function(err, rows){
+                    if (err){
+                        logError(err);
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+
+                });
+
+        });
+    }
+};
 
 
 //-- list student
@@ -1051,25 +1075,92 @@ exports.listStudent = function(req,res){
     }else{
         req.getConnection(function (err, connection) {
             //TODO  limit instructor privilege, check if the instructor own the class.
-            connection.query(
-                "SELECT USERNAME,USERID FROM USER JOIN " +
-                            "(SELECT STUDENT FROM STUDENT WHERE CRN = ?) AS B " +
+            if(req.user.USERTYPE==1){ //INSTRUCTOR
+                connection.query("SELECT * FROM CLASS WHERE CRN = ? AND INSTRUCTOR = ?",
+                    [input.crn,req.user.USERID],function(err,rows){
+                        if(err){
+                            logError(err);
+                            result.error=err;
+                            res.send(result);
+                        }else if(rows.length==0){
+                            result.error='You do not have access to this class.';
+                            console.log('WARNING: attempt to access crn: '+input.crn+' from user '+req.user.USERNAME);
+                            res.send(result);
+                        }else{
+                            connection.query(
+                                "SELECT * FROM USER JOIN " +
+                                "(SELECT STUDENT FROM STUDENT WHERE CRN = ?) AS B " +
                                 "ON (USER.USERID= B.STUDENT)"
-                    ,input.crn, function(err, rows){
-                if (err){
-                    console.log(err);
-                    result.error=err;
-                }else{
-                    result.data=rows;
-                }
-                res.send(result);
+                                ,input.crn, function(err, rows){
+                                    if (err){
+                                        logError(err);
+                                        result.error=err;
+                                    }else{
+                                        result.data=rows;
+                                    }
+                                    res.send(result);
 
-            });
+                                });
+                        }
+                    })
+
+            }else{
+                connection.query(
+                    "SELECT USERNAME,USERID FROM USER JOIN " +
+                    "(SELECT STUDENT FROM STUDENT WHERE CRN = ?) AS B " +
+                    "ON (USER.USERID= B.STUDENT)"
+                    ,input.crn, function(err, rows){
+                        if (err){
+                            logError(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
+
+                    });
+            }
+
+
 
         });
     }
 };
 
+
+exports.listClassOwn = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+
+    }else{
+        req.getConnection(function (err, connection) {
+           if (req.user.USERTYPE ==1){
+                connection.query("SELECT * FROM CLASS WHERE INSTRUCTOR = ?",[req.user.USERID], function(err, rows){
+                    if (err){
+                        logError(err);
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+                });
+            }else if(req.user.USERTYPE==0){
+                connection.query("SELECT * FROM CLASS WHERE INSTRUCTOR = ?",input.instructor, function(err, rows){
+                    if (err){
+                        logError(err);
+
+                        result.error=err;
+                    }else{
+                        result.data=rows;
+                    }
+                    res.send(result);
+                });
+            }
+        });
+    }
+};
 
 //-- list class that belong to instructor USERID
 exports.listClass = function(req,res){

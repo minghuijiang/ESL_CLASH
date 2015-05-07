@@ -520,7 +520,7 @@ window.sq.tracking={
 
 function reset(obj){
     if(!obj.sent)
-        sendRecord();
+        sendRecord(obj);
     obj.st = new Date().getTime();
     console.log(obj.st);
     obj.startTime=new Date().getTime();
@@ -538,7 +538,8 @@ function reset(obj){
 
 
 function sendRecord( obj ){
-    if(obj.sent) return ;
+    //if(obj.sent) return ;
+    if(obj.startTime==0) return;
     console.log('send record~~~~~~~~~~~~~');
     console.trace();
     obj.endTime = new Date().getTime();
