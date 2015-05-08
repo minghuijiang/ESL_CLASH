@@ -746,6 +746,7 @@ var c = {
     },
 
     play: function(extraSlowStart) {
+        console.log('playing~~~~~~~~~~~~~~');
         tracking.startTime=new Date().getTime();
         clearSeek();
         sq.playing = true;

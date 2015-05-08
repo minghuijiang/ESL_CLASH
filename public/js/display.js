@@ -235,3 +235,72 @@ function startReader(){
   }
 }
 
+var ins='all',classcrn='all',student='all';
+
+
+
+var recordData;
+
+
+
+function resetSelect(id,option){
+    $('#'+id).text('').append(option).prop('selectedIndex',0);
+}
+function filterRecord(){
+    var sub = recordData.filter(function(el){
+        if(ins!='all'&&el.INSTRUCTOR!=ins){
+            return false;
+        }
+        if(classcrn!='all'&&el.CRN!=classcrn)
+            return false;
+        if(student!='all'&&el.USERID!=student)
+            return false;
+        return true;
+    });
+    var te = '<table style="width:100%" border="1">'+
+        '<tr>'+
+        '<td>Student</td><td>Class</td>'+
+        '<td>File</td><td>Start Time</td>'+
+        '<td>Finish Time</td><td>Time Spend</td>'+
+        '<td>Start Speed</td><td>End Speed</td>'+
+        '<td>Avg Speed</td><td>Word Read</td>'+
+        '<td>Lexical Bundle Read</td><td>Regression</td>'+
+        '<td>Fixation</td></tr>';
+    for(var i=0;i<sub.length;i++){
+        var d = sub[i];
+        te+='<tr>'+
+        '<td>'+ (d.FNAME? d.FNAME+' '+ d.LNAME: d.USERNAME) +'</td><td>'+ d.CLASSNAME+'</td>'+
+        '<td>'+ d.FILENAME+'</td><td>'+ simpleTimeFormat(new Date(d.STARTTIME))+'</td>'+
+        '<td>'+ simpleTimeFormat(new Date(d.ENDTIME))+'</td><td>'+ convertTimeToStr(d.TIME_SPENT)+'</td>'+
+        '<td>'+ d.SSPEED+'</td><td>'+ d.ESPEED+'</td>'+
+        '<td>'+ (d.WORD_READ/ (d.TIME_SPENT)*60).toFixed(2)+'</td><td>'+ d.WORD_READ+'</td>'+
+        '<td>'+ d.LB_READ+'</td><td>'+ d.REGRESSION+'</td>'+
+        '<td>'+ d.FIXATION+'</td></tr>';
+    }
+    te+='</table>';
+    $('#recordDisplay').html(te);
+}
+
+
+function convertTimeToStr(s){
+    var text ='';
+    var sec =parseInt(s);
+    if(sec>60){
+        var min = parseInt(sec/60);
+        if(min>60){
+            var hour = parseInt(min/60);
+            text+=hour+' hour ';
+        }
+        var rmin = min%60;
+        text+= rmin+' min ';
+    }
+    var rsec = sec%60;
+    text += rsec+' sec';
+    return text;
+}
+
+var month=['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
+// Day of week, Month, day, year, Hour, Min, Sec
+function simpleTimeFormat(date){
+    return month[date.getUTCMonth()]+' '+date.getDate()+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
+}

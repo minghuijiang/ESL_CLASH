@@ -144,6 +144,58 @@ $('#print').bind('click', function () {
     createPrint(printContents);
 });
 
+$('#reloadRecord').on('click',function(ev){
+    $.get('api/getRecord',function(data){
+        var select= $('#recordDisplay');
+        console.log(data);
+        if(data.error){
+            showError(data.error);
+        }else{
+            recordData=data.data;
+            $.get('/api/listInstructor',function(data){
+                if(data.error)
+                    onError(data);
+                else{
+                    resetSelect('selectIns',createOption('All Instructor','all'));
+                    var v = data.data;
+                    for(var i=0;i< v.length;i++){
+                        var name;
+                        if(v[i].FNAME)
+                            name = v[i].FNAME+' '+v[i].LNAME;
+                        else
+                            name = v[i].USERNAME;
+                        $('#selectIns').append(createOption(name,v[i].USERID));
+                    }
+                }
+            });
+            $.get('/api/listClass',function(data){
+                if(data.error)
+                    onError(data);
+                else{
+                    resetSelect('clsSelector',createOption('All Class','all'));
+                    var v = data.data;
+                    for(var i=0;i< v.length;i++){
+                        $('#clsSelector').append(createOption(v[i].CLASSNAME,v[i].CRN));
+                    }
+                }
+            } );
+            filterRecord();
+
+        }
+    });
+});
+
+$('#selectIns').change(function(ev){
+    ins=$(this).find('option:selected').val();
+    filterRecord();
+});
+
+$('#clsSelector').change(function(ev){
+    classcrn = $(this).find('option:selected').val();
+    filterRecord();
+});
+
+
 $( "#main-tabs" ).tabs();
 $("li.last a").unbind('click');
 $( "#manageTabs" ).tabs();

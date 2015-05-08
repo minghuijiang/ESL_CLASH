@@ -51,7 +51,7 @@ exports.changeName = function(req,res){
 exports.changePassword = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 2);
-    if(req.user.USERID==1000019){
+    if(req.user.USERNAME=='instructor'){
         result.error='This is a dummy account, Do not change password.';
     }
     if(result.error){
@@ -875,24 +875,27 @@ exports.getRecord = function(req,res){
     var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
-
     }else{
         req.getConnection(function (err, connection) {
-            //TODO limit instructor version by check if he/she own the class.
             if(req.user.USERTYPE==2){
-                connection.query("SELECT * FROM RECORD WHERE USERID = ? ",[req.user.USERID], function(err, rows){
+                connection.query("SELECT * FROM (SELECT * FROM RECORD WHERE USERID = ?) AS B " +
+                                    "JOIN (SELECT USERID, USERNAME,FNAME,LNAME FROM USER) AS A ON (A.USERID = B.USERID) " +
+                                        "JOIN CLASS ON (B.CRN=CLASS.CRN) ",req.user.USERID, function(err, rows){
                     if (err){
+                        logError(err);
                         result.error=err;
                     }else{
-                        //rows[0][''] =req.user.USERNAME;
                         result.data=rows;
                     }
                     res.send(result);
 
                 });
             }else if(req.user.USERTYPE==1 ){
-                connection.query("SELECT * FROM RECORD WHERE INSTRUCTOR = ?",[req.user.USERID], function(err, rows){
+                connection.query("SELECT * FROM (SELECT * FROM RECORD WHERE INSTRUCTOR = ?)AS B " +
+                                    "JOIN (SELECT USERID, USERNAME,FNAME,LNAME FROM USER) AS A ON (A.USERID = B.USERID) " +
+                                        "JOIN CLASS ON (B.CRN=CLASS.CRN)",[req.user.USERID], function(err, rows){
                     if (err){
+                        logError(err);
                         result.error=err;
                     }else{
                         result.data=rows;
@@ -901,8 +904,11 @@ exports.getRecord = function(req,res){
 
                 });
             }else if(req.user.USERTYPE==0){
-                connection.query("SELECT * FROM RECORD", function(err, rows){
+                connection.query("SELECT * FROM RECORD " +
+                                    "JOIN (SELECT USERID, USERNAME,FNAME,LNAME FROM USER) AS A ON (A.USERID = RECORD.USERID) " +
+                                        "JOIN CLASS ON (RECORD.CRN=CLASS.CRN)", function(err, rows){
                     if (err){
+                        logError(err);
                         result.error=err;
                     }else{
                         result.data=rows;
@@ -1041,24 +1047,52 @@ exports.listUser = function(req,res){
 
 exports.listInstructor = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 0);
+    var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
 
     }else{
         req.getConnection(function (err, connection) {
+            if(req.user.USERTYPE==2){
+                connection.query("SELECT USERNAME,FNAME,LNAME,USERID FROM USER WHERE USERID IN " +
+                    "(SELECT INSTRUCTOR FROM CLASS WHERE CRN IN" +
+                    " (SELECT CRN FROM STUDENT WHERE STUDENT = ?))",req.user.USERID, //instructor or admin
+                    function(err, rows){
+                        if (err){
+                            logError(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
 
-            connection.query("SELECT * FROM USER WHERE USERTYPE < 2", //instructor or admin
-                function(err, rows){
-                    if (err){
-                        logError(err);
-                        result.error=err;
-                    }else{
-                        result.data=rows;
-                    }
-                    res.send(result);
+                    });
+            }else if(req.user.USERTYPE==1){
+                connection.query("SELECT USERNAME,FNAME,LNAME,USERID FROM USER WHERE USERID = ?",req.user.USERID, //instructor or admin
+                    function(err, rows){
+                        if (err){
+                            logError(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
 
-                });
+                    });
+            }else{
+                connection.query("SELECT USERNAME,FNAME,LNAME,USERID FROM USER WHERE USERTYPE = 1", //instructor or admin
+                    function(err, rows){
+                        if (err){
+                            logError(err);
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
+
+                    });
+            }
+
 
         });
     }
@@ -1074,7 +1108,6 @@ exports.listStudent = function(req,res){
 
     }else{
         req.getConnection(function (err, connection) {
-            //TODO  limit instructor privilege, check if the instructor own the class.
             if(req.user.USERTYPE==1){ //INSTRUCTOR
                 connection.query("SELECT * FROM CLASS WHERE CRN = ? AND INSTRUCTOR = ?",
                     [input.crn,req.user.USERID],function(err,rows){

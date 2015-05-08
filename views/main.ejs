@@ -180,13 +180,18 @@
 
     <div id="statistic-tab" class="tab-content">
         <div id="recordSelector">
+
             <select id="selectIns" class="instructorList">
                 <option value="" disabled selected>Select Instructor</option>
             </select>
-            <input type ="image" id="reloadRecordClass" class="reload" src="images/refresh.png" style="width:20px;vertical-align:middle"/>
-            <select id="studentSelector">
-                <option value="" disabled selected>Select your student</option>
+            <select id="clsSelector">
+                <option value="" selected>Select All Class</option>
             </select>
+            <% if(user.USERTYPE<2){%>
+            <select id="studentSelector">
+                <option value="" selected>Select All Student</option>
+            </select>
+            <% } %>
             <button id="reloadRecord" class="record reload">Reload Data</button>
         </div>
         <hr />
@@ -194,113 +199,7 @@
 
         </div>
         <script>
-            $('#reloadRecord').on('click',function(ev){
-                $.get('api/getRecord',function(data){
-                    var select= $('#recordDisplay');
-                    console.log(data);
-                    if(data.error){
-                        showError(data.error);
-                    }else{
-                        select.text('');
 
-                        var te = '<table style="width:100%" border="1">'+
-                                '<tr>'+
-                                '<td>Student</td><td>Instructor</td>'+
-                                '<td>File</td><td>Start Time</td>'+
-                                '<td>Finish Time</td><td>Time Spend</td>'+
-                                '<td>Start Speed</td><td>End Speed</td>'+
-                                '<td>Avg Speed</td><td>Word Read</td>'+
-                                '<td>Lexical Bundle Read</td><td>Regression</td>'+
-                                '<td>Fixation</td></tr>';
-                        for(var i=0;i<data.data.length;i++){
-                            var d = data.data[i];
-                            te+='<tr>'+
-                                '<td>'+ d.USERID+'</td><td>'+ d.INSTRUCTORID+'</td>'+
-                                '<td>'+ d.FILENAME+'</td><td>'+ simpleTimeFormat(new Date(d.STARTTIME))+'</td>'+
-                                '<td>'+ simpleTimeFormat(new Date(d.ENDTIME))+'</td><td>'+ convertTimeToStr(d.TIME_SPENT_SEC)+'</td>'+
-                                '<td>'+ d.SSPEED+'</td><td>'+ d.ESPEED+'</td>'+
-                                '<td>'+ (d.WORD_READ/ (d.TIME_SPENT_SEC/1000)*60).toFixed(2)+'</td><td>'+ d.WORD_READ+'</td>'+
-                                '<td>'+ d.LB_READ+'</td><td>'+ d.REGRESSION+'</td>'+
-                                '<td>'+ d.FIXATION+'</td></tr>';
-                        }
-                        te+='</table>';
-                        $('#recordDisplay').html(te);
-                    }
-                });
-            });
-
-            function convertTimeToStr(mili){
-                var text ='';
-                var sec =parseInt(mili/1000);
-                if(sec>60){
-                    var min = parseInt(sec/60);
-                    if(min>60){
-                        var hour = parseInt(min/60);
-                            text+=hour+' hour ';
-                    }
-                    var rmin = min%60;
-                    text+= rmin+' min ';
-                }
-                var rsec = sec%60;
-                text += rsec+' sec';
-                return text;
-            }
-
-            var month=['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov','Dec'];
-            // Day of week, Month, day, year, Hour, Min, Sec
-            function simpleTimeFormat(date){
-                return month[date.getUTCMonth()]+' '+date.getDate()+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
-            }
-//            $('#classSelector2').change(function(ev){
-//                var crn = this.selectedOptions[0].value;
-//                $.get('api/listStudent?crn='+crn,function(data){
-//                    var select= $('#studentSelector');
-//                    console.log(data);
-//                    if(data.error){
-//                        showError(data.error);
-//                    }else{
-//                        var o = document.createElement('option');
-//                        o.text= 'Select a File';
-//                        o.disabled = 'disabled';
-//                        o.selected ='selected';
-//                        select.text('');
-//                        select.append(o);
-//                        for(var i=0;i<data.data.length;i++){
-//                            var option = document.createElement('option');
-//                            option.text =data.data[i].FILENAME;
-//                            option.value=data.data[i].USERID;
-//                            console.log(option.text+'  '+option.value);
-//                            select.append(option);
-//                        }
-//                    }
-//                });
-//            });
-//            $('#fileSelector').change(function(ev){
-//                var crn = $('#classSelector')[0].selectedOptions[0].value;
-//                var instructor = this.selectedOptions[0].value;
-//                var filename = this.selectedOptions[0].innerHTML;
-//                if(file[instructor]&&file[instructor][filename]){  // if cache exist
-//                    changeContent(file[instructor][filename]);
-//                }else {
-//                    $.get('api/getFile?crn=' + crn + '&filename=' + filename+'&userid='+instructor, function (data) {
-//                        console.log(data);
-//                        if (data.error)
-//                            showError(data.error);
-//                        else {
-//                            try {
-//                                json = JSON.parse(data.data[0].JSON);
-//                                var str = parseJSON(json);
-//                                addTofile(data.data[0].FILENAME, data.data[0].USERID, str);
-//                                changeContent(str);
-//
-//                            }catch(e){
-//                                console.log(e);
-//                                document.getElementById("content").innerHTML ='Error parsing the document: '+filename;
-//                            }
-//                        }
-//                    });
-//                }
-//            });
         </script>
     </div>
     <% if (user.USERTYPE <= 1) { %>

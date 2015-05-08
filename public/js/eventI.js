@@ -320,8 +320,78 @@ function instructorBinding(){
 
             }
         })
-    })
+    });
 
+    $('#reloadRecord').on('click',function(ev){
+        $.get('api/getRecord',function(data){
+            var select= $('#recordDisplay');
+            console.log(data);
+            if(data.error){
+                showError(data.error);
+            }else{
+                recordData=data.data;
+                $.get('/api/listInstructor',function(data){
+                    if(data.error)
+                        onError(data);
+                    else{
+                        resetSelect('selectIns',createOption('All Instructor','all'));
+                        var v = data.data;
+                        for(var i=0;i< v.length;i++){
+                            var name;
+                            if(v[i].FNAME)
+                                name = v[i].FNAME+' '+v[i].LNAME;
+                            else
+                                name = v[i].USERNAME;
+                            $('#selectIns').append(createOption(name,v[i].USERID));
+                        }
+                    }
+                });
+                filterRecord();
+
+            }
+        });
+    });
+
+    $('#selectIns').change(function(ev){
+        ins=$(this).find('option:selected').val();
+        resetSelect('clsSelector',createOption('All Class','all'));
+        resetSelect('studentSelector',createOption('All Student','all'));
+        $.get('/api/listClass?instructor='+ins,function(data){
+            if(data.error)
+                onError(data);
+            else{
+                var v = data.data;
+                for(var i=0;i< v.length;i++)
+                    $('#clsSelector').append(createOption(v[i].CLASSNAME,v[i].CRN));
+            }
+        });
+        filterRecord();
+    });
+
+    $('#clsSelector').change(function(ev){
+        classcrn = $(this).find('option:selected').val();
+        resetSelect('studentSelector',createOption('All Student','all'));
+        $.get('/api/listStudent?crn='+classcrn,function(data){
+            if(data.error)
+                onError(data);
+            else{
+                var v = data.data;
+                for(var i=0;i< v.length;i++){
+                    var name;
+                    if(v[i].FNAME)
+                        name = v[i].FNAME+' '+v[i].LNAME;
+                    else
+                        name = v[i].USERNAME;
+                    $('#studentSelector').append(createOption(name,v[i].USERID));
+                }
+            }
+        });
+        filterRecord();
+    });
+    $('#studentSelector').change(function(ev){
+        student = $(this).find('option:selected').val();
+        filterRecord();
+    });
 }
 
 

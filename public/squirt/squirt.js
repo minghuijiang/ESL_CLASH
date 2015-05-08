@@ -503,7 +503,7 @@ function setText() {
 
 window.sq.tracking={
     st:0,
-    startTime:0,
+    startTime:-1,
     endTime:0,
     swpm:0,
     ewpm:0,
@@ -538,22 +538,26 @@ function reset(obj){
 
 
 function sendRecord( obj ){
-    //if(obj.sent) return ;
-    if(obj.startTime==0) return;
-    console.log('send record~~~~~~~~~~~~~');
+    console.log('============record');
+    console.log(obj);
     console.trace();
+    //if(obj.sent) return ;
+    if(obj.startTime==-1) return;
     obj.endTime = new Date().getTime();
     obj.ewpm = obj.userSettings.get('wpm');
     var select =$('#fileSelector')[0];
     var selectedFile =select.options[select.selectedIndex];
+    var sClass = $('#classSelector')[0];
+    var crn = sClass.options[sClass.selectedIndex].value;
     var data = {
         instructor: selectedFile.value,
         filename: selectedFile.innerHTML,
+        crn:crn,
         startTime: obj.st,
         endTime: obj.endTime,
         startWpm:obj.swpm,
         endWpm:obj.ewpm,
-        timeSpend: obj.endTime  - obj.startTime + obj.timeRead,
+        timeSpend: (obj.endTime  - obj.startTime + obj.timeRead)/1000,
         wordRead: obj.wordRead,
         lbRead: obj.lexicalRead,
         regression: obj.regression,
