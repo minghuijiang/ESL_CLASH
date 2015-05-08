@@ -557,7 +557,7 @@ function sendRecord( obj ){
         endTime: obj.endTime,
         startWpm:obj.swpm,
         endWpm:obj.ewpm,
-        timeSpend: (obj.endTime  - obj.startTime + obj.timeRead)/1000,
+        timeSpend: ((obj.startTime==0?0:(obj.endTime  - obj.startTime)) + obj.timeRead)/1000,
         wordRead: obj.wordRead,
         lbRead: obj.lexicalRead,
         regression: obj.regression,
