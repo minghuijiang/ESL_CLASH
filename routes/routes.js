@@ -154,6 +154,8 @@ function parseText (msg,req, res,min,max,callback){
     PythonShell.run( 'parse_pos.py', options, function(err, results) {
         if (err) {
             console.log(req.user.USERNAME+' Error from python script: '+err);
+            console.log(err);
+            logError(err);
             result.error = err;
             res.send(result);
         } else {
