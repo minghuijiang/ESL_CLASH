@@ -22,7 +22,7 @@ module.exports = function(app, passport) {
             failureFlash : true // allow flash messages
         }));
     // LOGOUT ==============================
-    app.get('/logout', function(req, res) {
+    app.get('/logout',isLoggedIn, function(req, res) {
         console.log(req.user.USERNAME+' logout');
         req.logout();
         res.redirect(prefix+'/login');
