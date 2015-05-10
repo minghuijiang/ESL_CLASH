@@ -242,7 +242,7 @@
 
             <div id="beta-tab" class="tab-content">
                 <select id="fileType">
-                    <option value="odu">ODU Enrollment File</option>
+                    <option value="odu">ODU Enrollment File(username=ODU email, password = UIN)</option>
                     <option value="csv">CSV(username,password,first name, last name)</option>
                 </select>
 
@@ -258,75 +258,7 @@
                 <textarea id="displayStudent" cols="80" rows="5" wrap="soft">
 
                 </textarea>
-                <script>
-                    $('#batchCreate').click(function(e){
-                        var oduMode = $('#fileType').find(':selected')[0].value=='odu';
-                        var arr = $('#fileContent').text().split('\n');
-                        var students='';
-                        var size = arr.length;
-                        var count = 0;
-                        var fail= 0;
-                        try{
-                            arr.forEach(function(line){
-                                line = line.trim();
-                                if(line.length==0)// avoid blank line.
-                                    return ;
-                                if(oduMode){
-                                    var token = line.split(":");
-                                    //410:13820:jiang ming h:00983778 :MJIAN002@ODU.EDU:7574729851:mjian
-                                    var username =token[4].toLowerCase().trim();
-                                    students+=username+',';
-                                    var password = token[3].trim();
-                                    var name = toTitleCase(token[2].trim());
-                                    var namev = name.split(' ',2);
-                                    $.get('/api/addUser?fname='+namev[1]+'&lname='+namev[0]+'&username='+username+
-                                            '&password='+password+'&usertype=2',function(data){
-                                        if(data.error){
-                                            fail++;
-                                        }
-                                        count ++;
-                                        if(count==size){ // finished
-                                            $('#displayStudent').text(students);
-                                            showMessage('Creating '+size+' students, '+fail+' failed.');
-                                        }
-                                    })
-                                }
-                            })
-                        }catch(err){
-                            showError("Error while parse the file, check file format or contact admin.")
-                        }
 
-
-                        if(!oduMode){
-
-                        }
-                    });
-                    function toTitleCase(str)
-                    {
-                        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-                    }
-                    $('#csvOpen').change(function(ev){
-                        console.log('changed');
-                        if(this.disabled){
-                            // do upload and re-download
-                            return alert('File upload not supported!');
-
-                        }else{
-                            var F = this.files;
-                            var reader = new FileReader();
-                            reader.onload=function(e){
-                                var text = this.result;
-                                if($('#fileType').find(':selected')[0].value=='odu'){
-                                    text= replaceAll('  ','',text); // for better view
-                                }
-                                $('#fileContent').text(text);
-                                $('#hiddenFile').val('');
-                            };
-                            reader.readAsText(F[0]);
-                        }
-
-                    });
-                </script>
             </div>
 
             <div id="class-tab" class="tab-content">

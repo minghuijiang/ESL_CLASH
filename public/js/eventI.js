@@ -392,6 +392,94 @@ function instructorBinding(){
         student = $(this).find('option:selected').val();
         filterRecord();
     });
+
+    //TODO for future developer,
+    // Add batch process to server side,
+    // use a single http post rather than tens of http get.
+    // TODO also for adding student to class.
+    $('#batchCreate').click(function(e){
+        var oduMode = $('#fileType').find(':selected')[0].value=='odu';
+        var arr = $('#fileContent').text().split('\n');
+        var students='';
+        var count = 0;
+        var fail= 0;
+        var exist = 0;
+        arr = arr.filter(function(line){
+            if(line.trim().length==0)
+                return false;
+            return true;
+        });
+        var size = arr.length;
+
+        try{
+            arr.forEach(function(line){
+                line = line.trim();
+                if(line.length==0)// avoid blank line.
+                    return ;
+                var username,password, fname,lname;
+                if(oduMode){
+                    var token = line.split(":");
+                    username =token[4].toLowerCase().trim();
+                    students+=username+',';
+                    password = token[3].trim();
+                    var name = toTitleCase(token[2].trim());
+                    var namev = name.split(' ',2);
+                    fname = namev[1];
+                    lname = namev[0];
+                }else{ // csv mode;
+                    var token = line.split(",");
+                    username = token[0].trim().toLowerCase();
+                    students+=username+',';
+                    password = token[1].trim();
+                    fname= toTitleCase(token[2]);
+                    lname=toTitleCase(token[3]);
+                }
+                $.get('/api/addUser?fname='+fname+'&lname='+lname+'&username='+username+
+                '&password='+password+'&usertype=2',function(data){
+                    if(data.error){
+                        if(data.error=='User exist.')
+                            exist++;
+                        else{
+                            onError(data);
+                            fail++;
+                        }
+
+                    }
+                    count ++;
+                    if(count==size){ // finished
+                        $('#displayStudent').text(students.substr(0,students.length-1));
+                        showMessage('Creating '+size+' students, '+exist+ ' user existed, '+fail+' failed.');
+                    }
+                });
+            })
+        }catch(err){
+            showError("Error while parse the file, check file format or contact admin.");
+            console.log(err);
+        }
+
+    });
+
+    $('#csvOpen').change(function(ev){
+        console.log('changed');
+        if(this.disabled){
+            // do upload and re-download
+            return alert('File upload not supported!');
+
+        }else{
+            var F = this.files;
+            var reader = new FileReader();
+            reader.onload=function(e){
+                var text = this.result;
+                if($('#fileType').find(':selected')[0].value=='odu'){
+                    text= replaceAll('  ','',text); // for better view
+                }
+                $('#fileContent').text(text);
+                $('#hiddenFile').val('');
+            };
+            reader.readAsText(F[0]);
+        }
+
+    });
 }
 
 

@@ -304,3 +304,9 @@ var month=['Jan','Feb','Mar','Apr','May','June','July','Aug','Sept','Oct','Nov',
 function simpleTimeFormat(date){
     return month[date.getUTCMonth()]+' '+date.getDate()+' '+date.getFullYear()+' '+date.getHours()+':'+date.getMinutes()+':'+date.getSeconds();
 }
+
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}
