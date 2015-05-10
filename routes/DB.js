@@ -109,6 +109,11 @@ exports.addUser = function(req,res){
     if(usertype!=2&&req.user.USERTYPE==1){
         result.error="Instructor can only create student account";
     }
+
+    if(!input.username||input.username.length==0 ||!input.password||input.password.length==0){
+        result.error('Parameters Error.');
+    }
+
     if(result.error){
         res.send(result);
 
@@ -123,17 +128,27 @@ exports.addUser = function(req,res){
                 USERTYPE   :    usertype
             };
 
-            //TODO verify if username already exist before do a insert,
-            // not necessary for prototype
-            connection.query("INSERT INTO USER set ? ",data, function(err, rows){
-                if (err){
-                    result.error=err;
+            connection.query("SELECT USERID FROM USER WHERE USERNAME = ?",input.username,function(err, rows){
+                if(err){
+                    logError(err);
+                    result.error = err;
+                    res.send(result);
+                }else if(rows.length!=0){
+                    result.error = "User exist.";
+                    res.send(result);
                 }else{
-                    result.data=rows;
+                    connection.query("INSERT INTO USER set ? ",data, function(err, rows){
+                        if (err){
+                            result.error=err;
+                        }else{
+                            result.data=rows;
+                        }
+                        res.send(result);
+                    });
                 }
-                res.send(result);
+            })
 
-            });
+
 
         });
     }
