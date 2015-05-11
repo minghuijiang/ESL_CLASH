@@ -1,0 +1,38 @@
+<div id="class-tab" class="tab-content">
+
+    <div class="left add" style="width:30%">
+        <h1>Create Class</h1>
+        <br />
+        <form id="addClass">
+            <input type="text" name="crn" value="" placeholder="CRN" required />
+            <br />
+            <input type="text" name="classname" value="" placeholder="Class Name" required />
+            <br />
+            <!--<input type="text" name="instructor" value="" placeholder="instructor (optional)" /><br />-->
+            <input type="submit" value="Create Class" />
+        </form>
+    </div>
+    <% if(user.USERTYPE==0){%>
+    <div class="verticalLine">
+    </div>
+    <div class="right delete" style="width:60%">
+        <h1>Class Management</h1>
+        <div class="container">
+            <div>
+                <h3>Class List</h3>
+                <select id="leftClass" size="10">
+                    <option>Class 1</option>
+                    <option>Class 2</option>
+                </select>
+            </div>
+
+            <div class="center">
+                <br /><br /><br /><br />
+                <button id="reloadClass" class="reload cls" >Reload Class</button> <br /><br /><br />
+                <button id="submitDeleteClass">Delete Class</button>
+            </div>
+        </div>
+
+    </div>
+    <% } %>
+</div>

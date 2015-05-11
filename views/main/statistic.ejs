@@ -1,0 +1,24 @@
+<div id="statistic-tab" class="tab-content">
+    <div id="recordSelector">
+
+        <select id="selectIns" class="instructorList">
+            <option value="" disabled selected>Select Instructor</option>
+        </select>
+        <select id="clsSelector">
+            <option value="" selected>Select All Class</option>
+        </select>
+        <% if(user.USERTYPE<2){%>
+        <select id="studentSelector">
+            <option value="" selected>Select All Student</option>
+        </select>
+        <% } %>
+        <button id="reloadRecord" class="record reload">Reload Data</button>
+    </div>
+    <hr />
+    <div id="recordDisplay" style="height:80%;font-size: 0.8em;overflow-y:auto">
+
+    </div>
+    <script>
+
+    </script>
+</div>

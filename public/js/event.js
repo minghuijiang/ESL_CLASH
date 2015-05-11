@@ -137,6 +137,37 @@ $('#hiddenFile').change(function(ev){
 
 });
 
+$('#changeName').on('submit',function(ev){
+    ev.preventDefault();
+    $.get('api/changeName?'+$('#changeName').serialize(),function(data){
+        if(data.error)
+            onError(data);
+        else{
+            $('#changeName')[0].reset();
+            showMessage("Name Changed");
+        }
+    })
+});
+$('#changePassword').on('submit',function(ev){
+    ev.preventDefault();
+    if($(this)[0][1].value!=$(this)[0][2].value){
+        $(this)[0][1].value='';
+        $(this)[0][2].value='';
+        showError("These passwords don't match, try again.");
+        return ;
+    }
+    var old=$(this)[0][0].value;
+    var newPass=$(this)[0][1].value;
+
+    $.get('api/changePassword?oldPass='+old+'&password='+newPass,function(data){
+        if(data.error)
+            onError(data);
+        else{
+            showMessage("Password Changed");
+        }
+        $('#changePassword')[0].reset();
+    })
+});
 
 //print button
 $('#print').bind('click', function () {

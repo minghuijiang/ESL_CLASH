@@ -1,0 +1,22 @@
+<div id="upload-tab" class="tab-content">
+    <div id="section">
+        <div id="enter">
+            <h2>Insert Text Below</h2>
+                    <textarea id="resizable" cols="60" rows="10"
+                              wrap="physical" name="text" maxlength="30000" placeholder="Enter text to SLASH"></textarea>
+            <div for="resizable" id="characterLeft"></div>
+            <button type="button" id="button">SLASH IT!</button>
+
+
+
+            <!--<button type="button" id="upload">Upload</button>-->
+        </div>
+        <hr />
+        <br />
+        <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
+            <input id='fileInput' type="file" name="file" value="Select File to Upload.." accept=".docx,.doc,.txt" /><br /><br />
+            <input type="submit" id="fileSubmit" />
+        </form>
+    </div>
+
+</div>

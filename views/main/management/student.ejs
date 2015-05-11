@@ -1,0 +1,40 @@
+<div id="student-tab" class="tab-content">
+    <div class="right delete" style="width:100%">
+        <h1>Student Management</h1>
+        <div class="container">
+            <div>
+                <h3>Class List</h3>
+                <select id="leftClass2" size="10">
+                    <option>Class 1</option>
+                    <option>Class 2</option>
+                    <option>Class 3</option>
+                </select>
+            </div>
+            <div class="center"></div>
+            <div>
+                <h3>Student List</h3>
+                <select id="leftStudent" size="10" multiple>
+                    <option>Select a class</option>
+                </select><br /><br />
+                <input type="text" id="studentField" placeholder="student1,student2," /><br /><br />
+                <button id="addStudentToClass">Add Student</button>
+            </div>
+            <div class="center">  <br /><br /><br /><br />
+                <input type="button" id="studentRightButton" value="&gt;&gt;"/><br /> <br />
+                <input type="button" id="studentLeftButton" value="&lt;&lt;"/>
+            </div>
+            <div>
+                <h3>Remove List</h3>
+                <select id="rightStudent" size="10" multiple>
+                </select>
+            </div>
+            <div class="center">
+                <br /><br /><br /><br />
+                <button id="reloadClass2" class="reload cls">Reload Class</button> <br /><br /><br /><br />
+                <button id="submitDeleteStudent">Remove Student</button><br /><br />
+
+            </div>
+        </div>
+
+    </div>
+</div>

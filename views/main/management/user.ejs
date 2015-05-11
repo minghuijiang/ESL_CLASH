@@ -1,0 +1,62 @@
+<div id="user-tab" class="tab-content" style="overflow-y: scroll;height:80%;">
+    <div class="left add" style="width:20%">
+        <h1>User Creation</h1>
+        <br />
+        <form id="addUser">
+
+            <input type="text" name="fname" value="" placeholder="First name(optional)" />
+            <br />
+            <input type="text" name="lname" value="" placeholder="Last name(optional)" />
+            <br />
+            <input type="text" name="username" value="" placeholder="Username" required />
+            <br />
+            <input type="password" id='addUserPassword' name="password" value="" placeholder="Password" required />
+            <br />
+            <input type="checkbox" onchange="document.getElementById('addUserPassword').type =
+                                this.checked ? 'text' : 'password'"> Show password
+            <br />
+            <select name="usertype">
+                <% if(user.USERTYPE==0) {%>
+                <option value="0">Admin</option>
+                <option value="1">Instructor</option>
+                <%}%>
+                <option value="2" selected="selected">Student</option>
+            </select>
+            <br>
+            <input type="submit" value="Create Account">
+        </form>
+    </div>
+    <% if(user.USERTYPE==0){%>
+    <div class="verticalLine">
+    </div>
+    <div class="right delete" style="width:70%">
+        <h1>Delete User</h1>
+        <div class="container">
+            <div>
+                <h3>User List</h3>
+                <select id="leftUser" size="10" multiple>
+                    <option>User 1</option>
+                    <option>User 2</option>
+                    <option>User 3</option>
+                </select>
+            </div>
+            <div class="center">  <br /><br /><br /><br />
+                <input type="button" id="userRightButton" value="&gt;&gt;"/><br /> <br />
+                <input type="button" id="userLeftButton" value="&lt;&lt;"/>
+            </div>
+            <div>
+                <h3>Remove List</h3>
+                <select id="rightUser" size="10" multiple>
+                </select>
+            </div>
+            <div class="center">
+                <br /><br /><br /><br />
+
+                <button type="button" id="reloadUser" class="reload user">Reload Data</button> <br /><br /><br />
+                <button type="button" id="submitDeleteUser">Delete User</button>
+            </div>
+        </div>
+
+    </div>
+    <% } %>
+</div>

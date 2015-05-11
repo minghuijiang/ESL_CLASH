@@ -1,0 +1,26 @@
+<div id="management-tab" class="tab-content">
+
+    <div id="manageTabs" style="height:85%">
+        <ul id="nest-tabHeader">
+            <li ><a href="#class-tab">Class</a></li>
+            <li><a href="#student-tab">Student</a></li>
+            <li><a href="#file-tab">File</a></li>
+            <li><a href="#exception-tab">Lexical Bundles</a></li>
+            <li><a href="#user-tab">User</a></li>
+            <li><a href="#beta-tab">Beta</a></li>
+        </ul>
+
+        <% include management/beta.ejs %>
+
+        <% include management/class.ejs %>
+
+        <% include management/student.ejs %>
+
+        <% include management/file.ejs %>
+
+        <% include management/exception.ejs %>
+
+        <% include management/user.ejs %>
+    </div>
+
+</div>
