@@ -79,7 +79,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/api/getPermission',isLoggedIn,isInstructorOrAdmin,DB.getPermission);
-
+    app.get('/api/changePermission',isLoggedIn,isInstructorOrAdmin,DB.changePermission);
 };
 var java = require('java'),
     PythonShell = require('python-shell'),

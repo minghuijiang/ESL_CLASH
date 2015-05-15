@@ -995,6 +995,16 @@ function ownedClass(connection,input, user,res,next){
     });
 }
 
+function ownedFile(connection,input, user,res,next){
+    connection.query("SELECT FILEID FROM FILE WHERE FILEID =? AND USERID = ?",[input.fileid,user.USERID],function(err,rows){
+        logAndSend(res,err,rows, function(){
+            if(rows.length==0)
+                res.send({error:'You are not own the class. crn= '+input.crn});
+            else
+                next(connection, input, user, res);
+        })
+    });
+}
 
 function getFileList(connection,input,user,res,next){
     connection.query(
@@ -1159,15 +1169,54 @@ exports.getPermission= function(req,res){
             if(req.user.USERTYPE==0&&input.instructor)
                 instructor= input.instructor;
 
-            connection.query("SELECT * FROM FILE WHERE FILEID = ? AND USERID = ? " +
-                " JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
-                " RIGHT JOIN (SELECT * FROM CLASS WHERE INSTRUCTOR = ?) AS B " +
-                "ON (FILE_PERMISSION.CRN = B.CRN)",[input.fileid,instructor,instructor],function(err,rows){
+            connection.query("SELECT FILE.FILEID,CLASS.CRN,CLASS.CLASSNAME FROM " +
+            "(" +
+                "(SELECT FILEID, FILENAME, USERID FROM FILE WHERE FILEID = ? AND USERID = ?) AS FILE" +
+                    " JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
+                        "RIGHT JOIN " +
+                            "(SELECT * FROM CLASS WHERE INSTRUCTOR = ?) AS CLASS" +
+                                " ON (CLASS.CRN = FILE_PERMISSION.CRN))"
+                ,[input.fileid,instructor,instructor],function(err,rows){
                     logAndSend(res,err,rows);
                 });
         });
     }
 };
+exports.changePermission= function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+    }else{
+        req.getConnection(function (err, connection) {
+            if(req.user.USERTYPE==1){
+                ownedFile(connection,input,req.user,res,function(){
+                    ownedClass(connection,input,req,user,modifyFilePermission);
+                })
+            }else{
+                modifyFilePermission(connection,input,req.user,res);
+            }
+        });
+    }
+};
+
+function modifyFilePermission(connection,input,user,res,next){
+    if(input.del){
+        connection.query("DELETE FROM FILE_PERMISSION WHERE FILEID = ? AND CRN = ?",[input,fileid,input.crn],
+            function(err,rows){
+                logAndSend(res,err,'ok');
+            });
+    }else{
+        var data = {
+            FILEID:input.fileid,
+            CRN:input.crn
+        };
+        connection.query("INSERT INTO FILE_PERMISSION SET ?",data,
+            function(err,rows){
+                logAndSend(res,err,'ok');
+            });
+    }
+}
 
 exports.listClassOwn = function(req,res){
     var input = req.query;
