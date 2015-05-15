@@ -25,7 +25,10 @@ function bindLoad(button, panel, url,callback){
                 select.text('');
                 for(var i=0;i<data.data.length;i++){
                     var option = document.createElement('option');
-                    option.text =callback(data.data[i]);
+                    var info = callback(data.data[i]);
+                    option.text =info[0];
+                    if(info.length==2)
+                        option.value=info[1];
                     select.append(option);
                 }
             }
@@ -48,7 +51,7 @@ function bindDel(button,panel,url,processItem,callback){
 function instructorBinding(){
     //delete script
     registerDel('leftException','exceptionLeftButton','rightException','exceptionRightButton');
-    registerDel('leftFile','fileLeftButton','rightFile','fileRightButton');
+    //registerDel('leftFile','fileLeftButton','rightFile','fileRightButton');
     registerDel('leftStudent','studentLeftButton','rightStudent','studentRightButton');
 
     addUser("#addUser",function(data){
@@ -183,14 +186,14 @@ function instructorBinding(){
 
 
     bindLoad('reloadUser','leftUser','api/listUser?',function(obj){
-        return obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')';
+        return [obj.USERNAME +'('+(obj.USERTYPE==2?'S':obj.USERTYPE==1?'I':'A')+')',obj.USERID];
     });
 
     bindLoad('reloadClass2','leftClass2','api/listClass?',function(obj){
-        return obj.CRN+'-'+obj.CLASSNAME;
+        return [obj.CLASSNAME,obj.CRN];
     });
     $('#leftClass2').on('change',function(ev){
-        var crn =ev.currentTarget.options[ev.currentTarget.selectedIndex].innerHTML.split('-')[0];
+        var crn =$(this).find(':selected')[0].value;
         $.get('api/listStudent?crn='+crn,function(data){
             var select= $('#leftStudent');
             var right = $('#rightStudent');
@@ -231,14 +234,14 @@ function instructorBinding(){
             });
     });
 
-    bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
-        if(obj.USERNAME)
-            return obj.FILENAME+'('+obj.USERNAME+')';
-        return obj.FILENAME;
-    });
+    //bindLoad('reloadFile','leftFile','api/getFiles?',function(obj){
+    //    if(obj.USERNAME)
+    //        return [obj.FILENAME+'('+obj.USERNAME+')',obj.FILEID];
+    //    return [obj.FILENAME,obj.FILEID];
+    //});
 
     bindLoad('reloadException','leftException','api/printException?',function(obj){
-        return obj.EX_STR+'('+obj.COUNT+')';
+        return [obj.EX_STR+'('+obj.COUNT+')'];
     });
 
     bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);

@@ -1,32 +1,49 @@
 <div id="file-tab" class="tab-content">
     <div class="right delete" style="width:100%">
-        <h1>Delete File</h1>
         <div class="container">
             <div>
                 <h3>File List</h3>
-                <select id="leftFile" size="10" multiple>
-                    <option>File 1</option>
-                    <option>File 2</option>
-                    <option>File 3</option>
+                <select id="leftFile" size="15">
                 </select>
-            </div>
-            <div class="center">  <br /><br /><br /><br />
-                <input type="button" id="fileRightButton" value="&gt;&gt;"/><br /> <br />
-                <input type="button" id="fileLeftButton" value="&lt;&lt;"/>
-            </div>
-            <div>
-                <h3>Remove List</h3>
-                <select id="rightFile" size="10" multiple>
-                </select>
-            </div>
-            <div class="center">
-                <br /><br /><br /><br />
+                <br /><br />
                 <button type="button" id="reloadFile" class="reload file">Reload Files</button> <br /><br /><br />
-                <button type="button" id="submitDeleteFile">Delete File</button>
+            </div>
+
+            <div id="option" style="float:left">
+                test
             </div>
 
 
         </div>
-
     </div>
 </div>
+
+<script>
+    $('#reloadFile').click(function(){
+        $.get('api/getFiles?',function(data){
+            var select= $('#leftFile');
+            if(data.error){
+                onError(data);
+            }else{
+                select.text('');
+                for(var i=0;i<data.data.length;i++){
+                    var obj = data.data[i];
+                    var text = obj.USERNAME? obj.FILENAME+'('+obj.USERNAME+')':obj.FILENAME;
+                    var value = obj.FILEID+'-'+obj.USERID;
+                    var option = createOption(text,value);
+                    select.append(option);
+                }
+            }
+        });
+    });
+
+
+    $("#leftFile").change(function(ev){
+        var sp = $(this).find(':selected')[0].value.split('-');
+        var fileid = sp[0];
+        var userid = sp[1];
+        $.get('api/getPermission?fileid='+fileid+'&instructor='+userid,function(data){
+            console.log(data);
+        })
+    })
+</script>

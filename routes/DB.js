@@ -35,13 +35,7 @@ exports.changeName = function(req,res){
                 LNAME:          input.lname
             };
             connection.query("UPDATE USER set ? WHERE USERID= ?",[data,req.user.USERID], function(err, rows){
-                if (err){
-                    logError(err);
-                    result.error=err;
-                }else{
-                    result.data='ok';
-                }
-                res.send(result);
+                logAndSend(res,err,'ok');
             });
         });
     }
@@ -66,17 +60,14 @@ exports.changePassword = function(req,res){
             //TODO verify if username already exist before do a insert,
             // not necessary for prototype
             connection.query("UPDATE USER set ? WHERE USERID =? AND PASSWORD = ?",[data,req.user.USERID,input.oldPass], function(err, rows){
-                if (err){
-                    logError(err);
-                    result.error=err;
-                }else{
+                logAndSend(res,err,rows,function(){
                     if(rows.affectedRows==0){
                         result.error='You enter the wrong password.'
                     }else{
                         result.data='ok';
                     }
-                }
-                res.send(result);
+                    res.send(result);
+                })
 
             });
 
@@ -943,95 +934,76 @@ exports.getFiles = function(req,res){
     var result = checkPermission(req, 2);
     if(result.error){
         res.send(result);
-
     }else{
-        /*
-         CREATE TABLE FILE(
-         USERID INT(15) NOT NULL,
-         FILENAME VARCHAR(32) NOT NULL,
-         JSON TEXT NOT NULL,
-         );
-         CREATE TABLE CLASS(
-         CRN INT(15) NOT NULL UNIQUE,
-         INSTRUCTOR INT(15) NOT NULL,
-         );
-         CREATE TABLE STUDENT(
-         CRN INT(15) NOT NULL,
-         STUDENT INT(15) NOT NULL
-         );
-         */
         //get class crn, then, find all instructor to this account, then fetch all file from the instructors.
         req.getConnection(function (err, connection) {
             var userid = req.user.userid;
 
-
-            if(req.user.USERTYPE==2){// STUDENT  get file for particular class.
-                //TODO not sure if nested query work, if not, split to three queries.
-                connection.query(
-                    "SELECT FILENAME, USERID FROM FILE WHERE USERID IN (" +
-                            "SELECT INSTRUCTOR FROM (" +
-                                "(SELECT CRN FROM STUDENT WHERE STUDENT = ? AND CRN = ?) AS A " +
-                                "JOIN CLASS ON (A.CRN = CLASS.CRN)" +
-                            ")" +
-                    ")"
-                    ,[req.user.USERID,input.crn], function(err, rows){
-                        if (err){
-                            console.log(err);
-                            result.error=err;
-                        }else{
-                            result.data=rows;
-                        }
-                        res.send(result);
-
+            if(input.crn){ // single class
+                if(req.user.USERTYPE==2){
+                    hasStudent(connection,input,req.user,res,getFileList);
+                }else if(req.user.USERTYPE==1){
+                    ownedClass(connection,input,req.user,res,getFileList);
+                }else if(req.user.USERTYPE==0){
+                    getFileList(connection,input,req.user,res);
+                }
+            }else{
+                if(req.user.USERTYPE==1){ // INSTRUCTOR
+                    connection.query('SELECT FILEID, FILENAME,USERID FROM FILE WHERE USERID = ? ',[req.user.USERID],function(err, rows){
+                        logAndSend(res,err,rows);
                     });
-            }else if(req.user.USERTYPE==1){ // INSTRUCTOR
-                connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID = ? ' +
-                    'OR USERID IN (' +
-                     "SELECT INSTRUCTOR FROM (" +
-                "(SELECT CRN FROM STUDENT WHERE STUDENT = ? AND CRN = ?) AS A " +
-                "JOIN CLASS ON (A.CRN = CLASS.CRN)))",[req.user.USERID,req.user.USERID,input.crn],function(err, rows){
-                    if (err){
-                        console.log(err);
-                        result.error=err;
-                    }else{
-                        result.data=rows;
-                    }
-                    res.send(result);
-
-                });
-
-            }else if(req.user.USERTYPE==0){ // admin
-                if(input.crn){ // file for single class.
-                    connection.query('SELECT FILENAME,USERID FROM FILE WHERE USERID IN ' +
-                                     '(SELECT INSTRUCTOR FROM CLASS WHERE CRN = ?)',input.crn,function(err, rows){
-                        if (err){
-                            console.log(err);
-                            result.error=err;
-                        }else{
-                            result.data=rows;
-                        }
-                        res.send(result);
-
-                    });
-                }else{ // all files
-                    connection.query('SELECT FILENAME ,FILE.USERID,USERNAME FROM FILE ' +
-                    '                   JOIN USER ON(FILE.USERID = USER.USERID) ORDER BY USERNAME',function(err, rows){
-                        if (err){
-                            console.log(err);
-                            result.error=err;
-                        }else{
-                            result.data=rows;
-                        }
-                        res.send(result);
-
+                }else if(req.user.USERTYPE==0){ // admin get instructor username as well.
+                    connection.query('SELECT FILEID,FILENAME ,FILE.USERID,USERNAME FROM FILE ' +
+                                        'JOIN USER ON(FILE.USERID = USER.USERID) ORDER BY USERNAME',function(err, rows){
+                        logAndSend(res,err,rows);
                     });
                 }
-
             }
         });
     }
 };
+function logAndSend(res,err,rows,next){
+    if (err){
+        logError(err);
+        res.send({error:err});
+    }else
+        if(next)
+            next();
+        else
+            res.send({data:rows});
+}
 
+function hasStudent(connection,input, user,res,next){
+    connection.query("SELECT CRN FROM STUDENT WHERE CRN = ? AND STUDENT = ?",[input.crn,user.USERID],function(err,rows){
+        logAndSend(res,err,rows,function(){
+            if(rows.length==0)
+                res.send({error:'You are not in the class. crn= '+input.crn});
+            else
+                next(connection, input, user, res);
+        })
+    });
+}
+
+function ownedClass(connection,input, user,res,next){
+    connection.query("SELECT CRN FROM CLASS WHERE CRN =? AND INSTRUCTOR = ?",[input.crn,user.USERID],function(err,rows){
+        logAndSend(res,err,rows, function(){
+            if(rows.length==0)
+                res.send({error:'You are not own the class. crn= '+input.crn});
+            else
+                next(connection, input, user, res);
+        })
+    });
+}
+
+
+function getFileList(connection,input,user,res,next){
+    connection.query(
+        "SELECT FILEID, FILENAME, USERID FROM FILE WHERE FILEID IN" +
+            "( SELECT FILEID FROM FILE_PERMISSION WHERE CRN = ? )"
+        ,input.crn, function(err, rows){
+            logAndSend(res,err,rows);
+        });
+}
 
 exports.listUser = function(req,res){
     var input = req.query;
@@ -1114,6 +1086,7 @@ exports.listInstructor = function(req,res){
 };
 
 
+
 //-- list student
 exports.listStudent = function(req,res){
     var input = req.query;
@@ -1175,6 +1148,26 @@ exports.listStudent = function(req,res){
     }
 };
 
+exports.getPermission= function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 1);
+    if(result.error){
+        res.send(result);
+    }else{
+        req.getConnection(function (err, connection) {
+            var instructor = req.user.USERID;
+            if(req.user.USERTYPE==0&&input.instructor)
+                instructor= input.instructor;
+
+            connection.query("SELECT * FROM FILE WHERE FILEID = ? AND USERID = ? " +
+                " JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
+                " RIGHT JOIN (SELECT * FROM CLASS WHERE INSTRUCTOR = ?) AS B " +
+                "ON (FILE_PERMISSION.CRN = B.CRN)",[input.fileid,instructor,instructor],function(err,rows){
+                    logAndSend(res,err,rows);
+                });
+        });
+    }
+};
 
 exports.listClassOwn = function(req,res){
     var input = req.query;

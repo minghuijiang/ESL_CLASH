@@ -5,7 +5,7 @@ function adminOnlyBinding(){
     registerDel('leftUser','userLeftButton','rightUser','userRightButton');
     //delete class loading
     bindLoad('reloadClass','leftClass','api/listClass?',function(obj){
-        return obj.CRN+'-'+obj.CLASSNAME;
+        return [obj.CLASSNAME,obj.CRN];
     });
     $('#submitDeleteClass').on('click',function(ev){
         var item =  $("#leftClass option:selected")[0];

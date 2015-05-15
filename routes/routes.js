@@ -76,8 +76,9 @@ module.exports = function(app, passport) {
         console.log(req.user.USERNAME+' request to reparse text.');
         var text=req.body.text;
         reParseLexical(text,req,res);
-    })
+    });
 
+    app.get('/api/getPermission',isLoggedIn,isInstructorOrAdmin,DB.getPermission);
 
 };
 var java = require('java'),
