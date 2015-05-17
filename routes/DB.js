@@ -1182,12 +1182,11 @@ exports.getPermission= function(req,res){
             }else{
                 connection.query("SELECT FILE.FILEID,FILE.FILENAME, CLASS.CRN,CLASS.CLASSNAME FROM " +
                     "(" +
-                    "(SELECT FILEID, FILENAME, USERID FROM FILE WHERE AND USERID = ?) AS FILE" +
-                    " LEFT JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
-                    "RIGHT JOIN " +
-                    "(SELECT * FROM CLASS WHERE INSTRUCTOR = ? AND CRN = ?) AS CLASS" +
-                    " ON (CLASS.CRN = FILE_PERMISSION.CRN))"
-                    ,[instructor,instructor,input.crn],function(err,rows){
+                    "(SELECT * FROM CLASS WHERE INSTRUCTOR = ? AND CRN = ?) AS CLASS " +
+                    "JOIN FILE_PERMISSION ON (CLASS.CRN = FILE_PERMISSION.CRN) " +
+                    " RIGHT JOIN (SELECT FILEID, FILENAME, USERID FROM FILE WHERE USERID = ?) AS FILE" +
+                    " ON (FILE.FILEID = FILE_PERMISSION.FILEID))"
+                    ,[instructor,input.crn,instructor],function(err,rows){
                         logAndSend(res,err,rows);
                     });
             }
