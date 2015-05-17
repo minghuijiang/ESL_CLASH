@@ -1,6 +1,6 @@
 <div id="class-tab" class="tab-content">
 
-    <div class="left add" style="width:30%">
+    <div class="left add" style="width:25%">
         <h1>Create Class</h1>
         <br />
         <form id="addClass">
@@ -42,13 +42,13 @@
                 <select id="classPicker" size="15">
                 </select>
                 <br /><br />
-                <button type="button" id="reloadClassPicker" class="reload class">Reload Files</button> <br /><br /><br />
+                <button type="button" id="reloadClassPicker" class="reload class">Reload Classes</button> <br /><br /><br />
             </div>
 
             <div style="margin-left: 20px">
                 <table>
                     <col width="100" />
-                    <col width="200" />
+                    <col width="300" />
                     <tr>
                         <th>Visible</th>
                         <th>File Name</th>
@@ -56,73 +56,11 @@
                 </table>
                 <table id="ClassOption">
                     <col width="100" />
-                    <col width="200" />
+                    <col width="300" />
                 </table>
             </div>
 
         </div>
     </div>
-
-    <script>
-        $('#reloadClassPicker').click(function(){
-            $.get('api/listClassOwn?',function(data){
-                var select= $('#classPicker');
-                if(data.error){
-                    onError(data);
-                }else{
-                    select.text('');
-                    for(var i=0;i<data.data.length;i++){
-                        var obj = data.data[i];
-                        var text = obj.CLASSNAME;
-                        var value = obj.CRN+tokenDelimiter+obj.USERID;
-                        var option = createOption(text,value);
-                        select.append(option);
-                    }
-                }
-            });
-        });
-
-        var selectCrn,selectUserid;
-        $("#classPicker").change(function(ev){
-            var sp = $(this).find(':selected')[0].value.split(tokenDelimiter);
-            selectCrn = sp[0];
-            selectUserid = sp[1];
-            $.get('api/getPermission?crn='+selectCrn+'&instructor='+userid,function(data){
-                console.log(data);
-                if(data.error)
-                    onError(data);
-                else{
-                    $('#ClassOption').find('tr').remove();
-                    for(var i=0; i<data.data.length;i++){
-                        var obj = data.data[i];
-                        var tr = makeEl('tr');
-//                <tr>
-//                    <th><input type="checkbox" val="test" /> </th>
-//                    <td>My test class</td>
-//                    </tr>
-                        var th = makeEl('th');
-                        $(th).html("<input class='sfp' type='checkbox' value='"+obj.FILEID+"'" +(obj.CRN?'checked=true':'') +" />");
-                        var td =makeEl('td');
-                        $(td).html(obj.FILENAME);
-                        $(tr).append(th).append(td);
-                        $('#ClassOption').append(tr);
-                    }
-                }
-            });
-        });
-
-        $('#ClassOption').on('click','.sfp',function(){
-            var fileid = $(this)[0].value;
-            $.get('/api/changePermission?crn='+selectCrn+'&fileid='+fileid+($(this)[0].checked?'':'&del='),function(data){
-                console.log(data);
-                if(data.error)
-                    onError(data);
-                else{
-
-                }
-            });
-        })
-    </script>
-
     <% }%>
 </div>
