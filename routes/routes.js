@@ -48,6 +48,7 @@ module.exports = function(app, passport) {
     app.get('/api/getFile',isLoggedIn,DB.getFile);
     app.get('/api/listUser',isLoggedIn,DB.listUser);
     app.get('/api/listClass',isLoggedIn,DB.listClass);
+    app.get('/api/listClassOwn',isLoggedIn,isInstructorOrAdmin,DB.listClassOwn);
     app.get('/api/listStudent',isLoggedIn,DB.listStudent);
     app.get('/api/listInstructor',isLoggedIn,DB.listInstructor);
     app.get('/api/changeName',isLoggedIn,DB.changeName);

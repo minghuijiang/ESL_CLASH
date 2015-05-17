@@ -163,3 +163,7 @@ div.verticalLine{
     -webkit-filter: blur(2px);
     -moz-filter: blur(2px);
 }
+
+.ct {
+    text-align: center;
+}

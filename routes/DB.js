@@ -1168,17 +1168,30 @@ exports.getPermission= function(req,res){
             var instructor = req.user.USERID;
             if(req.user.USERTYPE==0&&input.instructor)
                 instructor= input.instructor;
-
-            connection.query("SELECT FILE.FILEID,CLASS.CRN,CLASS.CLASSNAME FROM " +
-            "(" +
-                "(SELECT FILEID, FILENAME, USERID FROM FILE WHERE FILEID = ? AND USERID = ?) AS FILE" +
+            if(input.fileid){
+                connection.query("SELECT FILE.FILEID,FILE.FILENAME, CLASS.CRN,CLASS.CLASSNAME FROM " +
+                    "(" +
+                    "(SELECT FILEID, FILENAME, USERID FROM FILE WHERE FILEID = ? AND USERID = ?) AS FILE" +
                     " JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
-                        "RIGHT JOIN " +
-                            "(SELECT * FROM CLASS WHERE INSTRUCTOR = ?) AS CLASS" +
-                                " ON (CLASS.CRN = FILE_PERMISSION.CRN))"
-                ,[input.fileid,instructor,instructor],function(err,rows){
-                    logAndSend(res,err,rows);
-                });
+                    "RIGHT JOIN " +
+                    "(SELECT * FROM CLASS WHERE INSTRUCTOR = ?) AS CLASS" +
+                    " ON (CLASS.CRN = FILE_PERMISSION.CRN))"
+                    ,[input.fileid,instructor,instructor],function(err,rows){
+                        logAndSend(res,err,rows);
+                    });
+            }else{
+                connection.query("SELECT FILE.FILEID,FILE.FILENAME, CLASS.CRN,CLASS.CLASSNAME FROM " +
+                    "(" +
+                    "(SELECT FILEID, FILENAME, USERID FROM FILE WHERE AND USERID = ?) AS FILE" +
+                    " LEFT JOIN FILE_PERMISSION ON (FILE.FILEID = FILE_PERMISSION.FILEID) " +
+                    "RIGHT JOIN " +
+                    "(SELECT * FROM CLASS WHERE INSTRUCTOR = ? AND CRN = ?) AS CLASS" +
+                    " ON (CLASS.CRN = FILE_PERMISSION.CRN))"
+                    ,[instructor,instructor,input.crn],function(err,rows){
+                        logAndSend(res,err,rows);
+                    });
+            }
+
         });
     }
 };
@@ -1191,7 +1204,7 @@ exports.changePermission= function(req,res){
         req.getConnection(function (err, connection) {
             if(req.user.USERTYPE==1){
                 ownedFile(connection,input,req.user,res,function(){
-                    ownedClass(connection,input,req,user,modifyFilePermission);
+                    ownedClass(connection,input,req.user,res,modifyFilePermission);
                 })
             }else{
                 modifyFilePermission(connection,input,req.user,res);
@@ -1202,7 +1215,8 @@ exports.changePermission= function(req,res){
 
 function modifyFilePermission(connection,input,user,res,next){
     if(input.del){
-        connection.query("DELETE FROM FILE_PERMISSION WHERE FILEID = ? AND CRN = ?",[input,fileid,input.crn],
+        console.log('del');
+        connection.query("DELETE FROM FILE_PERMISSION WHERE FILEID = ? AND CRN = ?",[input.fileid,input.crn],
             function(err,rows){
                 logAndSend(res,err,'ok');
             });

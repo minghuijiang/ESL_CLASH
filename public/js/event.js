@@ -23,6 +23,10 @@ function createOption(text, val){
     return option;
 }
 
+function makeEl(type){
+    return document.createElement(type);
+}
+
 function createPrint(content){
     var myWindow = window.open("", "_newtab", "");
     var doc = myWindow.document;
