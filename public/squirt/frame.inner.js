@@ -116,7 +116,7 @@ var dom = {
     appendChildren: function(el, children) {
         var parent = el.parentElement;
         var nextSibling = el.nextSibling;
-        el.remove();
+        $(el).remove();
         children.map(function(node) {
             el.appendChild(node);
         });
