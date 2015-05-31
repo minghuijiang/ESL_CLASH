@@ -194,6 +194,7 @@ function instructorBinding(){
     });
     $('#leftClass2').on('change',function(ev){
         var crn =$(this).find(':selected')[0].value;
+        console.log(crn);
         $.get('api/listStudent?crn='+crn,function(data){
             var select= $('#leftStudent');
             var right = $('#rightStudent');
@@ -219,7 +220,7 @@ function instructorBinding(){
         if(!selected){
             alert('Please select a class before add student.');
         }
-        var crn = selected.innerHTML.split("-")[0];
+        var crn = selected.value;
         for(var i=0;i<students.length;i++)
             $.get('api/addStudent?student='+students[i]+'&crn='+crn,function(data){
                 if(data.error)
@@ -246,16 +247,9 @@ function instructorBinding(){
 
     bindDel('submitDeleteUser','rightUser','api/delUser?username=',removeParen,onError);
     bindDel('submitDeleteException','rightException','api/delException?exception=',removeParen,onError);
-    bindDel('submitDeleteFile','rightFile','api/delFile?filename=',function(item){
-        var split = item.innerHTML.split('(');
-        if(split.length==1)
-            return split[0];
-        else
-            return split[0]+'&username='+split[1].split(')')[0];
-    },onError);
     bindDel('submitDeleteStudent','rightStudent','api/delStudent?student=',function(item){
         var studentid = user[item.innerHTML];
-        var crn = $('#leftClass2 option:selected')[0].innerHTML.split("-")[0];
+        var crn = $('#leftClass2 option:selected')[0].value;
         console.log('delete student '+studentid+' from '+ crn);
         return studentid+'&crn='+crn;
     },onError);

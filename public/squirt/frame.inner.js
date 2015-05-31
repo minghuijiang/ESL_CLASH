@@ -1200,7 +1200,7 @@ var events = {
         tracking.send(tracking);
         reader.setText(e.text);
         evt.dispatch('squirt.wpm', {
-            value: userSettings.get('wpm', 320),
+            value: userSettings.get('wpm', 80),
             notForKeen: true
         });
     },

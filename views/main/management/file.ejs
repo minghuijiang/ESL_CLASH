@@ -6,7 +6,21 @@
                 <select id="leftFile" size="15">
                 </select>
                 <br /><br />
-                <button type="button" id="reloadFile" class="reload file">Reload Files</button> <br /><br /><br />
+                <button type="button" id="reloadFile" class="reload file">Reload Files</button>
+                <button type="button" id="submitDeleteFile" class="delete file">Delete File</button> <br /><br /><br />
+                <script>
+                    $("#submitDeleteFile").click(function(){
+                        var selected = $($('#leftFile').find(":selected")[0]);
+                        var filename = selected.html();
+                        $.get('api/delFile?filename='+filename,function(data){
+                            if(data.error)
+                                onError(data);
+                            else{
+                                selected.remove();
+                            }
+                        })
+                    })
+                </script>
             </div>
 
             <div id="wrapper" style="margin-left: 20px">
