@@ -1,9 +1,9 @@
 
-* {
+*{
     vertical-align: baseline;
     font-weight: inherit;
     font-style: inherit;
-    border: 0 none;
+    /*border: 0 none;*/
     outline: 0;
     padding: 0;
     margin: 0;

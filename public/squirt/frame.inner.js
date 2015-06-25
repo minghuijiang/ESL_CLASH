@@ -751,7 +751,8 @@ var c = {
         clearSeek();
         sq.playing = true;
         getNextNodeIdx = incrementNodeIdx;
-        carousel.classList.add('playing');
+        if(!showGrey)
+            carousel.classList.add('playing');
         slowStartIdx = nodeIdx;
         hideContextNodes(extraSlowStart,advanceNode)
     },
@@ -884,6 +885,18 @@ var w = {
 
 };
 
+if (!String.prototype.endsWith) {
+    String.prototype.endsWith = function(searchString, position) {
+        var subjectString = this.toString();
+        if (position === undefined || position > subjectString.length) {
+            position = subjectString.length;
+        }
+        position -= searchString.length;
+        var lastIndex = subjectString.indexOf(searchString, position);
+        return lastIndex !== -1 && lastIndex === position;
+    };
+}
+
 // We multiply the average delay per word by the user-set WPM to
 // obtain a baseline per-word interval that, when modified by
 // each word's specific delay value, will approach the user's
@@ -902,14 +915,60 @@ function textToNodes(text,wbw) {
 
     var totalDelay = 0;
     var length = 0;
+    var oldNode = null;
+    var oldLen = 0;
     var nodes = text
         .replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ")
         .split(tokenDelimiter)
-        //  .split(/[\s]+/g)
+        .map(function(lb){
+            lb = lb.trim();
+            var tmplen =   lb.split(/[\s]+/g).length;
+            var isTerminated = oldNode && (oldNode.endsWith('.')||oldNode.endsWith("?")||oldNode.endsWith("!")||oldNode.endsWith(";"));
+            console.log(lb+"  "+isTerminated);
+            if(oldNode){
+                var newsize = tmplen+oldLen;
+
+                if(newsize>max|| isTerminated){  // if new lb larger than maximum, go with two small one.
+                    var re = oldNode;
+                    oldNode=lb;
+                    oldLen=tmplen;
+                    return re;
+                }else if(newsize>=min) {
+                    console.log("=====merge:  "+oldNode+"   "+lb);
+                    var re = oldNode+" "+lb;
+                    oldNode=undefined;
+                    oldLen=0;
+                    return re;
+                }else{
+                    oldNode +=" "+lb;
+                    oldLen+=tmplen;
+                    return "";
+                }
+            }else{
+                if(tmplen<min&&!isTerminated){
+                    oldNode = lb;
+                    oldLen=tmplen;
+                    return ""; //skip this one.
+                }else{
+                    // continue;
+                    return lb;
+                }
+            }
+            if(tmplen<min){
+
+            }
+        });
+    if(oldNode){
+        nodes.push(oldNode);
+    }
+    nodes = nodes
         .filter(function(word) {
+            console.log("node: "+word);
+
             return word.length;
         })
         .map(w.toNode)
+
         .map(function(node) {
             totalDelay += node.delayFactor;
             return node
@@ -920,6 +979,52 @@ function textToNodes(text,wbw) {
         });
     avgDelayPerWord = totalDelay / length;
     return nodes;
+}
+
+
+
+var max = userSettings.get('max',7);
+var min = userSettings.get('min',4);
+var mc = userSettings.get('mc',30);
+
+var showGrey = userSettings.get('grey',false);
+function setGrey(on){
+    showGrey= on;
+    userSettings.set('grey',showGrey);
+}
+
+function getGrey(){
+    return showGrey;
+}
+
+function getMax(){
+    return max;
+}
+
+function getMin(){
+    return min;
+}
+
+function getMC(){
+    return mc;
+}
+
+function setMax(m){
+    var c = parseInt(m);
+    if(c){
+        max = c;
+        userSettings.set('max',max);
+    }
+    return max;
+}
+
+function setMin(m){
+    var c = parseInt(m);
+    if(c&& c<getMax()){
+        min = c;
+        userSettings.set('min',min);
+    }
+    return min;
 }
 
 var size=userSettings.get('fontSize',2);
@@ -1170,7 +1275,8 @@ var events = {
         dom.show('.carousel');
         dom.hide('.reader-content');
         reader.play(e.extraSlowStart);
-        document.body.classList.add('playing');
+        if(!showGrey)
+            document.body.classList.add('playing');
     },
 
     'squirt.close': function() {
