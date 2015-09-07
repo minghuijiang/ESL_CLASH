@@ -74,7 +74,7 @@ function instructorBinding(){
         console.log('clicked');
         var txt= $('#resizable').val().trim();
         if(txt.length==0){
-            txt= $('#resizable').placeholder;
+            txt= $('#resizable').attr('placeholder');
             console.log(txt);
             showError('Please enter some text before Slash.');
             return ;
