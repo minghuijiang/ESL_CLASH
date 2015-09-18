@@ -121,7 +121,7 @@ $('#open').click(function(){
 $('#hiddenFile').change(function(ev){
     console.log('changed');
     var F = this.files;
-    if(this.disabled||!F[0]){
+    if(this.disabled){
         // do upload and re-download
         return alert('File upload not supported!');
 
@@ -138,10 +138,8 @@ $('#hiddenFile').change(function(ev){
                 changeContent(str,F[0].name.split('.')[0]);
                 $('#hiddenFile').val('');
             };
-            reader.readAsText(F[0]);
-
-
-
+            if(F[0])
+                reader.readAsText(F[0]);
     }
 
 });
