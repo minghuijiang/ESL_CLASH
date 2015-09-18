@@ -128,14 +128,17 @@ $('#hiddenFile').change(function(ev){
         var F = this.files;
         console.log(F);
         var reader = new FileReader();
-        reader.onload=function(e){
-            var text = this.result;
-            json = JSON.parse(text);
-            var str = parseJSON(json);
-            changeContent(str,F[0].name.split('.')[0]);
-            $('#hiddenFile').val('');
-        };
-        reader.readAsText(F[0]);
+        if(reader!=null){
+            reader.onload=function(e){
+                var text = this.result;
+                json = JSON.parse(text);
+                var str = parseJSON(json);
+                changeContent(str,F[0].name.split('.')[0]);
+                $('#hiddenFile').val('');
+            };
+            reader.readAsText(F[0]);
+        }
+
 
     }
 
