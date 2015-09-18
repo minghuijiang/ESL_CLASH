@@ -128,7 +128,7 @@ $('#hiddenFile').change(function(ev){
         var F = this.files;
         console.log(F);
         var reader = new FileReader();
-        if(reader){
+        console.log(reader);
             reader.onload=function(e){
                 var text = this.result;
                 console.log(json);
@@ -138,7 +138,7 @@ $('#hiddenFile').change(function(ev){
                 $('#hiddenFile').val('');
             };
             reader.readAsText(F[0]);
-        }
+
 
 
     }
