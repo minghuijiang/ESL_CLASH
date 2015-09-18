@@ -120,12 +120,12 @@ $('#open').click(function(){
 });
 $('#hiddenFile').change(function(ev){
     console.log('changed');
-    if(this.disabled){
+    var F = this.files;
+    if(this.disabled||!F[0]){
         // do upload and re-download
         return alert('File upload not supported!');
 
     }else{
-        var F = this.files;
         console.log(F);
         console.log(F[0]);
         var reader = new FileReader();
