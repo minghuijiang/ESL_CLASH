@@ -131,6 +131,7 @@ $('#hiddenFile').change(function(ev){
         if(reader){
             reader.onload=function(e){
                 var text = this.result;
+                console.log(json);
                 json = JSON.parse(text);
                 var str = parseJSON(json);
                 changeContent(str,F[0].name.split('.')[0]);
