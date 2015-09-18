@@ -127,6 +127,7 @@ $('#hiddenFile').change(function(ev){
     }else{
         var F = this.files;
         console.log(F);
+        console.log(F[0]);
         var reader = new FileReader();
         console.log(reader);
             reader.onload=function(e){
