@@ -96,7 +96,8 @@ function boldException(isChecked){
 }
 
 function showVocab(isChecked){
-    $(".vocab").css("font-style",isChecked?"italic":"inherit");
+    $(".vocab").css("font-style",isChecked?"italic":"inherit")
+        .css("font-weight", isChecked ? "bold" : "inherit");
 }
 
 function showStress(isChecked){
