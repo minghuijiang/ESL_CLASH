@@ -24,7 +24,7 @@ function checkPermission(req, minLevel){
 
 
 function sql(req,query,data,callback){
-    req.getConnections(function(err,connection){
+    req.getConnection(function(err,connection){
         connection.query(query,data,callback);
     });
 }
