@@ -22,6 +22,15 @@ function checkPermission(req, minLevel){
     return result;
 }
 
+
+function sql(req,query,data,callback){
+    req.getConnections(function(err,connection){
+        connection.query(query,data,callback);
+    });
+}
+function test(err,rows){
+    logAndSend(res,err,'ok');
+}
 exports.changeName = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 2);
@@ -29,18 +38,30 @@ exports.changeName = function(req,res){
         res.send(result);
 
     }else{
-        req.getConnection(function (err, connection) {
-            var data = {
-                FNAME:          input.fname,
-                LNAME:          input.lname
-            };
-            connection.query("UPDATE USER set ? WHERE USERID= ?",[data,req.user.USERID], function(err, rows){
-                logAndSend(res,err,'ok');
-            });
-        });
+        sql(req,"UPDATE USER set ? WHERE USERID= ?",
+            [   {
+            FNAME:          input.fname,
+            LNAME:          input.lname
+             },req.user.USERID],test);
+        //req.getConnection(function (err, connection) {
+        //    var data = {
+        //        FNAME:          input.fname,
+        //        LNAME:          input.lname
+        //    };
+        //    connection.query("UPDATE USER set ? WHERE USERID= ?",[data,req.user.USERID], function(err, rows){
+        //        logAndSend(res,err,'ok');
+        //    });
+        //});
     }
 
 };
+
+
+
+exports.selfEnrollment = function(req,res){
+
+};
+
 
 exports.changePassword = function(req,res){
     var input = req.query;
