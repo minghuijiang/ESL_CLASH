@@ -28,7 +28,7 @@ function sql(req,query,data,callback){
         connection.query(query,data,callback);
     });
 }
-function test(err,rows){
+function test(res,err,rows){
     logAndSend(res,err,'ok');
 }
 exports.changeName = function(req,res){
@@ -42,7 +42,7 @@ exports.changeName = function(req,res){
             [   {
             FNAME:          input.fname,
             LNAME:          input.lname
-             },req.user.USERID],test);
+             },req.user.USERID],test(res));
         //req.getConnection(function (err, connection) {
         //    var data = {
         //        FNAME:          input.fname,
