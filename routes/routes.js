@@ -53,6 +53,7 @@ module.exports = function(app, passport) {
     app.get('/api/listInstructor',isLoggedIn,DB.listInstructor);
     app.get('/api/changeName',isLoggedIn,DB.changeName);
     app.get('/api/changePassword',isLoggedIn,DB.changePassword);
+    app.get('/api/getToken',isLoggedIn,DB.getClassToken);
     //test version.
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);

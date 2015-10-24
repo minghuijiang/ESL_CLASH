@@ -48,3 +48,4 @@ node_modules/*
 .idea/*
 
 java/slash-full.jar
+routes/DB.back.js
