@@ -93,7 +93,7 @@ exports.getClassToken = function(req,res){
 
 exports.selfEnrollment = function(req,res){
     var input = req.query;
-    var result = checkPermission(req, 2);
+    var result;// = checkPermission(req, 2);
     if(result.error){
         res.send(result);
     }else{
@@ -149,7 +149,7 @@ exports.selfEnrollment = function(req,res){
                                                         }
                                                         res.send(result);
 
-                                                    });
+                                                    })
                                             }
 
                                         });
