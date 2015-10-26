@@ -68,7 +68,9 @@
     </div>
     <% }%>
     <script>
+        console.log("bind");
         $('.getToken').bind('click', function () {
+            console.log("clickcccccc");
             var item =  $("#leftClass option:selected")[0];
             $.get('api/getToken?crn='+item.innerHTML.split('-')[0],function(data){
                 if(data.error){
