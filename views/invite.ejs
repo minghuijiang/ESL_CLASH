@@ -1,0 +1,47 @@
+<!-- views/login.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Node Authentication</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+    <style>
+        body 		{ padding-top:80px; }
+    </style>
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+<div class="container" style="float:center">
+    <h1>User Creation</h1>
+    <br />
+    <form id="addUser">
+
+        <input type="text" name="fname" value="" placeholder="First name(optional)" />
+        <br />
+        <input type="text" name="lname" value="" placeholder="Last name(optional)" />
+        <br />
+        <input type="text" name="username" value="" placeholder="Username" required />
+        <br />
+        <input type="password" id='addUserPassword' name="password" value="" placeholder="Password" required />
+        <br />
+        <input type="checkbox" onchange="document.getElementById('addUserPassword').type =
+                                this.checked ? 'text' : 'password'"> Show password
+        <br />
+        <input type="text" name="crn" value = "<%= crn %>" hidden />
+        <input type="text" name="instructor" value = "<%= instructor %>" hidden />
+        <select name="usertype">
+            <% if(user.USERTYPE==0) {%>
+            <option value="0">Admin</option>
+            <option value="1">Instructor</option>
+            <%}%>
+            <option value="2" selected="selected">Student</option>
+        </select>
+        <br>
+        <input type="submit" value="Create Account">
+    </form>
+</div>
+</body>
+</html>
+
+
+

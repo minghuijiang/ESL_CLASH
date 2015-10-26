@@ -11,6 +11,10 @@ module.exports = function(app, passport) {
     app.get( '/',isLoggedIn, function ( request, response ) {
         response.render('main.ejs',{user:request.user});
     });
+    app.get( '/invite', function ( request, response ) {
+        console.log(request);
+        //response.render('main.ejs',{user:request.user});
+    });
     // LOGIN ===============================
     app.get('/login', function(req, res) {
         res.render('login.ejs', { message: req.flash('loginMessage') });
@@ -54,6 +58,7 @@ module.exports = function(app, passport) {
     app.get('/api/changeName',isLoggedIn,DB.changeName);
     app.get('/api/changePassword',isLoggedIn,DB.changePassword);
     app.get('/api/getToken',isLoggedIn,DB.getClassToken);
+    app.get('/api/selfEnrollment',DB.selfEnrollment);
     //test version.
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);
