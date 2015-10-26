@@ -46,7 +46,7 @@
                 <br /><br />
                 <button type="button" id="reloadClassPicker" class="reload class">Reload Classes</button>
                 <button class="getToken">Get Invite Link</button>
-                <br /><input class="link"value="" ><br /><br />
+                <br /><input class="link"value="" size="200"><br /><br />
             </div>
 
             <div style="margin-left: 20px">
@@ -78,7 +78,7 @@
                     else
                         showError(data.error);
                 }else{
-                    var link  = "http://esl-clash.cs.odu.edu/api/crn="+item.value+"&token="+data.TOKEN;
+                    var link  = "http://esl-clash.cs.odu.edu/invite?crn="+item.value+"&token="+data.TOKEN;
                     $(".link").val(link);
                 }
             })
