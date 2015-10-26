@@ -15,7 +15,7 @@ module.exports = function(app, passport) {
         var crn = request.query.crn;
         var instructor = request.query.instructor;
 
-        response.render('invite.ejs',{crn:crn,instructor:instructor});
+        response.render('invite.ejs',{crn:crn,instructor:instructor,token:request.query.token});
     });
     // LOGIN ===============================
     app.get('/login', function(req, res) {

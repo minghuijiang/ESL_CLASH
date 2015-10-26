@@ -31,6 +31,7 @@
         <br />
         <input type="text" name="crn" value = "<%= crn %>" hidden />
         <input type="text" name="instructor" value = "<%= instructor %>" hidden />
+        <input type="text" name="token" value = "<%= token %>" hidden />
         <select name="usertype">
             <option value="2" selected="selected">Student</option>
         </select>
@@ -43,7 +44,8 @@
             if(data.error)
                 showError('Error: '+data.error.code);
             else{
-                showMessage('Account created!');
+                alert('Account created!');
+                window.location="http://esl-clash.cs.odu.edu/";
             }
             console.log(data);
         });

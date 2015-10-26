@@ -97,8 +97,8 @@ exports.selfEnrollment = function(req,res){
     if(result.error){
         res.send(result);
     }else{
-        sql(req, "SELECT * FROM ENROLLMENTTOKEN WHERE INSTRUCTOR = ? AND CRN = ? AND TOKEN = ?",
-            [input.instructor, input.crn,input.token],
+        sql(req, "SELECT * FROM ENROLLMENTTOKEN WHERE CRN = ? AND TOKEN = ?",
+            [input.crn,input.token],
             function(err,rows){
                 if(err)
                     logError(err);
