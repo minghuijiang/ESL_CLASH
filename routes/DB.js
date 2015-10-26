@@ -136,7 +136,7 @@ exports.selfEnrollment = function(req,res){
                                             }else{
                                                 result.data=rows;
                                                 console.log(rows);
-                                                var userid = rows[0].USERID;
+                                                var userid = rows.insertId;
                                                 sql(req,"INSERT INTO STUDENT set ? ",{
                                                     CRN:input.crn,
                                                     STUDENT:userid
