@@ -128,7 +128,7 @@ exports.selfEnrollment = function(req,res){
                                             FNAME:          input.fname,
                                             LNAME:          input.lname,
                                             PASSWORD :      input.password,
-                                            USERTYPE   :    usertype
+                                            USERTYPE   :    2
                                         }, function(err, rows){
                                             if (err){
                                                 result.error=err;
