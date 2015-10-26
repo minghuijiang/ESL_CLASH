@@ -72,7 +72,7 @@ exports.getClassToken = function(req,res){
                                 logError(err);
                             if(rows.length==1){
                                 console.log(rows);
-                                res.send(rows);
+                                res.send({TOKEN:rows[0].TOKEN});
                             }else{
                                 var hash = crypto.createHash('md5').update(req.user.USERID+''+input.crn+''+new Date().getTime()).digest('hex');
                                 console.log(hash);
