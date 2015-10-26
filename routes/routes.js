@@ -12,8 +12,10 @@ module.exports = function(app, passport) {
         response.render('main.ejs',{user:request.user});
     });
     app.get( '/invite', function ( request, response ) {
-        console.log(request.query.test);
-        //response.render('main.ejs',{user:request.user});
+        var crn = request.query.crn;
+        var instructor = request.query.instructor;
+
+        response.render('invite.ejs',{crn:crn,instructor:instructor});
     });
     // LOGIN ===============================
     app.get('/login', function(req, res) {
