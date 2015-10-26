@@ -62,14 +62,7 @@ function instructorBinding(){
         }
         console.log(data);
     });
-    addUserSelf("#addUserSelf",function(data){
-        if(data.error)
-            showError('Error: '+data.error.code);
-        else{
-            showMessage('Account created!');
-        }
-        console.log(data);
-    });
+
     addClass("#addClass",function(data){
         if(data.error)
             showError('Error: '+data.error.code);
