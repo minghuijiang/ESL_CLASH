@@ -71,7 +71,7 @@
         console.log("bind");
         $('.getToken').bind('click', function () {
             var item =  $("#classPicker option:selected")[0];
-            $.get('api/getToken?crn='+item.innerHTML.split('-')[0],function(data){
+            $.get('api/getToken?crn='+item.value,function(data){
                 if(data.error){
                     if(data.error.code)
                         showError(data.error.code);
