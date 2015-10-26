@@ -144,9 +144,7 @@ exports.selfEnrollment = function(req,res){
                                                         if (err){
                                                             result.error=err;
                                                         }else{
-                                                            rows.USERID = data.STUDENT;
-                                                            rows.USERNAME = input.student;
-                                                            result.data=rows;
+
                                                         }
                                                         res.send(result);
 
