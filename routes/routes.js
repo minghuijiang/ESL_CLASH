@@ -12,7 +12,7 @@ module.exports = function(app, passport) {
         response.render('main.ejs',{user:request.user});
     });
     app.get( '/invite', function ( request, response ) {
-        console.log(request);
+        console.log(request.query.test);
         //response.render('main.ejs',{user:request.user});
     });
     // LOGIN ===============================
