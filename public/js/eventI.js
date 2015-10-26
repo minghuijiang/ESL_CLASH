@@ -489,7 +489,7 @@ function instructorBinding(){
                 for(var i=0;i<data.data.length;i++){
                     var obj = data.data[i];
                     var text = obj.CLASSNAME;
-                    var value = obj.CRN+tokenDelimiter+obj.USERID;
+                    var value = obj.CRN;//+tokenDelimiter+obj.USERID;
                     var option = createOption(text,value);
                     select.append(option);
                 }
