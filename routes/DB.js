@@ -56,31 +56,113 @@ exports.getClassToken = function(req,res){
     if(result.error){
         res.send(result);
     }else{
-        sql(req,"SELECT TOKEN FROM ENROLLMENTTOKEN WHERE INSTRUCTOR = ? AND CRN = ?",
-            [req.user.USERID,input.crn],function(err, rows){
+        sql(req, "SELECT CRN FROM CLASS WHERE CRN = ? AND INSTRUCTOR = ?",[input.crn,req.user.USERID],
+            function(err,rows){
                 if(err)
                     logError(err);
-                if(rows.length==1){
-                    console.log(rows);
+                else if(rows.length<1){
+                    // no instructor crn pair
+                    result.error = "Class not found";
+                    res.send(result);
+
                 }else{
-                    var hash = crypto.createHash('md5').update(req.user.USERID+''+input.crn+''+new Date().getTime()).digest('hex');
-                    console.log(hash);
-                    sql(req,"INSERT INTO ENROLLMENTTOKEN SET ? ",{
-                        INSTRUCTOR: req.user.USERID,
-                        CRN: input.crn,
-                        TOKEN:hash
-                    });
-
+                    sql(req,"SELECT TOKEN FROM ENROLLMENTTOKEN WHERE INSTRUCTOR = ? AND CRN = ?",
+                        [req.user.USERID,input.crn],function(err, rows){
+                            if(err)
+                                logError(err);
+                            if(rows.length==1){
+                                console.log(rows);
+                                res.send(rows);
+                            }else{
+                                var hash = crypto.createHash('md5').update(req.user.USERID+''+input.crn+''+new Date().getTime()).digest('hex');
+                                console.log(hash);
+                                sql(req,"INSERT INTO ENROLLMENTTOKEN SET ? ",{
+                                    INSTRUCTOR: req.user.USERID,
+                                    CRN: input.crn,
+                                    TOKEN:hash
+                                });
+                                res.send({TOKEN:hash});
+                            }
+                        });
                 }
-            });
+            })
     }
-
 };
 
 
 
 exports.selfEnrollment = function(req,res){
+    var input = req.query;
+    var result = checkPermission(req, 2);
+    if(result.error){
+        res.send(result);
+    }else{
+        sql(req, "SELECT * FROM ENROLLMENTTOKEN WHERE INSTRUCTOR = ? AND CRN = ? AND TOKEN = ?",
+            [input.instructor, input.crn,input.token],
+            function(err,rows){
+                if(err)
+                    logError(err);
+                else if(rows.length<1){
+                    // no instructor crn pair
+                    result.error = "Token invalid";
+                    res.send(result);
+                }else{
+                    if(!input.username||input.username.length==0 ||!input.password||input.password.length==0){
+                        result.error('Parameters Error.');
+                    }
+                    if(result.error){
+                        res.send(result);
+                    }else{
+                        sql(req,"SELECT USERID FROM USER WHERE USERNAME = ?",input.username,
+                            function(err,rows){
+                                if(err){
+                                    logError(err);
+                                    result.error = err;
+                                    res.send(result);
+                                }else if(rows.length!=0){
+                                    result.error = "User exist.";
+                                    res.send(result);
+                                }else{
+                                    sql(req,"INSERT INTO USER set ? ",{
+                                            USERNAME    :   input.username,
+                                            FNAME:          input.fname,
+                                            LNAME:          input.lname,
+                                            PASSWORD :      input.password,
+                                            USERTYPE   :    usertype
+                                        }, function(err, rows){
+                                            if (err){
+                                                result.error=err;
+                                                res.send(result);
+                                            }else{
+                                                result.data=rows;
+                                                var userid = rows[0].USERID;
+                                                sql(req,"INSERT INTO STUDENT set ? ",{
+                                                    CRN:input.crn,
+                                                    STUDENT:userid
+                                                    },function(err, rows){
+                                                        if (err){
+                                                            result.error=err;
+                                                        }else{
+                                                            rows.USERID = data.STUDENT;
+                                                            rows.USERNAME = input.student;
+                                                            result.data=rows;
+                                                        }
+                                                        res.send(result);
 
+                                                    });
+                                            }
+
+                                        });
+                                }
+                            });
+                    }
+
+
+
+
+                }
+            })
+    }
 };
 
 
@@ -172,10 +254,11 @@ exports.addUser = function(req,res){
                     connection.query("INSERT INTO USER set ? ",data, function(err, rows){
                         if (err){
                             result.error=err;
+                            res.send(result);
                         }else{
                             result.data=rows;
                         }
-                        res.send(result);
+
                     });
                 }
             })

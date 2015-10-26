@@ -30,6 +30,8 @@
                 <br /><br /><br /><br />
                 <button id="reloadClass" class="reload cls" >Reload Class</button> <br /><br /><br />
                 <button id="submitDeleteClass">Delete Class</button>
+                <button class="getToken">Get Invite Link</button>
+                <input class="link"value="" >
             </div>
         </div>
 
@@ -42,7 +44,9 @@
                 <select id="classPicker" size="15">
                 </select>
                 <br /><br />
-                <button type="button" id="reloadClassPicker" class="reload class">Reload Classes</button> <br /><br /><br />
+                <button type="button" id="reloadClassPicker" class="reload class">Reload Classes</button>
+                <button class="getToken">Get Invite Link</button>
+                <br /><input class="link"value="" ><br /><br />
             </div>
 
             <div style="margin-left: 20px">
@@ -63,4 +67,24 @@
         </div>
     </div>
     <% }%>
+    <script>
+        $('.getToken').bind('click', function () {
+            console.log($('#classPicker'));
+//            $.get('api/getToken?',function(data){
+//                var select= $('#classPicker');
+//                if(data.error){
+//                    onError(data);
+//                }else{
+//                    select.text('');
+//                    for(var i=0;i<data.data.length;i++){
+//                        var obj = data.data[i];
+//                        var text = obj.CLASSNAME;
+//                        var value = obj.CRN+tokenDelimiter+obj.USERID;
+//                        var option = createOption(text,value);
+//                        select.append(option);
+//                    }
+//                }
+//            });
+        });
+    </script>
 </div>
