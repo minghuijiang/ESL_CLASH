@@ -924,6 +924,8 @@ function textToNodes(text,wbw) {
         .replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ")
         .split(tokenDelimiter)
         .map(function(lb){
+            if(iswbw)
+                return lb;
             lb = lb.trim();
             var tmplen =   lb.split(/[\s]+/g).length;
             var isTerminated = oldNode && (oldNode.endsWith('.')||oldNode.endsWith("?")||oldNode.endsWith("!")||oldNode.endsWith(";"));
