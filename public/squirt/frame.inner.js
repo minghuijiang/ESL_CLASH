@@ -908,6 +908,7 @@ var tokenDelimiter = 'ˇ';
 function textToNodes(text,wbw) {
     text = text.trim('\n').replace(/\s+\n/g, '\n');
     var array;
+    console.log("is wbw? "+wbw);
     if(wbw){
         console.log(text);
         text=text.replace(/\s/g, tokenDelimiter);
