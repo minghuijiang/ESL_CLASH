@@ -909,7 +909,9 @@ function textToNodes(text,wbw) {
     text = text.trim('\n').replace(/\s+\n/g, '\n');
     var array;
     if(wbw){
+        console.log(text);
         text=text.replace(/\s/g, tokenDelimiter);
+        console.log(text);
     }
     array= text.replace(/[-—\,\.\!\:\;](?![\"\'\)\]\}])/g, "$& ").split(tokenDelimiter);
 
