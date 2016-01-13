@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="CESR" uploadOnCheckin="7232634e-ce9a-4b9f-8a4d-5d68c0368acd">
+  <component name="PublishConfigData" serverName="CESR" uploadOnCheckin="0deb3c0a-bd42-4c71-840e-a67d23b98efb">
     <serverData>
       <paths name="CESR">
         <serverdata>
@@ -11,6 +11,6 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myUploadOnCheckinName" value="ODU" />
+    <option name="myUploadOnCheckinName" value="CESR" />
   </component>
 </project>
