@@ -5,8 +5,9 @@
       <paths name="CESR">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-            <mapping local="" />
+            <mapping deploy="" local="$PROJECT_DIR$" web="/" />
+            <mapping local="" web="" />
+            <mapping deploy="/" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
