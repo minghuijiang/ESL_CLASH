@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="CESR" />
+  <component name="PublishConfigData" serverName="CESR" uploadOnCheckin="7232634e-ce9a-4b9f-8a4d-5d68c0368acd">
+    <serverData>
+      <paths name="CESR">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+            <mapping local="" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myUploadOnCheckinName" value="ODU" />
+  </component>
 </project>
