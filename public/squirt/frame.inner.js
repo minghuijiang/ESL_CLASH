@@ -742,7 +742,6 @@ var c = {
 
         if (!sq.playing) return;
         sq.playing = false;
-        keyHandlers=keyHandlersPause;
         carousel.classList.remove('playing');
     },
 
@@ -806,17 +805,6 @@ var c = {
 
     contextNodes: function() {
         return contextNodes(5);
-    },
-
-    previous: function(){
-
-    },
-    next: function(){
-        getNextNodeIdx = incrementNodeIdx;
-        if(!showGrey)
-            carousel.classList.add('playing');
-        slowStartIdx = nodeIdx;
-        hideContextNodes(extraSlowStart,advanceNode)
     }
 };
 
@@ -1071,9 +1059,7 @@ evt.handle({
         var loc = ev.location;
         loc.y=0;
         c.seek(loc)},
-    'squirt.changeFont': changeFont,
-    'squirt.previous': c.previous,
-    'squirt.next':c.next()
+    'squirt.changeFont': changeFont
 });
 
 evt.on('keydown keyup', function keyEvent(e){
@@ -1086,7 +1072,7 @@ evt.on('keydown keyup', function keyEvent(e){
 });
 
 var downKeys = {}; // track pressed keys
-var keyHandlersRegular = {
+var keyHandlers = {
     keydown: {
         32: togglePlay,
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
@@ -1101,24 +1087,6 @@ var keyHandlersRegular = {
         83: evt.dispatch.bind(null, 'squirt.toggleSettings', {}, null)
     }
 };
-
-
-var keyHandlersPause = {
-    keydown: {
-        32: togglePlay,
-        27: evt.dispatch.bind(null, 'squirt.close', {}, null),
-        38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
-        40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
-
-    },
-    keyup: {
-        37: evt.dispatch.bind(null, 'squirt.previous', {}, null),
-        39: evt.dispatch.bind(null, 'squirt.next', {}, null),
-        83: evt.dispatch.bind(null, 'squirt.toggleSettings', {}, null)
-    }
-};
-
-var keyHandlers=keyHandlersRegular;
 
 function togglePlay(){
     evt.dispatch('squirt.' + (sq.playing ? 'pause' : 'play'));
