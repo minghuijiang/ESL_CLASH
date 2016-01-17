@@ -815,12 +815,16 @@ var c = {
     },
 
     previous: function(){
-
+        getNextNodeIdx=decrementNodeIdx();
+        updateAndDispatchProgress();
+        if (!getNextNodeIdx()) return noMoreNodes();
+        focusOnNodeAtIdx(nodeIdx);
     },
     next: function(){
-        //getNextNodeIdx = incrementNodeIdx;
-        //slowStartIdx = nodeIdx;
-        //hideContextNodes(false,advanceNode)
+        getNextNodeIdx=incrementNodeIdx();
+        updateAndDispatchProgress();
+        if (!getNextNodeIdx()) return noMoreNodes();
+        focusOnNodeAtIdx(nodeIdx);
     }
 };
 
