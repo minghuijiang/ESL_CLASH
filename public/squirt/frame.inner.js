@@ -1097,7 +1097,10 @@ evt.handle({
 evt.on('keydown keyup', function keyEvent(e){
     console.log('keyevent - '+e.keyCode);
     if(!keyHasAtLeastOneHandler(e.keyCode)) return true;
-    if(keyAlreadyDown(e)) return e.preventDefault(); // has side effects
+    if(keyAlreadyDown(e)){
+        console.log('key already down. '+e.keyCode)
+        return e.preventDefault(); // has side effects
+    }
     var handler = keyHandlers[e.type][e.keyCode];
     if(!handler) return true;
     handler && handler(e);
