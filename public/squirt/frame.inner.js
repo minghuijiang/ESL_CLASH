@@ -638,6 +638,7 @@ function centerOnFocus() {
 function contextNodes(ctxNodeRange) {
     var nodes = [];
     var idx = Math.max(0, nodeIdx); // hack -- nodeIdx is -1 on start
+    console.log()
     return c.nodes
         .slice(Math.max(0, idx - ctxNodeRange), idx)
         .concat(
@@ -1074,7 +1075,7 @@ evt.handle({
         c.seek(loc)},
     'squirt.changeFont': changeFont,
     'squirt.previous': c.previous,
-    'squirt.next':c.next()
+    'squirt.next':c.next
 });
 
 evt.on('keydown keyup', function keyEvent(e){
