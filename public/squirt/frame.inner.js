@@ -818,11 +818,9 @@ var c = {
 
     },
     next: function(){
-        getNextNodeIdx = incrementNodeIdx;
-        if(!showGrey)
-            carousel.classList.add('playing');
-        slowStartIdx = nodeIdx;
-        hideContextNodes(false,advanceNode)
+        //getNextNodeIdx = incrementNodeIdx;
+        //slowStartIdx = nodeIdx;
+        //hideContextNodes(false,advanceNode)
     }
 };
 
@@ -1306,9 +1304,10 @@ evt.on(window, 'load', function(){
 var events = {
     'squirt.pause': function(e) {
         reader.stop();
-        //evt.dispatch('squirt.scrollToWords', {
-        //    words: reader.currentContextWords()
-        //});
+        reader.stop();
+        evt.dispatch('squirt.scrollToWords', {
+            words: reader.currentContextWords()
+        });
         document.body.classList.remove('playing');
     },
 
