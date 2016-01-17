@@ -817,7 +817,7 @@ var c = {
         if(!showGrey)
             carousel.classList.add('playing');
         slowStartIdx = nodeIdx;
-        hideContextNodes(extraSlowStart,advanceNode)
+        hideContextNodes(false,advanceNode)
     }
 };
 
