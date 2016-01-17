@@ -1149,6 +1149,7 @@ function togglePlay(){
 // for keys that have a keyup handler, prevent keydown from
 // firing repeatedly when held
 function keyAlreadyDown(e){
+    console.log(downKeys)
     if(e.type == 'keydown' && keyHandlers['keyup'][e.keyCode] !== undefined){
         if(downKeys[e.keyCode]) return true;
         downKeys[e.keyCode] = true;
