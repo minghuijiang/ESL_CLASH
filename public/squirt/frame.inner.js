@@ -744,7 +744,7 @@ var c = {
 
         if (!sq.playing) return;
         sq.playing = false;
-        keyHandlers=keyHandlersPause;
+        //keyHandlers=keyHandlersPause;
         carousel.classList.remove('playing');
         console.log('pause finish')
     },
