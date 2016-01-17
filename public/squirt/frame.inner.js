@@ -819,14 +819,14 @@ var c = {
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,null)
+        carousel.classList.add('playing');
     },
     next: function(){
         getNextNodeIdx=decrementNodeIdx();
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,null)
+        carousel.classList.add('playing');
     }
 };
 
