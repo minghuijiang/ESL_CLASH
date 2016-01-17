@@ -815,18 +815,18 @@ var c = {
     },
 
     previous: function(){
-        getNextNodeIdx=decrementNodeIdx();
+        getNextNodeIdx=decrementNodeIdx;
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        carousel.classList.add('playing');
+        hideContextNodes(false,null)
     },
     next: function(){
-        getNextNodeIdx=decrementNodeIdx();
+        getNextNodeIdx=incrementNodeIdx;
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        carousel.classList.add('playing');
+        hideContextNodes(false,null)
     }
 };
 
