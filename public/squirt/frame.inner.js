@@ -733,6 +733,7 @@ var c = {
     nodes: null,
 
     pause: function() {
+        console.log('pause start')
         if(tracking.startTime!=0){
             tracking.fixation++;
             var current = new Date().getTime();
@@ -745,6 +746,7 @@ var c = {
         sq.playing = false;
         keyHandlers=keyHandlersPause;
         carousel.classList.remove('playing');
+        console.log('pause finish')
     },
 
     play: function(extraSlowStart) {
@@ -758,9 +760,11 @@ var c = {
             carousel.classList.add('playing');
         slowStartIdx = nodeIdx;
         hideContextNodes(extraSlowStart,advanceNode)
+        console.log('play finish')
     },
 
     wpm: function(wpm) {// this tell time bar how much time need to read the document.
+        console.log('wpm start')
         _wpm = wpm;
         intervalMs = 60 * 1000 / wpm;
         //TODO update display
@@ -1302,9 +1306,9 @@ evt.on(window, 'load', function(){
 var events = {
     'squirt.pause': function(e) {
         reader.stop();
-        evt.dispatch('squirt.scrollToWords', {
-            words: reader.currentContextWords()
-        });
+        //evt.dispatch('squirt.scrollToWords', {
+        //    words: reader.currentContextWords()
+        //});
         document.body.classList.remove('playing');
     },
 
