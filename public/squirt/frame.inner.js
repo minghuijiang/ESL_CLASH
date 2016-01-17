@@ -584,11 +584,11 @@ function waitOnNode(node,callback) {
     lock = true;
     // if we'r ff/rewinding, advance as soon as the current transition ends
     if (seekingFFOrRewind()) {
-        evt.once(nodesContainer, dom.transitionEndEvents,function(){lock = false;callback();});
+        evt.once(nodesContainer, dom.transitionEndEvents,function(){lock = false;callback&&callback();});
 
         // otherwise, we're playing, so resolve the promise after displaying the node
     } else {
-        setTimeout(function() {
+        callback&&setTimeout(function() {
 
                 tracking.lexicalRead++;
                 tracking.wordRead+= node.word.trim().split(/[\s]+/g).length;
@@ -611,6 +611,13 @@ function advanceNode() {
     if (!getNextNodeIdx()) return noMoreNodes();
     focusOnNodeAtIdx(nodeIdx);
     waitOnNode(c.nodes[nodeIdx],advanceNode);
+}
+
+function advanceNodeOnce() {
+    updateAndDispatchProgress();
+    if (!getNextNodeIdx()) return noMoreNodes();
+    focusOnNodeAtIdx(nodeIdx);
+    waitOnNode(c.nodes[nodeIdx],null);
 }
 
 function focusOnNodeAtIdx(idx) {
@@ -670,7 +677,8 @@ function hideContextNodes(extraSlow, callback) { // initial reader, show fade of
             node.classList.remove('serial-fade')
         },delayFactor * wordsAnimationLength);
     });
-    setTimeout(callback,animationLength+gDelay); // when other part fade, and wait for the animation, then advance node.
+
+    callback&&setTimeout(callback,animationLength+gDelay) // when other part fade, and wait for the animation, then advance node.
 
 }
 var linearLeft = {
@@ -819,14 +827,14 @@ var c = {
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,null)
+        hideContextNodes(false,advanceNodeOnce)
     },
     next: function(){
         getNextNodeIdx=incrementNodeIdx;
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,null)
+        hideContextNodes(false,advanceNodeOnce)
     }
 };
 
