@@ -1096,8 +1096,8 @@ var keyHandlersRegular = {
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
         38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
         40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
-        37: evt.dispatch.bind(null, 'squirt.rewind.start', {}, null),
-        39: evt.dispatch.bind(null, 'squirt.ff.start', {}, null)
+        37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):evt.dispatch.bind(null, 'squirt.previous', {}, null),
+        39: sq.playing?evt.dispatch.bind(null, 'squirt.ff.start', {}, null):evt.dispatch.bind(null, 'squirt.next', {}, null)
     },
     keyup: {
         37: evt.dispatch.bind(null, 'squirt.rewind.stop', {}, null),
@@ -1134,8 +1134,10 @@ function keyAlreadyDown(e){
     if(e.type == 'keydown' && keyHandlers['keyup'][e.keyCode] !== undefined){
         if(downKeys[e.keyCode]) return true;
         downKeys[e.keyCode] = true;
+        console.log('key down '+e.keyCode);
     } else {
         delete downKeys[e.keyCode];
+        console.log('key up '+e.keyCode);
     }
     return false;
 }
