@@ -819,12 +819,14 @@ var c = {
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
+        hideContextNodes(false,null)
     },
     next: function(){
-        getNextNodeIdx=incrementNodeIdx();
+        getNextNodeIdx=decrementNodeIdx();
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
+        hideContextNodes(false,null)
     }
 };
 
