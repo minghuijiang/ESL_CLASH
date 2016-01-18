@@ -742,6 +742,7 @@ var c = {
 
     pause: function() {
         console.log('pause start')
+        keyHandlers=keyHandlersPause
         console.log(keyHandlers);
         if(tracking.startTime!=0){
             tracking.fixation++;
@@ -759,6 +760,7 @@ var c = {
 
     play: function(extraSlowStart) {
         console.log('playing~~~~~~~~~~~~~~');
+        keyHandlers=keyHandlersPlay
         console.log(keyHandlers);
         tracking.startTime=new Date().getTime();
         clearSeek();
@@ -1108,14 +1110,32 @@ evt.on('keydown keyup', function keyEvent(e){
 });
 
 var downKeys = {}; // track pressed keys
-var keyHandlers = {
+var keyHandlers;
+var keyHandlersPlay = {
     keydown: {
         32: togglePlay,
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
         38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
         40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
-        37: sq.playing?1:0,//evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):null,
-        39: sq.playing?1:0,//evt.dispatch.bind(null, 'squirt.ff.start', {}, null):null
+        37: 1,//evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):null,
+        39: 1,//evt.dispatch.bind(null, 'squirt.ff.start', {}, null):null
+    },
+    keyup: {
+        37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.stop', {}, null):evt.dispatch.bind(null, 'squirt.previous', {}, null),
+        39: sq.playing?evt.dispatch.bind(null, 'squirt.ff.stop', {}, null):evt.dispatch.bind(null, 'squirt.next', {}, null),
+        83: evt.dispatch.bind(null, 'squirt.toggleSettings', {}, null)
+    }
+};
+
+
+var keyHandlersPause = {
+    keydown: {
+        32: togglePlay,
+        27: evt.dispatch.bind(null, 'squirt.close', {}, null),
+        38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
+        40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
+        37: 0,//evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):null,
+        39: 0,//evt.dispatch.bind(null, 'squirt.ff.start', {}, null):null
     },
     keyup: {
         37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.stop', {}, null):evt.dispatch.bind(null, 'squirt.previous', {}, null),
@@ -1141,7 +1161,6 @@ function keyAlreadyDown(e){
 }
 
 function keyHasAtLeastOneHandler(keyCode){
-    console.log(keyHandlers['keyup'][keyCode])
     return keyHandlers['keyup'][keyCode] || keyHandlers['keydown'][keyCode];
 }
 
