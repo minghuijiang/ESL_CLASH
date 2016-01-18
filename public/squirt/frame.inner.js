@@ -1113,7 +1113,7 @@ var downKeys = {}; // track pressed keys
 var keyHandlers;
 var keyHandlersPlay = {
     keydown: {
-        32: evt.dispatch('squirt.' + 'pause' ),
+        32: togglePlay,
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
         38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
         40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
@@ -1130,7 +1130,7 @@ var keyHandlersPlay = {
 
 var keyHandlersPause = {
     keydown: {
-        32: evt.dispatch('squirt.' + 'play'),
+        32: togglePlay,
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
         38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
         40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null)
