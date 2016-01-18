@@ -829,7 +829,7 @@ var c = {
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,advanceNodeOnce)
+        hideContextNodes(false,null)
     },
     next: function(){
         console.log('next called')
@@ -837,7 +837,7 @@ var c = {
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
         focusOnNodeAtIdx(nodeIdx);
-        hideContextNodes(false,advanceNodeOnce)
+        hideContextNodes(false,null)
     }
 };
 
