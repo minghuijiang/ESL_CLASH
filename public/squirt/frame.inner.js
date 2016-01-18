@@ -752,7 +752,6 @@ var c = {
 
         if (!sq.playing) return;
         sq.playing = false;
-        //keyHandlers=keyHandlersPause;
         carousel.classList.remove('playing');
         console.log('pause finish')
     },
@@ -762,7 +761,6 @@ var c = {
         tracking.startTime=new Date().getTime();
         clearSeek();
         sq.playing = true;
-        keyHandlers=keyHandlersRegular;
         getNextNodeIdx = incrementNodeIdx;
         if(!showGrey)
             carousel.classList.add('playing');
@@ -1108,7 +1106,7 @@ evt.on('keydown keyup', function keyEvent(e){
 });
 
 var downKeys = {}; // track pressed keys
-var keyHandlersRegular = {
+var keyHandlers = {
     keydown: {
         32: togglePlay,
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
@@ -1124,24 +1122,6 @@ var keyHandlersRegular = {
     }
 };
 
-
-var keyHandlersPause = {
-    keydown: {
-        32: togglePlay,
-        27: evt.dispatch.bind(null, 'squirt.close', {}, null),
-        38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
-        40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
-
-    },
-    keyup: {
-        37: evt.dispatch.bind(null, 'squirt.previous', {}, null),
-        39: evt.dispatch.bind(null, 'squirt.next', {}, null),
-        83: evt.dispatch.bind(null, 'squirt.toggleSettings', {}, null)
-    }
-};
-
-var keyHandlers=keyHandlersRegular;
-
 function togglePlay(){
     evt.dispatch('squirt.' + (sq.playing ? 'pause' : 'play'));
 }
@@ -1149,14 +1129,11 @@ function togglePlay(){
 // for keys that have a keyup handler, prevent keydown from
 // firing repeatedly when held
 function keyAlreadyDown(e){
-    console.log(downKeys)
     if(e.type == 'keydown' && keyHandlers['keyup'][e.keyCode] !== undefined){
         if(downKeys[e.keyCode]) return true;
         downKeys[e.keyCode] = true;
-        console.log('key down '+e.keyCode);
     } else {
         delete downKeys[e.keyCode];
-        console.log('key up '+e.keyCode);
     }
     return false;
 }
