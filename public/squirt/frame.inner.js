@@ -832,6 +832,7 @@ var c = {
         hideContextNodes(false,advanceNodeOnce)
     },
     next: function(){
+        console.log('next called')
         getNextNodeIdx=incrementNodeIdx;
         updateAndDispatchProgress();
         if (!getNextNodeIdx()) return noMoreNodes();
