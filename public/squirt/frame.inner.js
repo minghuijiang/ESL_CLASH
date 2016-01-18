@@ -1112,12 +1112,12 @@ var keyHandlers = {
         27: evt.dispatch.bind(null, 'squirt.close', {}, null),
         38: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: 10}, null),
         40: evt.dispatch.bind(null, 'squirt.wpm.adjust', {value: -10}, null),
-        37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):evt.dispatch.bind(null, 'squirt.previous', {}, null),
-        39: sq.playing?evt.dispatch.bind(null, 'squirt.ff.start', {}, null):evt.dispatch.bind(null, 'squirt.next', {}, null)
+        37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.start', {}, null):null,
+        39: sq.playing?evt.dispatch.bind(null, 'squirt.ff.start', {}, null):null
     },
     keyup: {
-        37: evt.dispatch.bind(null, 'squirt.rewind.stop', {}, null),
-        39: evt.dispatch.bind(null, 'squirt.ff.stop', {}, null),
+        37: sq.playing?evt.dispatch.bind(null, 'squirt.rewind.stop', {}, null):evt.dispatch.bind(null, 'squirt.previous', {}, null),
+        39: sq.playing?evt.dispatch.bind(null, 'squirt.ff.stop', {}, null):evt.dispatch.bind(null, 'squirt.next', {}, null),
         83: evt.dispatch.bind(null, 'squirt.toggleSettings', {}, null)
     }
 };
