@@ -742,6 +742,7 @@ var c = {
 
     pause: function() {
         console.log('pause start')
+        console.log(keyHandlers);
         if(tracking.startTime!=0){
             tracking.fixation++;
             var current = new Date().getTime();
@@ -758,6 +759,7 @@ var c = {
 
     play: function(extraSlowStart) {
         console.log('playing~~~~~~~~~~~~~~');
+        console.log(keyHandlers);
         tracking.startTime=new Date().getTime();
         clearSeek();
         sq.playing = true;
