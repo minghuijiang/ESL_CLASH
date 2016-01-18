@@ -1139,6 +1139,7 @@ function keyAlreadyDown(e){
 }
 
 function keyHasAtLeastOneHandler(keyCode){
+    console.log(keyHandlers['keyup'][keyCode])
     return keyHandlers['keyup'][keyCode] || keyHandlers['keydown'][keyCode];
 }
 
