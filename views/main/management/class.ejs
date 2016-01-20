@@ -70,7 +70,7 @@
     <script>
         console.log("bind");
         $('.getToken').bind('click', function () {
-            var item =  $("#classPicker option:selected")[0];
+            var item =  $("#leftClass option:selected")[0];
             console.log(item)
             $.get('api/getToken?crn='+item.value,function(data){
                 if(data.error){
