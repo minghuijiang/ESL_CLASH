@@ -25,6 +25,7 @@ var express = require('express'),
         console.log(err.stack);
     });
     // setup java slasher.
+	//rest
     java.classpath.push("java/slash.jar");
     var slash = java.newInstanceSync("main.Slash");
 
