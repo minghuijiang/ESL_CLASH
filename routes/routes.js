@@ -7,11 +7,6 @@ var fs = require('fs');
 
 module.exports = function(app, passport) {
 
-    app.get( '/ming', function ( request, response ) {
-        console.log(request);
-
-        response.render('ming.ejs');
-    });
     // HOME PAGE (with login links) ========
     app.get( '/',isLoggedIn, function ( request, response ) {
         response.render('main.ejs',{user:request.user});

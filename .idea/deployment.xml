@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="cesr" uploadOnCheckin="0a2cd7a5-7609-4c61-9855-b2dddde3dbb6">
-    <serverData>
-      <paths name="cesr">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-    </serverData>
+  <component name="PublishConfigData" serverName="amazon aws" uploadOnCheckin="0a2cd7a5-7609-4c61-9855-b2dddde3dbb6">
     <option name="myUploadOnCheckinName" value="cesr" />
   </component>
 </project>
