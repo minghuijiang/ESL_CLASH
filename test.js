@@ -34,7 +34,7 @@ var express = require('express'),
         user: 'root',
         password : '',
         port : 3306, //port mysql
-        database:'CLASH'
+        database:'CESR'
     },'request')); //TODO  use pool?
 
     app.use(multer({
