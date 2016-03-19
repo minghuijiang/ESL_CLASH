@@ -80,7 +80,7 @@
                     else
                         showError(data.error);
                 }else{
-                    var link  = "http://esl-clash.cs.odu.edu/invite?crn="+item.value+"&token="+data.TOKEN;
+                    var link  = window.location.href +"/invite?crn="+item.value+"&token="+data.TOKEN;
                     $(".link").val(link);
                 }
             })
