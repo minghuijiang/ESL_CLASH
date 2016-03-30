@@ -262,10 +262,10 @@ function handleUploads(req,res){
 
             console.log(req.user.USERNAME+' finished Spawn');
             parseText(output,req,res,1,10,function(){
-                fs.unlink(file.path,function(err){
-                    if(err)
-                        console.log(err);
-                });
+                //fs.unlink(file.path,function(err){
+                //    if(err)
+                //        console.log(err);
+                //});
             });
         });
         parse_msword.stderr.on('data', function (data) {
@@ -273,19 +273,19 @@ function handleUploads(req,res){
             console.log(data);
             result.error = data;
             res.send(result);
-            fs.unlink(file.path,function(err){
-                if(err)
-                    console.log(err);
-            });
+            //fs.unlink(file.path,function(err){
+            //    if(err)
+            //        console.log(err);
+            //});
         });
     }else{// this should not happen., always check extension on client side before upload.
         console.log(req.user.USERNAME+' unsupport file format : '+file.extension);
         result.error='Unsupported file format';
         res.send(result);
-        fs.unlink(file.path,function(err){
-            if(err)
-                console.log(err);
-        });
+        //fs.unlink(file.path,function(err){
+        //    if(err)
+        //        console.log(err);
+        //});
     }
 }
 
