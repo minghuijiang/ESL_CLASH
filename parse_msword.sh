@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 filename="$1"
 extension=${filename##*.}
