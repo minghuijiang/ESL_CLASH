@@ -241,6 +241,7 @@ function handleUploads(req,res){
     console.log('called handle uploads');
     var file = req.files.file;
     var file_extension = file.extension;
+    logError(file);
     var result = {};
     console.log(req.user.USERNAME+' request to slash upload document. file_extension: '+file_extension+' size: '+file.size);
     // check file size on client side.
