@@ -63,3 +63,6 @@ p {
     display:none;
 
 }
+.ui-widget-header .btn-warning{
+    background: #0000cc;
+}
