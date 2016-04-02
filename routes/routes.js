@@ -61,6 +61,7 @@ module.exports = function(app, passport) {
     app.get('/api/changePassword',isLoggedIn,DB.changePassword);
     app.get('/api/getToken',isLoggedIn,DB.getClassToken);
     app.get('/api/selfEnrollment',DB.selfEnrollment);
+    app.get('/api/selfEnrollmentExist',DB.selfEnrollmentExist);
     //test version.
     app.get('/js/eventI.js',isLoggedIn,isInstructorOrAdmin);
     app.get('/js/eventA.js',isLoggedIn,isAdmin);

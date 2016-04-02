@@ -10,6 +10,10 @@ function addUserSelf(form,callback, field){
     console.log(form);
     registerSubmit(form,'api/selfEnrollment?',callback, field);
 }
+function addUserExist(form,callback, field){
+    console.log(form);
+    registerSubmit(form,'api/selfEnrollmentExist?',callback, field);
+}
 function delUser(form,callback, field){
     registerSubmit(form,'api/delUser?',callback, field);
 }

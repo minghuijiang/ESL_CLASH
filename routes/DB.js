@@ -113,7 +113,6 @@ exports.selfEnrollment = function(req,res){
                     if(result.error){
                         res.send(result);
                     }else{
-                        //DB.addStudent(req,res);
                         sql(req,"SELECT USERID FROM USER WHERE USERNAME = ?",input.username,
                             function(err,rows){
                                 if(err){
@@ -122,7 +121,8 @@ exports.selfEnrollment = function(req,res){
                                     res.send(result);
                                 }else if(rows.length!=0){
                                     result.error = "User exist.";
-                                    res.send(result);
+                                    //sql(req,"SELECT USERID FROM USER WHERE USERNAME = ?",input.username,
+                                    res.send(result)
                                 }else{
                                     sql(req,"INSERT INTO USER set ? ",{
                                             USERNAME    :   input.username,
@@ -165,6 +165,79 @@ exports.selfEnrollment = function(req,res){
     }
 };
 
+exports.selfEnrollmentExist = function(req,res){
+    var input = req.query;
+    var result={};// = checkPermission(req, 2);
+    if(result.error){
+        res.send(result);
+    }else{
+        sql(req, "SELECT * FROM ENROLLMENTTOKEN WHERE CRN = ? AND TOKEN = ?",
+            [input.crn,input.token],
+            function(err,rows){
+                if(err)
+                    logError(err);
+                else if(rows.length<1){
+                    // no instructor crn pair
+                    result.error = "Token invalid";
+                    res.send(result);
+                }else{
+                    if(!input.username||input.username.length==0 ||!input.password||input.password.length==0){
+                        result.error('Parameters Error.');
+                    }
+                    if(result.error){
+                        res.send(result);
+                    }else{
+                        sql(req,"SELECT USERID FROM USER WHERE USERNAME = ? and PASSWORD = ?",input.username,input.password,
+                            function(err,rows){
+                                if(err){
+                                    logError(err);
+                                    result.error = err;
+                                    res.send(result);
+                                }else if(rows.length!=0){
+                                    //result.error = "User exist.";
+                                    userid= rows[0].USERID;
+                                    sql(req,"INSERT INTO STUDENT set ? ",{
+                                        CRN:input.crn,
+                                        STUDENT:userid
+                                    },function(err, rows){
+                                        if (err){
+                                            result.error=err;
+                                        }else{
+
+                                        }
+                                        res.send(result);
+
+                                    })
+                                }else{
+                                    sql(req,"INSERT INTO USER set ? ",{
+                                        USERNAME    :   input.username,
+                                        FNAME:          input.fname,
+                                        LNAME:          input.lname,
+                                        PASSWORD :      input.password,
+                                        USERTYPE   :    2
+                                    }, function(err, rows){
+                                        if (err){
+                                            result.error=err;
+                                            res.send(result);
+                                        }else{
+                                            result.data=rows;
+                                            console.log(rows);
+                                            var userid = rows.insertId;
+
+                                        }
+
+                                    });
+                                }
+                            });
+                    }
+
+
+
+
+                }
+            })
+    }
+};
 
 exports.changePassword = function(req,res){
     var input = req.query;
