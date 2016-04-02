@@ -63,7 +63,7 @@ p {
     display:none;
 
 }
-.btn-warning #tabHeader{
+.btn-warning{
     background-color: #0000cc;
     border-color:#0000cc;
 }
