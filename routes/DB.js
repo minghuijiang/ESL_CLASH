@@ -113,7 +113,7 @@ exports.selfEnrollment = function(req,res){
                     if(result.error){
                         res.send(result);
                     }else{
-                        DB.addStudent(req,res);
+                        //DB.addStudent(req,res);
                         sql(req,"SELECT USERID FROM USER WHERE USERNAME = ?",input.username,
                             function(err,rows){
                                 if(err){
