@@ -168,7 +168,6 @@ exports.selfEnrollment = function(req,res){
 exports.selfEnrollmentExist = function(req,res){
     var input = req.query;
     var result={};// = checkPermission(req, 2);
-    console.log("here");
     if(result.error){
         res.send(result);
     }else{
@@ -188,7 +187,7 @@ exports.selfEnrollmentExist = function(req,res){
                     if(result.error){
                         res.send(result);
                     }else{
-                        sql(req,"SELECT USERID FROM USER WHERE USERNAME = ? and PASSWORD = ?",input.username,input.password,
+                        sql(req,"SELECT USERID FROM USER WHERE USERNAME = ? and PASSWORD = ?",[input.username,input.password],
                             function(err,rows){
                                 if(err){
                                     logError(err);
