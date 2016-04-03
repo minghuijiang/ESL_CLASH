@@ -168,6 +168,7 @@ exports.selfEnrollment = function(req,res){
 exports.selfEnrollmentExist = function(req,res){
     var input = req.query;
     var result={};// = checkPermission(req, 2);
+    console.log("here");
     if(result.error){
         res.send(result);
     }else{

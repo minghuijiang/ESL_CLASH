@@ -62,9 +62,9 @@
 
         <input type="text" name="username" value="" placeholder="Username" required />
         <br />
-        <input type="password" id='addUserPassword' name="password" value="" placeholder="Password" required />
+        <input type="password" id='addUserExistPassword' name="password" value="" placeholder="Password" required />
         <br />
-        <input type="checkbox" onchange="document.getElementById('addUserPassword').type =
+        <input type="checkbox" onchange="document.getElementById('addUserExistPassword').type =
                                 this.checked ? 'text' : 'password'"> Show password
         <br />
         <input type="text" name="crn" value = "<%= crn %>" hidden />
@@ -80,7 +80,7 @@
             if(data.error)
                 showError('Error: '+data.error.code);
             else{
-                alert('Account created!');
+                alert('Account enrolled!');
                 window.url="http://cesrreader.com";
             }
             console.log(data);
