@@ -169,7 +169,7 @@ div.verticalLine{
 }
 
 
-.btn-warning #tabHeader{
+.btn-warning #tabHeader   .ui-widget-header{
     background-color: #0000cc;
     border-color:#0000cc;
 }
