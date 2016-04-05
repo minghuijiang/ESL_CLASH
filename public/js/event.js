@@ -241,3 +241,5 @@ $("button").button();
 
 $( "#tabHeader").css("background","#0000cc");
 $( "#tabHeader").css("border","#0000cc");
+$( "#nest-tabHeader").css("background","#0000cc");
+$( "#nest-tabHeader").css("border","#0000cc");
