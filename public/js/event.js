@@ -239,5 +239,5 @@ $("li.last a").unbind('click');
 $( "#manageTabs" ).tabs();
 $("button").button();
 
-$( "#tabHeader").css("background-color","#0000cc");
-$( "#tabHeader").css("border-color","#0000cc");
+$( "#tabHeader").css("background","#0000cc");
+$( "#tabHeader").css("border","#0000cc");
