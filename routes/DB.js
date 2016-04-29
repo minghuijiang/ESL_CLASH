@@ -803,6 +803,7 @@ exports.delClass = function(req,res){
     var input = req.query;
     var result = checkPermission(req, 2);
     var instructor = req.user.USERID;
+    logError(("in del "))
     if(req.user.USERTYPE==0&&input.instructor){
         instructor = input.instructor;
     }
