@@ -8,8 +8,8 @@ function adminOnlyBinding(){
         return [obj.CLASSNAME,obj.CRN];
     });
     $('#submitDeleteClass').on('click',function(ev){
-        var item =  $("#leftClass option:selected")[0].value;
-        $.get('api/delClass?crn='+item,function(data){
+        var item =  $("#leftClass option:selected")[0];
+        $.get('api/delClass?crn='+item.value,function(data){
             if(data.error){
                 if(data.error.code)
                     showError(data.error.code);

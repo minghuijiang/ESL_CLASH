@@ -103,7 +103,7 @@ function reParseLexical(msg,req,res,callback){
     var result ={};
     // grep ExceptionList
     req.getConnection(function (err, connection) {
-        connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
+        connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? OR USER ID = 1000105 ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
             var exception ='';
             if (err){
                 logError(error);
@@ -172,6 +172,8 @@ function parseText (msg,req, res,min,max,callback){
         } else {
             // grep ExceptionList
             req.getConnection(function (err, connection) {
+                var stat = "SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC";
+                if(req.useGlobal=true)
                 connection.query("SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC",req.user.USERID, function(err, rows){
                     var exception ='';
                     if (err){
