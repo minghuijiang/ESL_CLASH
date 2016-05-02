@@ -13,7 +13,7 @@ To see how CESRReader works, click “Slash it.” The slashes appear between ph
 
 When reading, you can use the up or down arrows to increase or decrease reading speed."></textarea>
             <div for="resizable" id="characterLeft"></div>
-            <input type="checkbox" name="Use Global Exceptions" value="checked" />
+            <input type="checkbox" id="textGlobal" checked=checked /> Use Common Lexical Bundles <br />
             <button type="button" id="button">SLASH IT!</button>
 
 
@@ -24,8 +24,9 @@ When reading, you can use the up or down arrows to increase or decrease reading 
         <br />
         <form id="uploadFile" action="/" method="post" enctype="multipart/form-data">
             <input id='fileInput' type="file" name="file" value="Select File to Upload.." accept=".docx,.doc,.txt" /><br /><br />
+            <input type="checkbox" id="uploadGlobal" checked=checked /> Use Common Lexical Bundles<br />
             <input type="submit" id="fileSubmit" />
-            <input type="checkbox" name="Use Global Exceptions" value="checked" />
+
         </form>
     </div>
 
