@@ -84,7 +84,7 @@ function instructorBinding(){
         $("span", this).text("This should not take long. Please wait...");
         $.ajax({
             type: "POST",
-            url: "/slash?useglobal="+$("#textGlobal").checked,
+            url: "/slash?useglobal="+$("#textGlobal").prop('checked'),
             data: 'text='+txt,
             success: function(data){
                 $("#button").prop('disabled',false);
@@ -110,7 +110,7 @@ function instructorBinding(){
         $('#fileSubmit',this).prop('disabled',true);
         $('#fileSubmit',this).val('Please wait...');
         $.ajax({
-            url: '/uploads?useglobal='+$("#uploadGlobal").checked,
+            url: '/uploads?useglobal='+$("#uploadGlobal").prop('checked'),
             type: 'POST',
             success: function(data){
                 $('#fileSubmit').prop('disabled',false);
