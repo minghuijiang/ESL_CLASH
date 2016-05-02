@@ -104,7 +104,7 @@ function reParseLexical(msg,req,res,callback){
     // grep ExceptionList
     req.getConnection(function (err, connection) {
         var stat = "SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC";
-        if(req.useGlobal=true)
+        if(req.useGlobal==true)
             stat= "SELECT * FROM EXCEPTION WHERE USERID = ? OR USER ID = 1000105 ORDER BY COUNT DESC"
         connection.query(stat,req.user.USERID, function(err, rows){
             var exception ='';
@@ -175,9 +175,10 @@ function parseText (msg,req, res,min,max,callback){
         } else {
             // grep ExceptionList
             req.getConnection(function (err, connection) {
+                console.log("useglobal = "+req.useglobal)
                 var stat = "SELECT * FROM EXCEPTION WHERE USERID = ? ORDER BY COUNT DESC";
-                if(req.useglobal=true)
-                stat= "SELECT * FROM EXCEPTION WHERE USERID = ? OR USER ID = 1000105 ORDER BY COUNT DESC"
+                if(req.useglobal==true)
+                 stat= "SELECT * FROM EXCEPTION WHERE USERID = ? OR USER ID = 1000105 ORDER BY COUNT DESC"
                 connection.query(stat,req.user.USERID, function(err, rows){
                     var exception ='';
                     if (err){
